@@ -232,6 +232,9 @@ const LOJA_BANNER_URL_PADRAO =
 const IMPULSOS_BANNER_URL_PADRAO =
   process.env.IMPULSOS_BANNER_URL ||
   'https://media.discordapp.net/attachments/1545383446208315422/1547864303552700496/content.png?ex=6aa4f877&is=6aa3a6f7&hm=ed118df1a1bb51aeb96ad41ddff0aca1b0f2e71a7ddf87141bb7fe6a5378c97b&=&format=webp&quality=lossless&width=1520&height=856';
+const NITRADAS_BANNER_URL_PADRAO =
+  process.env.NITRADAS_BANNER_URL ||
+  'https://cdn.discordapp.com/attachments/1545383446208315422/1547869780147572757/content.png?ex=6aa4fd91&is=6aa3ac11&hm=aea8d0e55944c2f3fee98034ed98d7603641ec650209b79f34ea52911c0d76ba&';
 
 // Tickets: categoria, cargos da staff e banner por defeito (env var sobrepõe).
 const TICKETS_CATEGORIA_ID_PADRAO = '1322700826912882779';
@@ -921,12 +924,16 @@ const PAINEL_TEXTOS = {
     ],
     { imagem: IMPULSOS_BANNER_URL_PADRAO }
   ),
-  Nitradas: textoPainel('Nitradas', [
-    'Recebe uma conta Full Acesso.',
-    'Contas com Nitro Gaming.',
-    'Melhor qualidade.',
-    'Muda e-mail, senha, etc.',
-  ]),
+  Nitradas: textoPainel(
+    'Nitradas',
+    [
+      'Recebe uma conta Full Acesso.',
+      'Contas com Nitro Gaming.',
+      'Melhor qualidade.',
+      'Muda e-mail, senha, etc.',
+    ],
+    { imagem: NITRADAS_BANNER_URL_PADRAO }
+  ),
   Links: textoPainel('Nitro Links', [
     'Nitro Link Mensal e Trimensal.',
     'Ativação do Nitro incluída.',
