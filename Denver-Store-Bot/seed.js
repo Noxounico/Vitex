@@ -123,6 +123,18 @@ const CATALOG = [
       { name: '20 Rockstar Acc', priceCents: cents(15) },
     ],
   },
+  {
+    category: 'bots',
+    products: [{ name: 'Bot Personalizado', priceCents: cents(5) }],
+  },
+  {
+    category: 'servidores',
+    products: [
+      { name: 'Discord RP', priceCents: cents(5) },
+      { name: 'Discord Personalizado', priceCents: cents(5) },
+      { name: 'Discord Básico', priceCents: cents(3) },
+    ],
+  },
 ];
 
 function seed() {

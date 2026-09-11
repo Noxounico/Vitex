@@ -235,7 +235,8 @@ const TICKETS_CATEGORIA_ID_PADRAO = '1322700826912882779';
 const TICKETS_CARGOS_STAFF_PADRAO = ['1443307566921678968', '1318653141453111368'];
 const TICKETS_BANNER_URL_PADRAO =
   'https://media.discordapp.net/attachments/1534183602764648579/1547711353840738425/image.png?ex=6aa46a05&is=6aa31885&hm=add46c54857977892ae15441df5b3e5ac8423cbc068029e98d4b4fdca43cabb4&=&format=webp&quality=lossless&width=1479&height=832';
-const VERIFY_ROLE_ID_PADRAO = '1178495316132110336';
+const VERIFY_ROLE_ID_PADRAO = '1547807362306408548';
+const FUTURO_CLIENTE_ROLE_ID_PADRAO = '1547219527060824176';
 const LOGS_CANAL_ID_PADRAO = '1547721266566402200';
 
 function ticketsCategoriaId() {
@@ -273,6 +274,19 @@ function cargoVerificacaoId() {
   return process.env.VERIFY_ROLE_ID || VERIFY_ROLE_ID_PADRAO;
 }
 
+function cargoFuturoClienteId() {
+  return process.env.FUTURO_CLIENTE_ROLE_ID || FUTURO_CLIENTE_ROLE_ID_PADRAO;
+}
+
+function cargosAposVerificar(roleIdPrincipal) {
+  return [...new Set([roleIdPrincipal || cargoVerificacaoId(), cargoFuturoClienteId()].filter(Boolean))];
+}
+
+function cargosEmFalta(member, roleIds) {
+  if (!member?.roles?.cache) return [...roleIds];
+  return roleIds.filter((id) => !member.roles.cache.has(id));
+}
+
 // "trial" -> "Trial", "link spotify tri" -> "Link Spotify Tri"
 function capitalizar(str) {
   return str
@@ -288,6 +302,7 @@ function criarCliente() {
       GatewayIntentBits.GuildMessages,
       GatewayIntentBits.MessageContent,
       GatewayIntentBits.DirectMessages,
+      GatewayIntentBits.GuildMembers,
     ],
     partials: [Partials.Channel],
   });
@@ -387,6 +402,14 @@ const PRODUTOS_SEED = [
   // --- Canal Rockstar ACC'S ---
   { nome: '1 Rockstar Acc', preco: eur(4), categoria: 'rockstar' },
   { nome: '20 Rockstar Acc', preco: eur(15), categoria: 'rockstar' },
+
+  // --- Canal de bots Discord ---
+  { nome: 'Bot Personalizado', preco: eur(5), categoria: 'bots' },
+
+  // --- Canal de criação de servidores Discord ---
+  { nome: 'Discord RP', preco: eur(5), categoria: 'servidores' },
+  { nome: 'Discord Personalizado', preco: eur(5), categoria: 'servidores' },
+  { nome: 'Discord Básico', preco: eur(3), categoria: 'servidores' },
 ];
 
 // Cria produtos em falta e atualiza o preço/categoria dos que já existem.
@@ -468,6 +491,9 @@ const CATEGORIA_POR_COMANDO = {
   'loja-roblox': 'roblox',
   'loja-fortnite': 'fortnite',
   'loja-rockstar': 'rockstar',
+  'loja-bots': 'bots',
+  'loja-servidores': 'servidores',
+  'loja-criacao': 'servidores',
 };
 
 // Acrescenta as opções comuns de personalização do painel a um comando
@@ -609,7 +635,7 @@ const slashCommands = [
     .addRoleOption((opt) =>
       opt
         .setName('cargo')
-        .setDescription('Cargo dado a quem se verificar (senão usa a variável VERIFY_ROLE_ID)')
+        .setDescription('Cargo de verificado (também é dado o cargo de futuro cliente)')
         .setRequired(false)
     )
     .addAttachmentOption((opt) =>
@@ -725,6 +751,15 @@ const SINONIMOS_STOCK = {
   trampo: 'trampo',
   mensal: 'mensal',
   anual: 'anual',
+  bot: 'bot',
+  bots: 'bot',
+  discord: 'discord',
+  servidor: 'servidores',
+  servidores: 'servidores',
+  criacao: 'servidores',
+  rp: 'rp',
+  basico: 'basico',
+  personalizado: 'personalizado',
 };
 
 function normalizarTextoProduto(texto) {
@@ -845,12 +880,21 @@ function corParaHex(cor) {
 }
 
 // Textos/estilo específicos por categoria — cada painel tem a sua mensagem.
+function linhaJaFormatada(texto) {
+  return /^(•|💎|🔹|✨|・|🖥️|🤖)/u.test(texto);
+}
+
 function textoPainel(titulo, bullets, extras = {}) {
   return {
     titulo,
-    descricao: bullets
-      .map((b) => (b.startsWith('•') || b.startsWith('💎') ? b : `• ${b}`))
-      .join('\n'),
+    descricao:
+      extras.descricao ||
+      bullets
+        .map((b) => {
+          if (!b) return '';
+          return linhaJaFormatada(b) ? b : `• ${b}`;
+        })
+        .join('\n'),
     entrega: extras.entrega || '⚡ Entrega Automática!',
     cor: extras.cor ?? 0x2b2d31,
   };
@@ -947,6 +991,36 @@ const PAINEL_TEXTOS = {
     'Melhor qualidade.',
     'Entrega automática no privado.',
   ]),
+  bots: textoPainel(
+    '🤖 BOTS DISCORD 🤖',
+    [
+      '🔹 Bot Personalizado: 5€',
+      'O preço depende do tipo de bot — qualquer coisa dá pra ver no Ticket!',
+      '✨ Incluído:',
+      '・Comandos personalizados',
+      '・Cargos e permissões',
+      '・Configurações',
+      '・Design personalizado',
+      '・Configuração completa',
+    ],
+    { entrega: '🎫 Entrega via ticket' }
+  ),
+  servidores: textoPainel(
+    '🖥️ SERVIDORES DISCORD — PREÇOS 🖥️',
+    [
+      '🔹 Discord RP: 5€',
+      '🔹 Discord Personalizado: 5€',
+      '🔹 Discord Básico: 3€',
+      'Depende de que tipo de Discord Personalizado for, qualquer coisa dá pra ver o preço no Ticket!',
+      '✨ Incluído:',
+      '・Canais e categorias personalizados',
+      '・Cargos e permissões',
+      '・Configurações',
+      '・Design personalizado',
+      '・Configuração completa',
+    ],
+    { entrega: '🎫 Entrega via ticket' }
+  ),
 };
 
 function textosDaCategoria(categoryName) {
@@ -1866,7 +1940,8 @@ async function publicarVerificacao(interaction) {
 
 async function pedirCaptchaVerificacao(interaction, roleId) {
   const member = interaction.member;
-  if (member?.roles?.cache?.has(roleId)) {
+  const roleIds = cargosAposVerificar(roleId);
+  if (member && cargosEmFalta(member, roleIds).length === 0) {
     return interaction.reply({ content: '✅ Já estás verificado!', ephemeral: true });
   }
 
@@ -1919,22 +1994,25 @@ async function verificarMembro(interaction, roleId, opts = {}) {
   const responder = (payload) =>
     opts.viaUpdate ? interaction.update(payload) : interaction.reply({ ...payload, ephemeral: true });
 
-  if (member?.roles?.cache?.has(roleId)) {
+  const roleIds = cargosAposVerificar(roleId);
+  const emFalta = cargosEmFalta(member, roleIds);
+  if (member && emFalta.length === 0) {
     return responder({ content: '✅ Já estás verificado!', components: [] });
   }
   try {
-    await member.roles.add(roleId);
+    await member.roles.add(emFalta);
+    const mencoes = roleIds.map((id) => `<@&${id}>`).join(' e ');
     await responder({
       content: '✅ Verificado! Já tens acesso ao servidor.',
       components: [],
     });
-    await logToChannel(`✅ <@${interaction.user.id}> verificou-se (cargo <@&${roleId}>).`);
+    await logToChannel(`✅ <@${interaction.user.id}> verificou-se (cargos ${mencoes}).`);
   } catch (err) {
     console.error('Falha ao verificar membro:', err.message);
     await responder({
       content:
         'Não consegui dar-te o cargo. Um admin precisa de dar ao bot a permissão **Gerir Cargos** ' +
-        'e de colocar o cargo do bot **acima** do cargo de verificação.',
+        'e de colocar o cargo do bot **acima** dos cargos de verificação e de futuro cliente.',
       components: [],
     });
   }
