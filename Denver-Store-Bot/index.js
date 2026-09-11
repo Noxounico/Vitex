@@ -246,10 +246,10 @@ const SERVIDORES_BANNER_URL_PADRAO =
   'https://cdn.discordapp.com/attachments/1545383446208315422/1547886814973399082/content.png?ex=6aa50d6f&is=6aa3bbef&hm=dd92545b597805591310259bdd63813beceef8c46afb95a8f96228739fbd2538&';
 
 // Tickets: categoria, cargos da staff e banner por defeito (env var sobrepõe).
-const TICKETS_CATEGORIA_ID_PADRAO = '1322700826912882779';
+const TICKETS_CATEGORIA_ID_PADRAO = '1548064600652775526';
 const TICKETS_CARGOS_STAFF_PADRAO = ['1443307566921678968', '1318653141453111368'];
 const TICKETS_BANNER_URL_PADRAO =
-  'https://media.discordapp.net/attachments/1534183602764648579/1547711353840738425/image.png?ex=6aa46a05&is=6aa31885&hm=add46c54857977892ae15441df5b3e5ac8423cbc068029e98d4b4fdca43cabb4&=&format=webp&quality=lossless&width=1479&height=832';
+  'https://media.discordapp.net/attachments/1545383446208315422/1548064227137167460/content.png?ex=6aa5b2a9&is=6aa46129&hm=7143771ae8cfdb5656ff0f5f1fdf1086dda3169ccc31f181a2fb66307c79a402&=&format=webp&quality=lossless&width=1520&height=856';
 const VERIFY_ROLE_ID_PADRAO = '1547807362306408548';
 const FUTURO_CLIENTE_ROLE_ID_PADRAO = '1547219527060824176';
 const LOGS_CANAL_ID_PADRAO = '1547721266566402200';
@@ -1247,8 +1247,23 @@ const TIPOS_TICKET = {
   duvidas: { label: 'Duvidas', emoji: '👥', descricao: 'Abra um ticket para tirar a sua Duvida' },
 };
 
-function gerarSufixoTicket() {
-  return Math.random().toString(36).slice(2, 7); // ex.: "cn3xl"
+function slugCanalTicket(texto) {
+  return String(texto || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+function nomeCanalTicket(tipoKey, username, extra) {
+  const tipo = TIPOS_TICKET[tipoKey];
+  const motivo = slugCanalTicket(tipo?.label || tipoKey || 'ticket');
+  const nome = slugCanalTicket(username).slice(0, 32) || 'user';
+  const partes = [motivo, nome];
+  if (extra) partes.push(slugCanalTicket(extra).slice(0, 24));
+  return partes.filter(Boolean).join('-').slice(0, 90);
 }
 
 function gerarPainelTickets(opts = {}) {
@@ -1346,7 +1361,8 @@ function textoComandos() {
 
 function ehCanalTicket(canal) {
   if (!canal) return false;
-  return canal.parentId === ticketsCategoriaId() || /^(suporte|receber-produto|duvidas)-/i.test(canal.name);
+  if (canal.parentId === ticketsCategoriaId()) return true;
+  return /^(suporte|receber-produto|duvidas|receber-produto)-/i.test(canal.name);
 }
 
 function podeGerirTicket(membro, canal) {
@@ -1373,9 +1389,15 @@ async function fecharTicket(canal, autorTag) {
   }, 5000);
 }
 
-async function criarCanalTicket(guild, userId, tipoKey, nomeExtra) {
+async function criarCanalTicket(guild, user, tipoKey, extra) {
   const tipo = TIPOS_TICKET[tipoKey];
   if (!tipo || !guild) return null;
+
+  const userId = typeof user === 'string' ? user : user.id;
+  const username =
+    typeof user === 'object'
+      ? user.username || user.globalName || userId
+      : userId;
 
   const categoriaId = ticketsCategoriaId();
   const staffRoleIds = ticketsCargosStaffIds();
@@ -1410,12 +1432,7 @@ async function criarCanalTicket(guild, userId, tipoKey, nomeExtra) {
     });
   }
 
-  const base = nomeExtra || `${tipoKey}-${gerarSufixoTicket()}`;
-  const nome = String(base)
-    .toLowerCase()
-    .replace(/[^a-z0-9-]+/g, '-')
-    .replace(/-+/g, '-')
-    .slice(0, 90);
+  const nome = nomeCanalTicket(tipoKey, username, extra);
 
   return guild.channels.create({
     name: nome,
@@ -1447,7 +1464,7 @@ async function criarTicket(interaction, tipoKey) {
 
   let canal;
   try {
-    canal = await criarCanalTicket(interaction.guild, interaction.user.id, tipoKey);
+    canal = await criarCanalTicket(interaction.guild, interaction.user, tipoKey);
   } catch (err) {
     console.error('Falha ao criar canal de ticket:', err.message);
     return interaction.reply({
@@ -1493,9 +1510,9 @@ async function abrirTicketPedido(interaction, { orderId, product, quantidade }) 
   try {
     const canal = await criarCanalTicket(
       interaction.guild,
-      interaction.user.id,
+      interaction.user,
       'receber-produto',
-      `receber-produto-${orderId}`
+      String(orderId)
     );
     const rowPedido = new ActionRowBuilder().addComponents(
       new ButtonBuilder()
