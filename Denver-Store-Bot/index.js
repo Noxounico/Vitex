@@ -229,6 +229,9 @@ async function gerarImagemPainel({ imagemUrl, titulo, bullets, entrega, precoTex
 const LOJA_BANNER_URL_PADRAO =
   process.env.LOJA_BANNER_URL ||
   'https://media.discordapp.net/attachments/1545383446208315422/1545780646473891962/banner-loja.jpg?ex=6aa3fb69&is=6aa2a9e9&hm=f77d4ddcfd49941ea186279776ed50c55ae6aa81d83dc49780ab3ed45926712e&=&format=webp';
+const IMPULSOS_BANNER_URL_PADRAO =
+  process.env.IMPULSOS_BANNER_URL ||
+  'https://media.discordapp.net/attachments/1545383446208315422/1547864303552700496/content.png?ex=6aa4f877&is=6aa3a6f7&hm=ed118df1a1bb51aeb96ad41ddff0aca1b0f2e71a7ddf87141bb7fe6a5378c97b&=&format=webp&quality=lossless&width=1520&height=856';
 
 // Tickets: categoria, cargos da staff e banner por defeito (env var sobrepõe).
 const TICKETS_CATEGORIA_ID_PADRAO = '1322700826912882779';
@@ -897,6 +900,7 @@ function textoPainel(titulo, bullets, extras = {}) {
         .join('\n'),
     entrega: extras.entrega || '⚡ Entrega Automática!',
     cor: extras.cor ?? 0x2b2d31,
+    imagem: extras.imagem || null,
   };
 }
 
@@ -907,12 +911,11 @@ const PAINEL_TEXTOS = {
     'Melhor qualidade.',
     'Entrega automática no privado.',
   ]),
-  Impulsos: textoPainel('Impulsos', [
-    '💎 1 Impulso: 1€',
-    '💎 2 Impulsos: 2€',
-    '💎 7 Impulsos: 7€',
-    '💎 14 Impulsos: 14€',
-  ]),
+  Impulsos: textoPainel(
+    'Impulsos',
+    ['💎 1 Impulso: 1€', '💎 2 Impulsos: 2€', '💎 7 Impulsos: 7€', '💎 14 Impulsos: 14€'],
+    { imagem: IMPULSOS_BANNER_URL_PADRAO }
+  ),
   Nitradas: textoPainel('Nitradas', [
     'Recebe uma conta Full Acesso.',
     'Contas com Nitro Gaming.',
