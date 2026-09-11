@@ -235,6 +235,9 @@ const IMPULSOS_BANNER_URL_PADRAO =
 const NITRADAS_BANNER_URL_PADRAO =
   process.env.NITRADAS_BANNER_URL ||
   'https://cdn.discordapp.com/attachments/1545383446208315422/1547869780147572757/content.png?ex=6aa4fd91&is=6aa3ac11&hm=aea8d0e55944c2f3fee98034ed98d7603641ec650209b79f34ea52911c0d76ba&';
+const LINKS_BANNER_URL_PADRAO =
+  process.env.LINKS_BANNER_URL ||
+  'https://media.discordapp.net/attachments/1545383446208315422/1547880624872751134/content.png?ex=6aa507ab&is=6aa3b62b&hm=6262b3f6c612c8213bf519bd02310c41d84b8aab76041d519a5ad7e8cab0bb70&=&format=webp&quality=lossless&width=1519&height=856';
 
 // Tickets: categoria, cargos da staff e banner por defeito (env var sobrepõe).
 const TICKETS_CATEGORIA_ID_PADRAO = '1322700826912882779';
@@ -285,7 +288,11 @@ function cargoFuturoClienteId() {
 }
 
 function cargosAposVerificar(roleIdPrincipal) {
-  return [...new Set([roleIdPrincipal || cargoVerificacaoId(), cargoFuturoClienteId()].filter(Boolean))];
+  return [
+    ...new Set(
+      [roleIdPrincipal, cargoVerificacaoId(), cargoFuturoClienteId()].filter(Boolean)
+    ),
+  ];
 }
 
 function cargosEmFalta(member, roleIds) {
@@ -934,12 +941,16 @@ const PAINEL_TEXTOS = {
     ],
     { imagem: NITRADAS_BANNER_URL_PADRAO }
   ),
-  Links: textoPainel('Nitro Links', [
-    'Nitro Link Mensal e Trimensal.',
-    'Ativação do Nitro incluída.',
-    'Melhor qualidade.',
-    'Só clicar em resgatar.',
-  ]),
+  Links: textoPainel(
+    'Nitro Links',
+    [
+      'Nitro Link Mensal e Trimensal.',
+      'Ativação do Nitro incluída.',
+      'Melhor qualidade.',
+      'Só clicar em resgatar.',
+    ],
+    { imagem: LINKS_BANNER_URL_PADRAO }
+  ),
   trial: textoPainel('Trial Nitro', [
     'Trial Nitro para testar a conta.',
     'Ativação simples, só resgatar.',
@@ -2014,23 +2025,38 @@ async function verificarMembro(interaction, roleId, opts = {}) {
   if (member && emFalta.length === 0) {
     return responder({ content: '✅ Já estás verificado!', components: [] });
   }
-  try {
-    await member.roles.add(emFalta);
-    const mencoes = roleIds.map((id) => `<@&${id}>`).join(' e ');
-    await responder({
-      content: '✅ Verificado! Já tens acesso ao servidor.',
+  if (!member) {
+    return responder({
+      content: 'Não consegui ler o teu perfil neste servidor. Tenta outra vez.',
       components: [],
     });
-    await logToChannel(`✅ <@${interaction.user.id}> verificou-se (cargos ${mencoes}).`);
-  } catch (err) {
-    console.error('Falha ao verificar membro:', err.message);
-    await responder({
+  }
+
+  const dados = [];
+  for (const id of emFalta) {
+    try {
+      await member.roles.add(id);
+      dados.push(id);
+    } catch (err) {
+      console.error(`Falha ao dar cargo ${id}:`, err.message);
+    }
+  }
+
+  if (dados.length === 0) {
+    return responder({
       content:
         'Não consegui dar-te o cargo. Um admin precisa de dar ao bot a permissão **Gerir Cargos** ' +
         'e de colocar o cargo do bot **acima** dos cargos de verificação e de futuro cliente.',
       components: [],
     });
   }
+
+  const mencoes = roleIds.map((id) => `<@&${id}>`).join(' e ');
+  await responder({
+    content: '✅ Verificado! Já tens acesso ao servidor.',
+    components: [],
+  });
+  await logToChannel(`✅ <@${interaction.user.id}> verificou-se (cargos ${mencoes}).`);
 }
 
 // ---------------------------------------------------------------------------
