@@ -428,7 +428,8 @@ const PRODUTOS_SEED = [
   { nome: '20 Rockstar Acc', preco: eur(15), categoria: 'rockstar' },
 
   // --- Canal de bots Discord ---
-  { nome: 'Bot Personalizado', preco: eur(5), categoria: 'bots' },
+  { nome: 'Bot Personalizado', preco: eur(10), categoria: 'bots' },
+  { nome: 'Manutenção Mensal', preco: eur(10), categoria: 'bots' },
 
   // --- Canal de criação de servidores Discord ---
   { nome: 'Discord RP', preco: eur(5), categoria: 'servidores' },
@@ -1029,12 +1030,15 @@ const PAINEL_TEXTOS = {
     'Entrega automática no privado.',
   ]),
   bots: textoPainel(
-    'Bots Discord',
+    '🤖 BOTS DISCORD',
     [
-      'Bot feito à medida do teu servidor.',
-      'Comandos, cargos e permissões prontos.',
-      'Design personalizado e setup completo.',
-      'Melhor qualidade.',
+      '🔹 Bot Personalizado: 10€',
+      '🔹 Manutenção: 10€ / mês',
+      '✨ Incluído:',
+      '・Bot à medida do teu servidor',
+      '・Comandos, cargos e permissões',
+      '・Design personalizado e setup completo',
+      '・Suporte contínuo na manutenção mensal',
     ],
     { entrega: '🎫 Entrega via ticket', imagem: BOTS_BANNER_URL_PADRAO }
   ),

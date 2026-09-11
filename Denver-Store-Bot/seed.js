@@ -125,7 +125,10 @@ const CATALOG = [
   },
   {
     category: 'bots',
-    products: [{ name: 'Bot Personalizado', priceCents: cents(5) }],
+    products: [
+      { name: 'Bot Personalizado', priceCents: cents(10) },
+      { name: 'Manutenção Mensal', priceCents: cents(10) },
+    ],
   },
   {
     category: 'servidores',
