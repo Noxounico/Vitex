@@ -326,11 +326,10 @@ const PRODUTOS_SEED = [
   { nome: 'Modelo loja', preco: eur(1), categoria: 'Painéis & Métodos' },
 
   // --- Canal de impulsos ---
-  { nome: '2x impulsos', preco: eur(3), categoria: 'Impulsos' },
-  { nome: '6x impulsos', preco: eur(6), categoria: 'Impulsos' },
-  { nome: '8x impulsos', preco: eur(8), categoria: 'Impulsos' },
-  { nome: '14x impulsos', preco: eur(10), categoria: 'Impulsos' },
-  { nome: '14x impulsos trimensais', preco: eur(15), categoria: 'Impulsos' },
+  { nome: '1 Impulso', preco: eur(1), categoria: 'Impulsos' },
+  { nome: '2 Impulsos', preco: eur(2), categoria: 'Impulsos' },
+  { nome: '7 Impulsos', preco: eur(7), categoria: 'Impulsos' },
+  { nome: '14 Impulsos', preco: eur(14), categoria: 'Impulsos' },
 
   // --- Canal de nitradas ---
   { nome: 'Nitrada Mensal', preco: eur(5), categoria: 'Nitradas' },
@@ -426,13 +425,28 @@ function seedProdutosIniciais() {
     atualizados++;
   }
 
+  const nomesImpulsos = new Set(
+    PRODUTOS_SEED.filter((p) => p.categoria === 'Impulsos').map((p) => p.nome.toLowerCase())
+  );
+  let desativados = 0;
+  for (const p of db.listActiveProductsByCategory('Impulsos')) {
+    if (!nomesImpulsos.has(String(p.name).toLowerCase())) {
+      db.deactivateProduct(p.id);
+      console.log(`~ produto desativado #${p.id}: ${p.name} [Impulsos]`);
+      desativados++;
+    }
+  }
+
   if (criados > 0) {
     console.log(`🌱 ${criados} produto(s) novo(s) criado(s).`);
   }
   if (atualizados > 0) {
     console.log(`🌱 ${atualizados} preço(s) atualizado(s).`);
   }
-  if (criados === 0 && atualizados === 0) {
+  if (desativados > 0) {
+    console.log(`🌱 ${desativados} produto(s) antigo(s) de Impulsos desativado(s).`);
+  }
+  if (criados === 0 && atualizados === 0 && desativados === 0) {
     console.log('🌱 Produtos e preços já estavam em dia.');
   }
 }
@@ -834,7 +848,9 @@ function corParaHex(cor) {
 function textoPainel(titulo, bullets, extras = {}) {
   return {
     titulo,
-    descricao: bullets.map((b) => (b.startsWith('•') ? b : `• ${b}`)).join('\n'),
+    descricao: bullets
+      .map((b) => (b.startsWith('•') || b.startsWith('💎') ? b : `• ${b}`))
+      .join('\n'),
     entrega: extras.entrega || '⚡ Entrega Automática!',
     cor: extras.cor ?? 0x2b2d31,
   };
@@ -848,10 +864,10 @@ const PAINEL_TEXTOS = {
     'Entrega automática no privado.',
   ]),
   Impulsos: textoPainel('Impulsos', [
-    'Impulso para o teu servidor Discord.',
-    'Ativação rápida.',
-    'Melhor qualidade.',
-    'Sem partilhar a tua conta.',
+    '💎 1 Impulso: 1€',
+    '💎 2 Impulsos: 2€',
+    '💎 7 Impulsos: 7€',
+    '💎 14 Impulsos: 14€',
   ]),
   Nitradas: textoPainel('Nitradas', [
     'Recebe uma conta Full Acesso.',
@@ -1788,7 +1804,7 @@ function gerarOpcoesCaptcha() {
 function bannerVerificacaoPadrao() {
   return (
     process.env.VERIFY_BANNER_URL ||
-    'https://media.discordapp.net/attachments/1545383446208315422/1545780693550891009/banner.png?ex=6aa15874&is=6aa006f4&hm=56751429c4ad74e1edd9ded35491d91681dfed9e4c5e8c0bac13f9039c16369b&=&format=webp&quality=lossless&width=1521&height=856'
+    'https://cdn.discordapp.com/attachments/1545383446208315422/1547805707263549451/content.png?ex=6aa4c1e5&is=6aa37065&hm=870c7858c84547919eb072ae2289348f45c08ebb817601c581ff4c9ff0f995bc&'
   );
 }
 
@@ -2284,7 +2300,7 @@ async function aoMensagem(message) {
       return;
     }
 
-    if (nomeComando === 'verificacao' || nomeComando === 'verificação') {
+    if (nomeComando === 'verificacao' || nomeComando === 'verificação' || nomeComando === 'verficacao') {
       const mencionado = message.mentions.roles.first();
       const roleId = mencionado?.id || (resto[0] && /^\d{17,20}$/.test(resto[0]) ? resto[0] : cargoVerificacaoId());
       try {
