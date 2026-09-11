@@ -121,6 +121,11 @@ function updateProduct(id, { priceCents, currency, category }) {
   return true;
 }
 
+function deactivateProduct(id) {
+  const info = db.prepare(`UPDATE products SET active = 0 WHERE id = ? AND active = 1`).run(id);
+  return info.changes > 0;
+}
+
 function countAvailableKeys(productId) {
   return db
     .prepare(`SELECT COUNT(*) AS n FROM keys WHERE product_id = ? AND used = 0`)
@@ -243,6 +248,7 @@ module.exports = {
   getProduct,
   getProductByName,
   updateProduct,
+  deactivateProduct,
   countAvailableKeys,
   getStock,
   setStock,

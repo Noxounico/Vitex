@@ -32,11 +32,10 @@ const CATALOG = [
   {
     category: 'Impulsos',
     products: [
-      { name: '2x impulsos', priceCents: cents(3) },
-      { name: '6x impulsos', priceCents: cents(6) },
-      { name: '8x impulsos', priceCents: cents(8) },
-      { name: '14x impulsos', priceCents: cents(10) },
-      { name: '14x impulsos trimensais', priceCents: cents(15) },
+      { name: '1 Impulso', priceCents: cents(1) },
+      { name: '2 Impulsos', priceCents: cents(2) },
+      { name: '7 Impulsos', priceCents: cents(7) },
+      { name: '14 Impulsos', priceCents: cents(14) },
     ],
   },
   {
@@ -166,6 +165,17 @@ function seed() {
       });
       created += 1;
       console.log(`  + criado #${id}: ${p.name} — ${formatPrice(p.priceCents, currency)}`);
+    }
+  }
+
+  const impulsos = CATALOG.find((g) => g.category === 'Impulsos');
+  if (impulsos) {
+    const nomes = new Set(impulsos.products.map((p) => p.name.toLowerCase()));
+    for (const p of db.listActiveProductsByCategory('Impulsos')) {
+      if (!nomes.has(String(p.name).toLowerCase())) {
+        db.deactivateProduct(p.id);
+        console.log(`  - desativado #${p.id}: ${p.name}`);
+      }
     }
   }
 
