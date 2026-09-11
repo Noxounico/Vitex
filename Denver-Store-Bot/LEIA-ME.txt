@@ -17,6 +17,7 @@ Como ligar
 
 Comandos
   !loja-impulsos  !loja-nitradas  !loja-links  !loja-trial
+  !loja-paineis   !loja-models    !loja-modelos
   !loja-virgem    !loja-aged      !loja-spotify  !loja-membros
   !loja-trampo    !loja-roblox    !loja-fortnite !loja-rockstar
   !loja-bots      !loja-servidores  !loja-criacao

@@ -238,6 +238,12 @@ const NITRADAS_BANNER_URL_PADRAO =
 const LINKS_BANNER_URL_PADRAO =
   process.env.LINKS_BANNER_URL ||
   'https://media.discordapp.net/attachments/1545383446208315422/1547880624872751134/content.png?ex=6aa507ab&is=6aa3b62b&hm=6262b3f6c612c8213bf519bd02310c41d84b8aab76041d519a5ad7e8cab0bb70&=&format=webp&quality=lossless&width=1519&height=856';
+const BOTS_BANNER_URL_PADRAO =
+  process.env.BOTS_BANNER_URL ||
+  'https://media.discordapp.net/attachments/1545383446208315422/1547885597614673930/content.png?ex=6aa50c4c&is=6aa3bacc&hm=6216ab9c06261dec24a30a8d4fa993c5dbd10071b63ec530e5a1717d84dbeb75&=&format=webp&quality=lossless&width=1518&height=856';
+const MODELS_BANNER_URL_PADRAO =
+  process.env.MODELS_BANNER_URL ||
+  'https://cdn.discordapp.com/attachments/1545383446208315422/1547886814973399082/content.png?ex=6aa50d6f&is=6aa3bbef&hm=dd92545b597805591310259bdd63813beceef8c46afb95a8f96228739fbd2538&';
 
 // Tickets: categoria, cargos da staff e banner por defeito (env var sobrepõe).
 const TICKETS_CATEGORIA_ID_PADRAO = '1322700826912882779';
@@ -491,6 +497,8 @@ function seedProdutosIniciais() {
 // só escolher o comando certo na lista do Discord.
 const CATEGORIA_POR_COMANDO = {
   'loja-paineis': 'Painéis & Métodos',
+  'loja-models': 'Painéis & Métodos',
+  'loja-modelos': 'Painéis & Métodos',
   'loja-impulsos': 'Impulsos',
   'loja-nitradas': 'Nitradas',
   'loja-links': 'Links',
@@ -915,12 +923,16 @@ function textoPainel(titulo, bullets, extras = {}) {
 }
 
 const PAINEL_TEXTOS = {
-  'Painéis & Métodos': textoPainel('Painéis & Métodos', [
-    'Recebe o painel ou método pronto a usar.',
-    'SMS, Ifood, internet e outros métodos.',
-    'Melhor qualidade.',
-    'Entrega automática no privado.',
-  ]),
+  'Painéis & Métodos': textoPainel(
+    'Painéis & Métodos',
+    [
+      'Recebe o painel ou método pronto a usar.',
+      'SMS, Ifood, internet e outros métodos.',
+      'Melhor qualidade.',
+      'Entrega automática no privado.',
+    ],
+    { imagem: MODELS_BANNER_URL_PADRAO }
+  ),
   Impulsos: textoPainel(
     'Impulsos',
     [
@@ -1029,7 +1041,7 @@ const PAINEL_TEXTOS = {
       '・Design personalizado',
       '・Configuração completa',
     ],
-    { entrega: '🎫 Entrega via ticket' }
+    { entrega: '🎫 Entrega via ticket', imagem: BOTS_BANNER_URL_PADRAO }
   ),
   servidores: textoPainel(
     '🖥️ SERVIDORES DISCORD — PREÇOS 🖥️',
