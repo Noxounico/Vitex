@@ -1905,7 +1905,7 @@ function gerarOpcoesCaptcha() {
 function bannerVerificacaoPadrao() {
   return (
     process.env.VERIFY_BANNER_URL ||
-    'https://cdn.discordapp.com/attachments/1545383446208315422/1547805707263549451/content.png?ex=6aa4c1e5&is=6aa37065&hm=870c7858c84547919eb072ae2289348f45c08ebb817601c581ff4c9ff0f995bc&'
+    'https://media.discordapp.net/attachments/1545383446208315422/1547979614767288361/content.png?ex=6aa563dc&is=6aa4125c&hm=4dfa994ea19e577c4ab6a55ae9bc2608f2278620dea817a0901cd42f709ea86c&=&format=webp&quality=lossless&width=550&height=310'
   );
 }
 
