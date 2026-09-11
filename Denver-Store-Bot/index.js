@@ -241,8 +241,8 @@ const LINKS_BANNER_URL_PADRAO =
 const BOTS_BANNER_URL_PADRAO =
   process.env.BOTS_BANNER_URL ||
   'https://media.discordapp.net/attachments/1545383446208315422/1547885597614673930/content.png?ex=6aa50c4c&is=6aa3bacc&hm=6216ab9c06261dec24a30a8d4fa993c5dbd10071b63ec530e5a1717d84dbeb75&=&format=webp&quality=lossless&width=1518&height=856';
-const MODELS_BANNER_URL_PADRAO =
-  process.env.MODELS_BANNER_URL ||
+const SERVIDORES_BANNER_URL_PADRAO =
+  process.env.SERVIDORES_BANNER_URL ||
   'https://cdn.discordapp.com/attachments/1545383446208315422/1547886814973399082/content.png?ex=6aa50d6f&is=6aa3bbef&hm=dd92545b597805591310259bdd63813beceef8c46afb95a8f96228739fbd2538&';
 
 // Tickets: categoria, cargos da staff e banner por defeito (env var sobrepõe).
@@ -497,8 +497,6 @@ function seedProdutosIniciais() {
 // só escolher o comando certo na lista do Discord.
 const CATEGORIA_POR_COMANDO = {
   'loja-paineis': 'Painéis & Métodos',
-  'loja-models': 'Painéis & Métodos',
-  'loja-modelos': 'Painéis & Métodos',
   'loja-impulsos': 'Impulsos',
   'loja-nitradas': 'Nitradas',
   'loja-links': 'Links',
@@ -923,16 +921,12 @@ function textoPainel(titulo, bullets, extras = {}) {
 }
 
 const PAINEL_TEXTOS = {
-  'Painéis & Métodos': textoPainel(
-    'Painéis & Métodos',
-    [
-      'Recebe o painel ou método pronto a usar.',
-      'SMS, Ifood, internet e outros métodos.',
-      'Melhor qualidade.',
-      'Entrega automática no privado.',
-    ],
-    { imagem: MODELS_BANNER_URL_PADRAO }
-  ),
+  'Painéis & Métodos': textoPainel('Painéis & Métodos', [
+    'Recebe o painel ou método pronto a usar.',
+    'SMS, Ifood, internet e outros métodos.',
+    'Melhor qualidade.',
+    'Entrega automática no privado.',
+  ]),
   Impulsos: textoPainel(
     'Impulsos',
     [
@@ -1030,34 +1024,24 @@ const PAINEL_TEXTOS = {
     'Entrega automática no privado.',
   ]),
   bots: textoPainel(
-    '🤖 BOTS DISCORD 🤖',
+    'Bots Discord',
     [
-      '🔹 Bot Personalizado: 5€',
-      'O preço depende do tipo de bot — qualquer coisa dá pra ver no Ticket!',
-      '✨ Incluído:',
-      '・Comandos personalizados',
-      '・Cargos e permissões',
-      '・Configurações',
-      '・Design personalizado',
-      '・Configuração completa',
+      'Bot feito à medida do teu servidor.',
+      'Comandos, cargos e permissões prontos.',
+      'Design personalizado e setup completo.',
+      'Melhor qualidade.',
     ],
     { entrega: '🎫 Entrega via ticket', imagem: BOTS_BANNER_URL_PADRAO }
   ),
   servidores: textoPainel(
-    '🖥️ SERVIDORES DISCORD — PREÇOS 🖥️',
+    'Servidores Discord',
     [
-      '🔹 Discord RP: 5€',
-      '🔹 Discord Personalizado: 5€',
-      '🔹 Discord Básico: 3€',
-      'Depende de que tipo de Discord Personalizado for, qualquer coisa dá pra ver o preço no Ticket!',
-      '✨ Incluído:',
-      '・Canais e categorias personalizados',
-      '・Cargos e permissões',
-      '・Configurações',
-      '・Design personalizado',
-      '・Configuração completa',
+      'Servidor Discord pronto a usar.',
+      'Canais, categorias e cargos personalizados.',
+      'Design, permissões e configuração completa.',
+      'Melhor qualidade.',
     ],
-    { entrega: '🎫 Entrega via ticket' }
+    { entrega: '🎫 Entrega via ticket', imagem: SERVIDORES_BANNER_URL_PADRAO }
   ),
 };
 
