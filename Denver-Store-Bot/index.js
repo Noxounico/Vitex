@@ -913,7 +913,12 @@ const PAINEL_TEXTOS = {
   ]),
   Impulsos: textoPainel(
     'Impulsos',
-    ['💎 1 Impulso: 1€', '💎 2 Impulsos: 2€', '💎 7 Impulsos: 7€', '💎 14 Impulsos: 14€'],
+    [
+      'Impulso para o teu servidor Discord.',
+      'Ativação rápida.',
+      'Melhor qualidade.',
+      'Sem partilhar a tua conta.',
+    ],
     { imagem: IMPULSOS_BANNER_URL_PADRAO }
   ),
   Nitradas: textoPainel('Nitradas', [
