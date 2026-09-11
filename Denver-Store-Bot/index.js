@@ -253,6 +253,7 @@ const TICKETS_BANNER_URL_PADRAO =
 const VERIFY_ROLE_ID_PADRAO = '1547807362306408548';
 const FUTURO_CLIENTE_ROLE_ID_PADRAO = '1547219527060824176';
 const LOGS_CANAL_ID_PADRAO = '1547721266566402200';
+const BEMVINDO_CANAL_ID_PADRAO = '1547219527849476199';
 
 function ticketsCategoriaId() {
   return process.env.TICKETS_CATEGORIA_ID || TICKETS_CATEGORIA_ID_PADRAO;
@@ -283,6 +284,10 @@ function ticketsBannerUrl() {
 
 function logsCanalId() {
   return process.env.PEDIDOS_CHANNEL_ID || process.env.LOG_CHANNEL_ID || LOGS_CANAL_ID_PADRAO;
+}
+
+function bemvindoCanalId() {
+  return process.env.WELCOME_CHANNEL_ID || BEMVINDO_CANAL_ID_PADRAO;
 }
 
 function cargoVerificacaoId() {
@@ -323,7 +328,7 @@ function criarCliente() {
       GatewayIntentBits.DirectMessages,
       GatewayIntentBits.GuildMembers,
     ],
-    partials: [Partials.Channel],
+    partials: [Partials.Channel, Partials.GuildMember],
   });
 }
 
@@ -2632,9 +2637,50 @@ async function aoReady() {
   }
 }
 
+function avatarDoMembro(user) {
+  return user.displayAvatarURL({ size: 512, extension: 'png', forceStatic: false });
+}
+
+function embedBemvindo(member) {
+  const avatar = avatarDoMembro(member.user);
+  const criado = Math.floor(member.user.createdTimestamp / 1000);
+  return new EmbedBuilder()
+    .setColor(0x2b2d31)
+    .setTitle('👋 Seja bem-vindo!')
+    .setDescription(
+      `Olá ${member}, **seja bem-vindo** ao **${member.guild.name}**!\n` +
+        `Fica à vontade, e se precisares de ajuda abre um ticket.`
+    )
+    .setThumbnail(avatar)
+    .setImage(avatar)
+    .addFields(
+      { name: 'Conta criada', value: `<t:${criado}:R>`, inline: true },
+      { name: 'Membro', value: `#${member.guild.memberCount}`, inline: true }
+    )
+    .setFooter({ text: member.user.username, iconURL: avatar })
+    .setTimestamp();
+}
+
+async function aoMembroEntrou(member) {
+  if (member.user?.bot) return;
+  const channelId = bemvindoCanalId();
+  if (!channelId) return;
+  try {
+    const channel = await member.client.channels.fetch(channelId);
+    if (!channel?.isTextBased()) return;
+    await channel.send({
+      content: `${member}`,
+      embeds: [embedBemvindo(member)],
+    });
+  } catch (err) {
+    console.error('Falha ao enviar boas-vindas:', err.message);
+  }
+}
+
 function anexarEventos(c) {
   c.on('interactionCreate', aoInteracao);
   c.on('messageCreate', aoMensagem);
+  c.on(Events.GuildMemberAdd, aoMembroEntrou);
   c.on(Events.ClientReady, aoReady);
   c.on(Events.Error, (err) => {
     console.error('Erro do cliente Discord:', err);

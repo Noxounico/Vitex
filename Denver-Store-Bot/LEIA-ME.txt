@@ -11,7 +11,8 @@ Como ligar
   1. Instala Node 22
   2. Copia .env.example para .env
   3. Mete DISCORD_TOKEN, CLIENT_ID e GUILD_ID
-  4. No Developer Portal: Message Content Intent + Server Members se precisares
+  4. No Developer Portal: Message Content Intent + Server Members Intent
+     (Server Members é preciso para a mensagem de boas-vindas)
   5. npm install
   6. npm start
 
