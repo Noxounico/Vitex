@@ -4,7 +4,7 @@ Menu dourado em duas colunas. Corre **como Administrador**.
 
 ## Como usar
 
-Botão direito → Executar como administrador. Opção **1** = ponto de restauro.
+Botão direito → Executar como administrador. Ponto de restauro é **só** a opção **1** (não é criado nas outras ações).
 
 O ficheiro está em ASCII/UTF-8 **sem BOM** para o menu não aparecer duplicado.
 
@@ -19,4 +19,4 @@ Serviços (menu Windows → 8): **inúteis** e **normais**. Opção **14** reduz
 
 ## Reverter
 
-Opção **13 Reverter tudo**, ponto `Nox Otimizacao`, ou Reverter nos submenus Xbox / serviços / hardware / arranque. Apps da Loja removidas no Debloater não voltam sozinhas.
+Opção **13 Reverter tudo**, ou Reverter nos submenus Xbox / serviços / hardware / arranque. Ponto `Nox Otimizacao` só existe se usaste a opção **1**. Apps da Loja removidas no Debloater não voltam sozinhas.
