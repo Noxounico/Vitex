@@ -35,8 +35,10 @@ const CATALOG = [
       { name: '1 Impulso', priceCents: cents(1) },
       { name: '2 Impulsos', priceCents: cents(2) },
       { name: '7 Impulsos', priceCents: cents(7) },
-      { name: '14 Impulsos', priceCents: cents(12) },
-      { name: '24 Impulsos', priceCents: cents(20) },
+      { name: '14 Impulsos Mensal', priceCents: cents(10) },
+      { name: '24 Impulsos Mensal', priceCents: cents(15) },
+      { name: '14 Impulsos Trimensal', priceCents: cents(20) },
+      { name: '24 Impulsos Trimensal', priceCents: cents(30) },
     ],
   },
   {

@@ -374,8 +374,10 @@ const PRODUTOS_SEED = [
   { nome: '1 Impulso', preco: eur(1), categoria: 'Impulsos' },
   { nome: '2 Impulsos', preco: eur(2), categoria: 'Impulsos' },
   { nome: '7 Impulsos', preco: eur(7), categoria: 'Impulsos' },
-  { nome: '14 Impulsos', preco: eur(12), categoria: 'Impulsos' },
-  { nome: '24 Impulsos', preco: eur(20), categoria: 'Impulsos' },
+  { nome: '14 Impulsos Mensal', preco: eur(10), categoria: 'Impulsos' },
+  { nome: '24 Impulsos Mensal', preco: eur(15), categoria: 'Impulsos' },
+  { nome: '14 Impulsos Trimensal', preco: eur(20), categoria: 'Impulsos' },
+  { nome: '24 Impulsos Trimensal', preco: eur(30), categoria: 'Impulsos' },
 
   // --- Canal de nitradas ---
   { nome: 'Nitrada Mensal', preco: eur(5), categoria: 'Nitradas' },
@@ -944,6 +946,7 @@ const PAINEL_TEXTOS = {
     'Impulsos',
     [
       'Impulso para o teu servidor Discord.',
+      'Mensal e trimensal (14 e 24).',
       'Ativação rápida.',
       'Melhor qualidade.',
       'Sem partilhar a tua conta.',
