@@ -5,7 +5,7 @@
  *
  * Add http://localhost:8888/callback as Redirect URI in the Spotify app dashboard.
  */
-require('dotenv').config({ path: require('path').join(__dirname, '..', '.env') });
+require('dotenv').config({ path: require('path').join(__dirname, '.env') });
 const http = require('http');
 const { URL } = require('url');
 
