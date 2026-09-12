@@ -12,7 +12,7 @@ Como ligar
   2. Copia .env.example para .env
   3. Mete DISCORD_TOKEN, CLIENT_ID e GUILD_ID
   4. No Developer Portal: Message Content Intent + Server Members Intent
-     (Server Members é preciso para a mensagem de boas-vindas)
+     (Server Members é preciso para boas-vindas; o bot precisa de **Gerir Servidor** para ver quem convidou)
   5. npm install
   6. npm start
 

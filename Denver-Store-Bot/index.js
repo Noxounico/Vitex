@@ -253,7 +253,8 @@ const TICKETS_BANNER_URL_PADRAO =
 const VERIFY_ROLE_ID_PADRAO = '1547807362306408548';
 const FUTURO_CLIENTE_ROLE_ID_PADRAO = '1547219527060824176';
 const LOGS_CANAL_ID_PADRAO = '1547721266566402200';
-const BEMVINDO_CANAL_ID_PADRAO = '1547219527849476199';
+const BEMVINDO_CANAL_ID_PADRAO = '1547935663733612597';
+const CONVITES_CANAL_ID_PADRAO = '1547219527849476199';
 
 function ticketsCategoriaId() {
   return process.env.TICKETS_CATEGORIA_ID || TICKETS_CATEGORIA_ID_PADRAO;
@@ -288,6 +289,10 @@ function logsCanalId() {
 
 function bemvindoCanalId() {
   return process.env.WELCOME_CHANNEL_ID || BEMVINDO_CANAL_ID_PADRAO;
+}
+
+function convitesCanalId() {
+  return process.env.INVITES_CHANNEL_ID || CONVITES_CANAL_ID_PADRAO;
 }
 
 function cargoVerificacaoId() {
@@ -327,6 +332,7 @@ function criarCliente() {
       GatewayIntentBits.MessageContent,
       GatewayIntentBits.DirectMessages,
       GatewayIntentBits.GuildMembers,
+      GatewayIntentBits.GuildInvites,
     ],
     partials: [Partials.Channel, Partials.GuildMember],
   });
@@ -2644,6 +2650,9 @@ async function aoReady() {
   ultimoOk = Date.now();
   falhasSeguidas = 0;
   console.log(`Bot ligado como ${client.user.tag}`);
+  for (const guild of client.guilds.cache.values()) {
+    await carregarConvitesGuild(guild);
+  }
   if (jaArrancou) return;
   jaArrancou = true;
   try {
@@ -2662,9 +2671,80 @@ function avatarDoMembro(user) {
   return user.displayAvatarURL({ size: 512, extension: 'png', forceStatic: false });
 }
 
-function embedBemvindo(member) {
+const convitesCache = new Map();
+
+function snapshotConvites(invites) {
+  const map = new Map();
+  for (const inv of invites.values()) {
+    map.set(inv.code, {
+      uses: inv.uses ?? 0,
+      inviterId: inv.inviter?.id || null,
+    });
+  }
+  return map;
+}
+
+async function carregarConvitesGuild(guild) {
+  try {
+    const invites = await guild.invites.fetch();
+    convitesCache.set(guild.id, snapshotConvites(invites));
+  } catch (err) {
+    console.error(`Falha ao ler convites de ${guild.id}:`, err.message);
+    convitesCache.set(guild.id, new Map());
+  }
+}
+
+async function descobrirConvite(member) {
+  const antes = convitesCache.get(member.guild.id) || new Map();
+  let atuais;
+  try {
+    atuais = await member.guild.invites.fetch();
+  } catch (err) {
+    console.error('Falha ao comparar convites:', err.message);
+    return null;
+  }
+
+  const depois = snapshotConvites(atuais);
+  let encontrado = null;
+  for (const [code, agora] of depois) {
+    const usesAntes = antes.get(code)?.uses ?? 0;
+    if (agora.uses > usesAntes) {
+      encontrado = { code, inviterId: agora.inviterId };
+      break;
+    }
+  }
+
+  convitesCache.set(member.guild.id, depois);
+  return encontrado;
+}
+
+function aoConviteCriado(invite) {
+  if (!invite.guild) return;
+  const map = convitesCache.get(invite.guild.id) || new Map();
+  map.set(invite.code, {
+    uses: invite.uses ?? 0,
+    inviterId: invite.inviter?.id || null,
+  });
+  convitesCache.set(invite.guild.id, map);
+}
+
+function aoConviteApagado(invite) {
+  if (!invite.guild) return;
+  const map = convitesCache.get(invite.guild.id);
+  if (map) map.delete(invite.code);
+}
+
+function embedBemvindo(member, convite) {
   const avatar = avatarDoMembro(member.user);
   const criado = Math.floor(member.user.createdTimestamp / 1000);
+  const fields = [
+    { name: 'Conta criada', value: `<t:${criado}:R>`, inline: true },
+    { name: 'Membro', value: `#${member.guild.memberCount}`, inline: true },
+  ];
+  if (convite?.inviterId) {
+    fields.push({ name: 'Convidado por', value: `<@${convite.inviterId}>`, inline: true });
+  }
+
   return new EmbedBuilder()
     .setColor(0x2b2d31)
     .setTitle('👋 Seja bem-vindo!')
@@ -2674,27 +2754,58 @@ function embedBemvindo(member) {
     )
     .setThumbnail(avatar)
     .setImage(avatar)
-    .addFields(
-      { name: 'Conta criada', value: `<t:${criado}:R>`, inline: true },
-      { name: 'Membro', value: `#${member.guild.memberCount}`, inline: true }
-    )
+    .addFields(fields)
     .setFooter({ text: member.user.username, iconURL: avatar })
     .setTimestamp();
 }
 
+function textoTrackerConvite(member, convite, total) {
+  if (!convite?.inviterId) {
+    return `${member} entrou no servidor. Não consegui ver quem convidou.`;
+  }
+  return `${member} foi convidado por <@${convite.inviterId}> e agora tem **${total}** convite${
+    total === 1 ? '' : 's'
+  }.`;
+}
+
+async function enviarCanalTexto(channelId, payload) {
+  if (!channelId) return;
+  const channel = await client.channels.fetch(channelId).catch(() => null);
+  if (!channel?.isTextBased()) return;
+  await channel.send(payload);
+}
+
 async function aoMembroEntrou(member) {
   if (member.user?.bot) return;
-  const channelId = bemvindoCanalId();
-  if (!channelId) return;
+
+  const convite = await descobrirConvite(member);
+  if (convite?.inviterId) {
+    db.recordInvite({
+      guildId: member.guild.id,
+      inviterId: convite.inviterId,
+      invitedId: member.id,
+      inviteCode: convite.code,
+    });
+  }
+  const total = convite?.inviterId
+    ? db.countInvitesByUser(member.guild.id, convite.inviterId)
+    : 0;
+
   try {
-    const channel = await member.client.channels.fetch(channelId);
-    if (!channel?.isTextBased()) return;
-    await channel.send({
+    await enviarCanalTexto(bemvindoCanalId(), {
       content: `${member}`,
-      embeds: [embedBemvindo(member)],
+      embeds: [embedBemvindo(member, convite)],
     });
   } catch (err) {
     console.error('Falha ao enviar boas-vindas:', err.message);
+  }
+
+  try {
+    await enviarCanalTexto(convitesCanalId(), {
+      content: textoTrackerConvite(member, convite, total),
+    });
+  } catch (err) {
+    console.error('Falha ao enviar tracker de convites:', err.message);
   }
 }
 
@@ -2702,6 +2813,8 @@ function anexarEventos(c) {
   c.on('interactionCreate', aoInteracao);
   c.on('messageCreate', aoMensagem);
   c.on(Events.GuildMemberAdd, aoMembroEntrou);
+  c.on(Events.InviteCreate, aoConviteCriado);
+  c.on(Events.InviteDelete, aoConviteApagado);
   c.on(Events.ClientReady, aoReady);
   c.on(Events.Error, (err) => {
     console.error('Erro do cliente Discord:', err);

@@ -62,6 +62,18 @@ if (!temColuna('orders', 'quantity')) {
   db.exec(`ALTER TABLE orders ADD COLUMN quantity INTEGER NOT NULL DEFAULT 1`);
 }
 
+db.exec(`
+CREATE TABLE IF NOT EXISTS invites (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  guild_id TEXT NOT NULL,
+  inviter_id TEXT NOT NULL,
+  invited_id TEXT NOT NULL,
+  invite_code TEXT,
+  created_at TEXT DEFAULT (datetime('now')),
+  UNIQUE(guild_id, invited_id)
+);
+`);
+
 // ---------- Produtos ----------
 function addProduct({ name, description, priceCents, currency, category, roleId, stockQty }) {
   const stmt = db.prepare(
@@ -240,6 +252,22 @@ function listPendingOrdersByUser(discordUserId) {
     .all(discordUserId);
 }
 
+function recordInvite({ guildId, inviterId, invitedId, inviteCode }) {
+  const info = db
+    .prepare(
+      `INSERT OR IGNORE INTO invites (guild_id, inviter_id, invited_id, invite_code)
+       VALUES (?, ?, ?, ?)`
+    )
+    .run(guildId, inviterId, invitedId, inviteCode || null);
+  return info.changes > 0;
+}
+
+function countInvitesByUser(guildId, inviterId) {
+  return db
+    .prepare(`SELECT COUNT(*) AS n FROM invites WHERE guild_id = ? AND inviter_id = ?`)
+    .get(guildId, inviterId).n;
+}
+
 module.exports = {
   addProduct,
   listActiveProducts,
@@ -264,4 +292,6 @@ module.exports = {
   markOrderDelivered,
   markOrderStatus,
   listPendingOrdersByUser,
+  recordInvite,
+  countInvitesByUser,
 };
