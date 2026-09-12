@@ -168,7 +168,7 @@ echo          %C%[  7 ]%N% Melhorar Conexao/Ping                                
 echo          %C%[  9 ]%N% Otimizar NVIDIA                                        %C%[ 10 ]%N% Fix de Erros
 echo          %C%[ 11 ]%N% Debloater                                              %C%[ 12 ]%N% Limpeza do sistema
 echo          %C%[ 13 ]%N% Reverter tudo                                          %C%[ 14 ]%N% Reduzir processos / CPU
-echo          %C%[ 15 ]%N% Sair
+echo          %C%[ 15 ]%N% Remover apps em 2 plano                                %C%[ 16 ]%N% Sair
 echo(
 set "op="
 set /p op=                                       Escolha uma opcao:
@@ -186,7 +186,8 @@ if "%op%"=="11" goto menu_deb
 if "%op%"=="12" goto menu_clean
 if "%op%"=="13" goto do_revert_all
 if "%op%"=="14" goto do_cpu
-if "%op%"=="15" goto do_sair
+if "%op%"=="15" goto do_bg
+if "%op%"=="16" goto do_sair
 goto menu_main
 
 
@@ -1069,10 +1070,7 @@ call :_tips
 call :_xbox
 reg add "HKCU\Software\Policies\Microsoft\Windows\WindowsCopilot" /v TurnOffWindowsCopilot /t REG_DWORD /d 1 /f >nul
 reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v ShowCopilotButton /t REG_DWORD /d 0 /f >nul
-reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications" /v GlobalUserDisabled /t REG_DWORD /d 1 /f >nul
-reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Search" /v BackgroundAppGlobalToggle /t REG_DWORD /d 0 /f >nul
-reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\AppPrivacy" /v LetAppsRunInBackground /t REG_DWORD /d 2 /f >nul
-call :ok "Apps UWP em background off"
+call :_bg_apps_off
 call :_bloat_kill
 timeout /t 2 /nobreak >nul
 echo(
@@ -1080,6 +1078,30 @@ echo --- Depois ---
 call :_cpu_snap
 echo(
 echo Reverter: menu 13. Apps tuas continuam abertas.
+call :pause_back
+goto menu_main
+
+:do_bg
+cls
+echo Remover aplicativos em 2 plano
+echo Apps da Loja / UWP deixam de correr em segundo plano.
+echo NAO fecha Cursor, Discord, browsers nem jogos.
+echo Defender / Update / firewall / rede / audio ficam ligados.
+echo(
+set "ans="
+set /p ans=Escreve S para criar ponto de restauro e continuar: 
+if /I not "%ans%"=="S" goto menu_main
+echo(
+call :_restore_silent
+call :_bg_apps_off
+echo(
+echo O que mudou:
+echo   - GlobalUserDisabled = 1  (definicao do utilizador)
+echo   - BackgroundAppGlobalToggle = 0
+echo   - LetAppsRunInBackground = Never  (politica)
+echo   - Disabled / DisabledByUser em cada app UWP
+echo(
+echo Reverter: menu 13.
 call :pause_back
 goto menu_main
 
@@ -1388,6 +1410,23 @@ goto :eof
 powershell -NoProfile -ExecutionPolicy Bypass -Command "try { Checkpoint-Computer -Description 'Nox Otimizacao' -RestorePointType MODIFY_SETTINGS; Write-Host '    [OK] Ponto de restauro' } catch { Write-Host '    [AVISO] Ponto de restauro falhou' }"
 goto :eof
 
+:_bg_apps_off
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications" /v GlobalUserDisabled /t REG_DWORD /d 1 /f >nul
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Search" /v BackgroundAppGlobalToggle /t REG_DWORD /d 0 /f >nul
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\AppPrivacy" /v LetAppsRunInBackground /t REG_DWORD /d 2 /f >nul
+reg add "HKCU\SOFTWARE\Policies\Microsoft\Windows\AppPrivacy" /v LetAppsRunInBackground /t REG_DWORD /d 2 /f >nul
+call :ok "GlobalUserDisabled=1  LetAppsRunInBackground=Never"
+powershell -NoProfile -ExecutionPolicy Bypass -EncodedCommand JAByAG8AbwB0ACAAPQAgACcASABLAEMAVQA6AFwAUwBvAGYAdAB3AGEAcgBlAFwATQBpAGMAcgBvAHMAbwBmAHQAXABXAGkAbgBkAG8AdwBzAFwAQwB1AHIAcgBlAG4AdABWAGUAcgBzAGkAbwBuAFwAQgBhAGMAawBnAHIAbwB1AG4AZABBAGMAYwBlAHMAcwBBAHAAcABsAGkAYwBhAHQAaQBvAG4AcwAnAAoATgBlAHcALQBJAHQAZQBtACAALQBQAGEAdABoACAAJAByAG8AbwB0ACAALQBGAG8AcgBjAGUAIAB8ACAATwB1AHQALQBOAHUAbABsAAoAJABuACAAPQAgADAACgBHAGUAdAAtAEMAaABpAGwAZABJAHQAZQBtACAAJAByAG8AbwB0ACAALQBFAEEAIABTAGkAbABlAG4AdABsAHkAQwBvAG4AdABpAG4AdQBlACAAfAAgAEYAbwByAEUAYQBjAGgALQBPAGIAagBlAGMAdAAgAHsACgAgACAATgBlAHcALQBJAHQAZQBtAFAAcgBvAHAAZQByAHQAeQAgACQAXwAuAFAAUwBQAGEAdABoACAALQBOAGEAbQBlACAARABpAHMAYQBiAGwAZQBkACAALQBWAGEAbAB1AGUAIAAxACAALQBQAHIAbwBwAGUAcgB0AHkAVAB5AHAAZQAgAEQAVwBvAHIAZAAgAC0ARgBvAHIAYwBlACAAfAAgAE8AdQB0AC0ATgB1AGwAbAAKACAAIABOAGUAdwAtAEkAdABlAG0AUAByAG8AcABlAHIAdAB5ACAAJABfAC4AUABTAFAAYQB0AGgAIAAtAE4AYQBtAGUAIABEAGkAcwBhAGIAbABlAGQAQgB5AFUAcwBlAHIAIAAtAFYAYQBsAHUAZQAgADEAIAAtAFAAcgBvAHAAZQByAHQAeQBUAHkAcABlACAARABXAG8AcgBkACAALQBGAG8AcgBjAGUAIAB8ACAATwB1AHQALQBOAHUAbABsAAoAIAAgACQAbgArACsACgB9AAoARwBlAHQALQBBAHAAcAB4AFAAYQBjAGsAYQBnAGUAIAAtAEUAQQAgAFMAaQBsAGUAbgB0AGwAeQBDAG8AbgB0AGkAbgB1AGUAIAB8ACAARgBvAHIARQBhAGMAaAAtAE8AYgBqAGUAYwB0ACAAewAKACAAIAAkAGkAZAAgAD0AIAAkAF8ALgBQAGEAYwBrAGEAZwBlAEYAYQBtAGkAbAB5AE4AYQBtAGUACgAgACAAaQBmACAAKAAtAG4AbwB0ACAAJABpAGQAKQAgAHsAIAByAGUAdAB1AHIAbgAgAH0ACgAgACAAJABwACAAPQAgAEoAbwBpAG4ALQBQAGEAdABoACAAJAByAG8AbwB0ACAAJABpAGQACgAgACAAaQBmACAAKAAtAG4AbwB0ACAAKABUAGUAcwB0AC0AUABhAHQAaAAgACQAcAApACkAIAB7ACAATgBlAHcALQBJAHQAZQBtACAAJABwACAALQBGAG8AcgBjAGUAIAB8ACAATwB1AHQALQBOAHUAbABsACAAfQAKACAAIABOAGUAdwAtAEkAdABlAG0AUAByAG8AcABlAHIAdAB5ACAAJABwACAALQBOAGEAbQBlACAARABpAHMAYQBiAGwAZQBkACAALQBWAGEAbAB1AGUAIAAxACAALQBQAHIAbwBwAGUAcgB0AHkAVAB5AHAAZQAgAEQAVwBvAHIAZAAgAC0ARgBvAHIAYwBlACAAfAAgAE8AdQB0AC0ATgB1AGwAbAAKACAAIABOAGUAdwAtAEkAdABlAG0AUAByAG8AcABlAHIAdAB5ACAAJABwACAALQBOAGEAbQBlACAARABpAHMAYQBiAGwAZQBkAEIAeQBVAHMAZQByACAALQBWAGEAbAB1AGUAIAAxACAALQBQAHIAbwBwAGUAcgB0AHkAVAB5AHAAZQAgAEQAVwBvAHIAZAAgAC0ARgBvAHIAYwBlACAAfAAgAE8AdQB0AC0ATgB1AGwAbAAKACAAIAAkAG4AKwArAAoAfQAKAFcAcgBpAHQAZQAtAEgAbwBzAHQAIAAoACIAIAAgACAAIABbAE8ASwBdACAAewAwAH0AIABhAHAAcABzACAAVQBXAFAAIABzAGUAbQAgAGEAYwBlAHMAcwBvACAAZQBtACAAMgAgAHAAbABhAG4AbwAiACAALQBmACAAJABuACkA
+goto :eof
+
+:_bg_apps_on
+reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications" /v GlobalUserDisabled /f >nul 2>&1
+reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Search" /v BackgroundAppGlobalToggle /f >nul 2>&1
+reg delete "HKLM\SOFTWARE\Policies\Microsoft\Windows\AppPrivacy" /v LetAppsRunInBackground /f >nul 2>&1
+reg delete "HKCU\SOFTWARE\Policies\Microsoft\Windows\AppPrivacy" /v LetAppsRunInBackground /f >nul 2>&1
+powershell -NoProfile -ExecutionPolicy Bypass -EncodedCommand JAByAG8AbwB0ACAAPQAgACcASABLAEMAVQA6AFwAUwBvAGYAdAB3AGEAcgBlAFwATQBpAGMAcgBvAHMAbwBmAHQAXABXAGkAbgBkAG8AdwBzAFwAQwB1AHIAcgBlAG4AdABWAGUAcgBzAGkAbwBuAFwAQgBhAGMAawBnAHIAbwB1AG4AZABBAGMAYwBlAHMAcwBBAHAAcABsAGkAYwBhAHQAaQBvAG4AcwAnAAoAaQBmACAAKABUAGUAcwB0AC0AUABhAHQAaAAgACQAcgBvAG8AdAApACAAewAKACAAIABHAGUAdAAtAEMAaABpAGwAZABJAHQAZQBtACAAJAByAG8AbwB0ACAALQBFAEEAIABTAGkAbABlAG4AdABsAHkAQwBvAG4AdABpAG4AdQBlACAAfAAgAEYAbwByAEUAYQBjAGgALQBPAGIAagBlAGMAdAAgAHsACgAgACAAIAAgAFIAZQBtAG8AdgBlAC0ASQB0AGUAbQBQAHIAbwBwAGUAcgB0AHkAIAAkAF8ALgBQAFMAUABhAHQAaAAgAC0ATgBhAG0AZQAgAEQAaQBzAGEAYgBsAGUAZAAgAC0ARQBBACAAUwBpAGwAZQBuAHQAbAB5AEMAbwBuAHQAaQBuAHUAZQAKACAAIAAgACAAUgBlAG0AbwB2AGUALQBJAHQAZQBtAFAAcgBvAHAAZQByAHQAeQAgACQAXwAuAFAAUwBQAGEAdABoACAALQBOAGEAbQBlACAARABpAHMAYQBiAGwAZQBkAEIAeQBVAHMAZQByACAALQBFAEEAIABTAGkAbABlAG4AdABsAHkAQwBvAG4AdABpAG4AdQBlAAoAIAAgAH0ACgB9AAoAVwByAGkAdABlAC0ASABvAHMAdAAgACcAIAAgACAAIABbAE8ASwBdACAAYwBoAGEAdgBlAHMAIABwAG8AcgAgAGEAcABwACAAcgBlAGEAdABpAHYAYQBkAGEAcwAnAA==
+goto :eof
+
 :_cpu_snap
 powershell -NoProfile -Command "$p=(Get-Process -EA SilentlyContinue).Count; $c=(Get-CimInstance Win32_Processor -EA SilentlyContinue | Measure-Object -Property LoadPercentage -Average).Average; if ($null -eq $c) {$c=0}; Write-Host ('    Processos: '+[string]([int]$p)+'   CPU (aprox): '+[string]([int]$c)+' %%')"
 goto :eof
@@ -1542,9 +1581,7 @@ reg delete "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManage
 reg delete "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /v SystemPaneSuggestionsEnabled /f >nul 2>&1
 reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v TaskbarDa /f >nul 2>&1
 reg delete "HKLM\SOFTWARE\Policies\Microsoft\Dsh" /v AllowNewsAndInterests /f >nul 2>&1
-reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications" /v GlobalUserDisabled /f >nul 2>&1
-reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Search" /v BackgroundAppGlobalToggle /f >nul 2>&1
-reg delete "HKLM\SOFTWARE\Policies\Microsoft\Windows\AppPrivacy" /v LetAppsRunInBackground /f >nul 2>&1
+call :_bg_apps_on
 call :_sch_restore
 reg delete "HKLM\SOFTWARE\Policies\Microsoft\Windows\GameDVR" /f >nul 2>&1
 fsutil behavior set disablelastaccess 2 >nul 2>&1
