@@ -1,31 +1,20 @@
 # Nox Otimização (`Optimizacao.bat`)
 
-Ferramenta **Windows 10/11** em menu de duas colunas (números laranja).  
-Ficheiros: `Optimizacao.bat` e a cópia `Optimizaça.bat` (mesmo conteúdo).
+Menu dourado em duas colunas. Corre **como Administrador**.
 
 ## Como usar
 
-1. Botão direito → **Executar como administrador**.
-2. Cria um **ponto de restauro** (opção **1**) antes do resto.
-3. Escolhe o número e Enter.
-4. Reinicia depois de energia / NVIDIA / AMD / Hyper-V / HAGS.
+Botão direito → Executar como administrador. Opção **1** = ponto de restauro.
 
-## Menu principal
+O ficheiro está em ASCII/UTF-8 **sem BOM** para o menu não aparecer duplicado.
 
-1 Criar Ponto de Restauração · 2 Otimizar Windows · 3 Otimização de Jogos · 4 Otimização de Periféricos · 5 Config. inicialização do Windows · 6 Liberar Memória Ram · 7 Melhorar Conexão/Ping · 8 Otimizar AMD · 9 Otimizar NVIDIA · 10 Fix de Erros · 11 Debloater · 12 Sair
+## Menus
 
-**Otimizar Windows** tem as 38 opções do ecrã de referência (energia, visuais, Xbox, serviços, Explorer, etc.).  
-Opção 5 abre o menu Xbox (remover / restaurar). Opção 8 abre o otimizador de serviços (desativar / reverter).
+1 Restauro · 2 Windows (38 opções) · 3 Jogos · 4 Hardware · 5 Arranque · 6 RAM · 7 Ping · 8 AMD · 9 NVIDIA · 10 Fix · 11 Debloater · 12 Sair
 
-## Recusado de propósito (aparece no menu, não executa)
-
-- **16** Desativar SmartScreen  
-- **22** Desat. UAC  
-- **27** Desat. Anti-Malware  
-
-Também **não** mexe em Windows Defender, Windows Update, Firewall nem na rede.
+**Recusado (aparece, não executa):** SmartScreen, UAC, Anti-Malware, desinstalar a Loja, desinstalar a Calculadora.  
+Windows Update / Firewall / Defender / rede **não** são desligados. O Fix da Update só repara serviços.
 
 ## Reverter
 
-Definições → Sistema → Recuperação → ponto `Nox Otimizacao`.  
-Xbox e serviços têm opção **Reverter** no próprio submenu.
+Ponto `Nox Otimizacao`, ou as opções Reverter nos submenus Xbox / serviços / hardware.
