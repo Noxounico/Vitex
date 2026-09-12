@@ -167,7 +167,8 @@ echo          %C%[  5 ]%N% Config. inicializacao do Windows                     
 echo          %C%[  7 ]%N% Melhorar Conexao/Ping                                  %C%[  8 ]%N% Otimizar AMD
 echo          %C%[  9 ]%N% Otimizar NVIDIA                                        %C%[ 10 ]%N% Fix de Erros
 echo          %C%[ 11 ]%N% Debloater                                              %C%[ 12 ]%N% Limpeza do sistema
-echo          %C%[ 13 ]%N% Reverter tudo                                          %C%[ 14 ]%N% Sair
+echo          %C%[ 13 ]%N% Reverter tudo                                          %C%[ 14 ]%N% Reduzir processos / CPU
+echo          %C%[ 15 ]%N% Sair
 echo(
 set "op="
 set /p op=                                       Escolha uma opcao:
@@ -184,7 +185,8 @@ if "%op%"=="10" goto menu_fix
 if "%op%"=="11" goto menu_deb
 if "%op%"=="12" goto menu_clean
 if "%op%"=="13" goto do_revert_all
-if "%op%"=="14" goto do_sair
+if "%op%"=="14" goto do_cpu
+if "%op%"=="15" goto do_sair
 goto menu_main
 
 
@@ -1039,6 +1041,48 @@ echo Para ficheiros usa o menu 12 Limpeza.
 call :pause_back
 goto menu_main
 
+:do_cpu
+cls
+echo Reduzir processos ativos e CPU de fundo
+echo NAO fecha Cursor, Discord, browsers nem jogos.
+echo Defender / Update / firewall / rede / audio ficam ligados.
+echo(
+set "ans="
+set /p ans=Escreve S para criar ponto de restauro e continuar: 
+if /I not "%ans%"=="S" goto menu_main
+echo(
+call :_restore_silent
+echo(
+echo --- Antes ---
+call :_cpu_snap
+echo(
+echo A desligar servicos de fundo...
+for %%S in (SysMain WSearch DPS DiagTrack dmwappushservice Fax RemoteRegistry RetailDemo WMPNetworkSvc diagnosticshub.standardcollector.service MapsBroker CscService wisvc AJRouter shpamsvc PhoneSvc WalletService lfsvc SensorService SensorDataService SensrSvc SCardSvr SCPolicySvc TapiSrv WpcMonSvc WorkFolders fhsvc SEMgrSvc WerSvc PcaSvc XblGameSave XboxNetApiSvc XboxGipSvc AssignedAccessManagerSvc spectrum SharedRealitySvc DusmSvc TrkWks stisvc WbioSrvc TabletInputService PrintNotify CDPSvc WpnService NvTelemetryContainer) do (
+    call :_svc_off %%S
+)
+echo(
+echo A desligar tarefas agendadas de telemetria...
+call :_sch_trim
+echo(
+echo Widgets / Copilot / Game Bar / apps em segundo plano...
+call :_tips
+call :_xbox
+reg add "HKCU\Software\Policies\Microsoft\Windows\WindowsCopilot" /v TurnOffWindowsCopilot /t REG_DWORD /d 1 /f >nul
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v ShowCopilotButton /t REG_DWORD /d 0 /f >nul
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications" /v GlobalUserDisabled /t REG_DWORD /d 1 /f >nul
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Search" /v BackgroundAppGlobalToggle /t REG_DWORD /d 0 /f >nul
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\AppPrivacy" /v LetAppsRunInBackground /t REG_DWORD /d 2 /f >nul
+call :ok "Apps UWP em background off"
+call :_bloat_kill
+timeout /t 2 /nobreak >nul
+echo(
+echo --- Depois ---
+call :_cpu_snap
+echo(
+echo Reverter: menu 13. Apps tuas continuam abertas.
+call :pause_back
+goto menu_main
+
 :do_nvidia
 cls
 echo Otimizar NVIDIA...
@@ -1340,6 +1384,64 @@ reg add "HKLM\SOFTWARE\Policies\Microsoft\Dsh" /v AllowNewsAndInterests /t REG_D
 call :ok "Dicas / widgets off"
 goto :eof
 
+:_restore_silent
+powershell -NoProfile -ExecutionPolicy Bypass -Command "try { Checkpoint-Computer -Description 'Nox Otimizacao' -RestorePointType MODIFY_SETTINGS; Write-Host '    [OK] Ponto de restauro' } catch { Write-Host '    [AVISO] Ponto de restauro falhou' }"
+goto :eof
+
+:_cpu_snap
+powershell -NoProfile -Command "$p=(Get-Process -EA SilentlyContinue).Count; $c=(Get-CimInstance Win32_Processor -EA SilentlyContinue | Measure-Object -Property LoadPercentage -Average).Average; if ($null -eq $c) {$c=0}; Write-Host ('    Processos: '+[string]([int]$p)+'   CPU (aprox): '+[string]([int]$c)+' %%')"
+goto :eof
+
+:_bloat_kill
+echo A terminar so processos de bloat (nao toca nas tuas apps)...
+for %%P in (GameBar.exe GameBarFTW.exe GameBarPresenceWriter.exe WidgetService.exe Widgets.exe YourPhone.exe PhoneExperienceHost.exe CompatTelRunner.exe SearchApp.exe SearchHost.exe GameChatOverlay.exe XboxApp.exe XboxPcAppFTW.exe XboxGameBar.exe) do (
+    taskkill /F /IM %%P >nul 2>&1
+)
+call :ok "Game Bar / Widgets / SearchHost / CompatTel / Phone"
+goto :eof
+
+:_sch_trim
+schtasks /Change /TN "\Microsoft\Windows\Application Experience\Microsoft Compatibility Appraiser" /Disable >nul 2>&1
+schtasks /Change /TN "\Microsoft\Windows\Application Experience\ProgramDataUpdater" /Disable >nul 2>&1
+schtasks /Change /TN "\Microsoft\Windows\Application Experience\StartupAppTask" /Disable >nul 2>&1
+schtasks /Change /TN "\Microsoft\Windows\Customer Experience Improvement Program\Consolidator" /Disable >nul 2>&1
+schtasks /Change /TN "\Microsoft\Windows\Customer Experience Improvement Program\UsbCeip" /Disable >nul 2>&1
+schtasks /Change /TN "\Microsoft\Windows\Autochk\Proxy" /Disable >nul 2>&1
+schtasks /Change /TN "\Microsoft\Windows\DiskDiagnostic\Microsoft-Windows-DiskDiagnosticDataCollector" /Disable >nul 2>&1
+schtasks /Change /TN "\Microsoft\Windows\Feedback\Siuf\DmClient" /Disable >nul 2>&1
+schtasks /Change /TN "\Microsoft\Windows\Feedback\Siuf\DmClientOnScenarioDownload" /Disable >nul 2>&1
+schtasks /Change /TN "\Microsoft\Windows\Maps\MapsToastTask" /Disable >nul 2>&1
+schtasks /Change /TN "\Microsoft\Windows\Maps\MapsUpdateTask" /Disable >nul 2>&1
+schtasks /Change /TN "\Microsoft\Windows\Windows Error Reporting\QueueReporting" /Disable >nul 2>&1
+schtasks /Change /TN "\Microsoft\Windows\CloudExperienceHost\CreateObjectTask" /Disable >nul 2>&1
+schtasks /Change /TN "\Microsoft\XblGameSave\XblGameSaveTask" /Disable >nul 2>&1
+schtasks /Change /TN "\Microsoft\Windows\Diagnosis\Scheduled" /Disable >nul 2>&1
+schtasks /Change /TN "\Microsoft\Windows\Flighting\FeatureConfig\ReconcileFeatures" /Disable >nul 2>&1
+schtasks /Change /TN "\Microsoft\Windows\Flighting\OneSettings\RefreshCache" /Disable >nul 2>&1
+call :ok "Tarefas CEIP / CompatTel / Maps / WER (Update intacto)"
+goto :eof
+
+:_sch_restore
+schtasks /Change /TN "\Microsoft\Windows\Application Experience\Microsoft Compatibility Appraiser" /Enable >nul 2>&1
+schtasks /Change /TN "\Microsoft\Windows\Application Experience\ProgramDataUpdater" /Enable >nul 2>&1
+schtasks /Change /TN "\Microsoft\Windows\Application Experience\StartupAppTask" /Enable >nul 2>&1
+schtasks /Change /TN "\Microsoft\Windows\Customer Experience Improvement Program\Consolidator" /Enable >nul 2>&1
+schtasks /Change /TN "\Microsoft\Windows\Customer Experience Improvement Program\UsbCeip" /Enable >nul 2>&1
+schtasks /Change /TN "\Microsoft\Windows\Autochk\Proxy" /Enable >nul 2>&1
+schtasks /Change /TN "\Microsoft\Windows\DiskDiagnostic\Microsoft-Windows-DiskDiagnosticDataCollector" /Enable >nul 2>&1
+schtasks /Change /TN "\Microsoft\Windows\Feedback\Siuf\DmClient" /Enable >nul 2>&1
+schtasks /Change /TN "\Microsoft\Windows\Feedback\Siuf\DmClientOnScenarioDownload" /Enable >nul 2>&1
+schtasks /Change /TN "\Microsoft\Windows\Maps\MapsToastTask" /Enable >nul 2>&1
+schtasks /Change /TN "\Microsoft\Windows\Maps\MapsUpdateTask" /Enable >nul 2>&1
+schtasks /Change /TN "\Microsoft\Windows\Windows Error Reporting\QueueReporting" /Enable >nul 2>&1
+schtasks /Change /TN "\Microsoft\Windows\CloudExperienceHost\CreateObjectTask" /Enable >nul 2>&1
+schtasks /Change /TN "\Microsoft\XblGameSave\XblGameSaveTask" /Enable >nul 2>&1
+schtasks /Change /TN "\Microsoft\Windows\Diagnosis\Scheduled" /Enable >nul 2>&1
+schtasks /Change /TN "\Microsoft\Windows\Flighting\FeatureConfig\ReconcileFeatures" /Enable >nul 2>&1
+schtasks /Change /TN "\Microsoft\Windows\Flighting\OneSettings\RefreshCache" /Enable >nul 2>&1
+call :ok "Tarefas agendadas reativadas"
+goto :eof
+
 :_svc_off
 echo(%~1| findstr /I /X /C:"WinDefend" /C:"Sense" /C:"WdNisSvc" /C:"SecurityHealthService" /C:"wscsvc" /C:"mpssvc" /C:"MpsSvc" /C:"BFE" /C:"wuauserv" /C:"bits" /C:"UsoSvc" /C:"DoSvc" /C:"WaaSMedicSvc" /C:"Dhcp" /C:"Dnscache" /C:"NlaSvc" /C:"netprofm" /C:"nsi" /C:"Winmgmt" /C:"RpcSs" /C:"DcomLaunch" /C:"LSM" /C:"EventLog" /C:"Schedule" /C:"Audiosrv" /C:"AudioEndpointBuilder" /C:"PlugPlay" /C:"Power" /C:"ProfSvc" /C:"UserManager" /C:"SamSs" /C:"CryptSvc" /C:"gpsvc" /C:"WlanSvc" /C:"WinHttpAutoProxySvc" /C:"TrustedInstaller" /C:"MsMpEng" /C:"NisSrv" >nul 2>&1
 if not errorlevel 1 (
@@ -1440,6 +1542,10 @@ reg delete "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManage
 reg delete "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /v SystemPaneSuggestionsEnabled /f >nul 2>&1
 reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v TaskbarDa /f >nul 2>&1
 reg delete "HKLM\SOFTWARE\Policies\Microsoft\Dsh" /v AllowNewsAndInterests /f >nul 2>&1
+reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications" /v GlobalUserDisabled /f >nul 2>&1
+reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Search" /v BackgroundAppGlobalToggle /f >nul 2>&1
+reg delete "HKLM\SOFTWARE\Policies\Microsoft\Windows\AppPrivacy" /v LetAppsRunInBackground /f >nul 2>&1
+call :_sch_restore
 reg delete "HKLM\SOFTWARE\Policies\Microsoft\Windows\GameDVR" /f >nul 2>&1
 fsutil behavior set disablelastaccess 2 >nul 2>&1
 powercfg -h on >nul 2>&1
