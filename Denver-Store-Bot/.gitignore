@@ -1,0 +1,13 @@
+# Dependencies
+node_modules/
+
+# Local SQLite database (created automatically on first run)
+loja.db
+loja.db-shm
+loja.db-wal
+
+# Environment secrets
+.env
+
+# Logs
+*.log
