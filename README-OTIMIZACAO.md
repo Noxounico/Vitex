@@ -1,41 +1,31 @@
-# Otimização Windows (`Optimizacao.bat`)
+# Nox Otimização (`Optimizacao.bat`)
 
-Script para **Windows 10/11**. Corre **como Administrador**.  
-Ficheiro principal: `Optimizacao.bat` (ASCII). Cópia com o nome pedido: `Optimizaça.bat` (mesmo conteúdo).
+Ferramenta **Windows 10/11** em menu de duas colunas (números laranja).  
+Ficheiros: `Optimizacao.bat` e a cópia `Optimizaça.bat` (mesmo conteúdo).
 
 ## Como usar
 
-1. Clicar com o botão direito em `Optimizacao.bat` → **Executar como administrador**.
-2. O script tenta criar um **ponto de restauro** antes de alterar o que quer que seja.
-3. Cada passo aparece no ecrã em português.
-4. No fim, **reinicia o PC** para aplicar o plano de energia e o agendamento de GPU.
+1. Botão direito → **Executar como administrador**.
+2. Cria um **ponto de restauro** (opção **1**) antes do resto.
+3. Escolhe o número e Enter.
+4. Reinicia depois de energia / NVIDIA / AMD / Hyper-V / HAGS.
 
-## O que altera
+## Menu principal
 
-- **Efeitos visuais** no estilo “Ajustar para melhor desempenho”: animações de janelas e da barra de tarefas, transparência, sombras, Aero Peek, fade de menus, atraso de menus. A **suavização de fontes (ClearType) fica ligada** para o texto continuar legível.
-- **Jogos / FPS:** Game Mode ligado; Game DVR, gravação em segundo plano e overlay da Xbox Game Bar desligados; prioridade multimedia da tarefa “Games” mais alta.
-- **Energia:** tenta o plano *Ultimate Performance*; se não existir, usa *Alto desempenho*. Em corrente, CPU a 100%. Em **bateria não mexe**.
-- **GPU:** liga o agendamento com aceleração por hardware (HAGS), se o driver aceitar.
-- **Rato:** desliga a aceleração (“Melhorar precisão do ponteiro”).
-- **Fluff:** widgets/notícias na barra, dicas da Microsoft, destaques da pesquisa, atraso artificial no arranque.
+1 Criar Ponto de Restauração · 2 Otimizar Windows · 3 Otimização de Jogos · 4 Otimização de Periféricos · 5 Config. inicialização do Windows · 6 Liberar Memória Ram · 7 Melhorar Conexão/Ping · 8 Otimizar AMD · 9 Otimizar NVIDIA · 10 Fix de Erros · 11 Debloater · 12 Sair
 
-As chaves de registo estão **comentadas no `.bat`** com o valor típico de fábrica, para poderes reverter à mão.
+**Otimizar Windows** tem as 38 opções do ecrã de referência (energia, visuais, Xbox, serviços, Explorer, etc.).  
+Opção 5 abre o menu Xbox (remover / restaurar). Opção 8 abre o otimizador de serviços (desativar / reverter).
 
-## O que **não** toca (de propósito)
+## Recusado de propósito (aparece no menu, não executa)
 
-- Windows Defender / SmartScreen  
-- Windows Update  
-- Firewall  
-- Rede (Wi‑Fi, Ethernet, IPv6, DNS)  
-- Ficheiros de sistema (nada é apagado)  
-- Serviços do Xbox necessários para a app/Game Pass (só DVR/overlay via registo)  
-- Sem tarefas agendadas, sem cópia para a pasta de arranque, sem persistência tipo malware  
+- **16** Desativar SmartScreen  
+- **22** Desat. UAC  
+- **27** Desat. Anti-Malware  
 
-## Como reverter
+Também **não** mexe em Windows Defender, Windows Update, Firewall nem na rede.
 
-1. **Preferido:** Definições → Sistema → Recuperação → **Restauro do sistema** → ponto `Antes da Otimizacao (Vitex)`.
-2. Ou restabelece os valores comentados em `Optimizacao.bat` (e apaga as políticas `AllowGameDVR` e `AllowNewsAndInterests` se as quiseres de volta).
-3. Plano de energia: Definições → Sistema → Energia → *Equilibrado*.
-4. Rato: Definições → Bluetooth e dispositivos → Rato → voltar a marcar “Melhorar precisão do ponteiro” se quiseres.
+## Reverter
 
-Alguns ajustes (HAGS, DVR, plano de energia) só ficam consistentes depois de um reinício.
+Definições → Sistema → Recuperação → ponto `Nox Otimizacao`.  
+Xbox e serviços têm opção **Reverter** no próprio submenu.
