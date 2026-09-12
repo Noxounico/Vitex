@@ -141,6 +141,13 @@ const CATALOG = [
       { name: 'Discord Básico', priceCents: cents(3) },
     ],
   },
+  {
+    category: 'curso',
+    products: [
+      { name: 'Curso Básico', priceCents: cents(15) },
+      { name: 'Curso Avançado', priceCents: cents(30) },
+    ],
+  },
 ];
 
 function seed() {

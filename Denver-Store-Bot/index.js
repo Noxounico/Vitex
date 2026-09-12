@@ -244,6 +244,9 @@ const BOTS_BANNER_URL_PADRAO =
 const SERVIDORES_BANNER_URL_PADRAO =
   process.env.SERVIDORES_BANNER_URL ||
   'https://cdn.discordapp.com/attachments/1545383446208315422/1547886814973399082/content.png?ex=6aa50d6f&is=6aa3bbef&hm=dd92545b597805591310259bdd63813beceef8c46afb95a8f96228739fbd2538&';
+const CURSO_BANNER_URL_PADRAO =
+  process.env.CURSO_BANNER_URL ||
+  'https://media.discordapp.net/attachments/1547020344873848932/1548444814490607816/content.png?ex=6aa7151c&is=6aa5c39c&hm=6aaefab7122df491c01c3a9c14244634b3f80c508a46a5314ac4d7f862db3b0a&=&format=webp&quality=lossless&width=1520&height=856';
 
 // Tickets: categoria, cargos da staff e banner por defeito (env var sobrepõe).
 const TICKETS_CATEGORIA_ID_PADRAO = '1548064600652775526';
@@ -444,6 +447,10 @@ const PRODUTOS_SEED = [
   { nome: 'Discord RP', preco: eur(5), categoria: 'servidores' },
   { nome: 'Discord Personalizado', preco: eur(5), categoria: 'servidores' },
   { nome: 'Discord Básico', preco: eur(3), categoria: 'servidores' },
+
+  // --- Canal de cursos ---
+  { nome: 'Curso Básico', preco: eur(15), categoria: 'curso' },
+  { nome: 'Curso Avançado', preco: eur(30), categoria: 'curso' },
 ];
 
 // Cria produtos em falta e atualiza o preço/categoria dos que já existem.
@@ -528,6 +535,8 @@ const CATEGORIA_POR_COMANDO = {
   'loja-bots': 'bots',
   'loja-servidores': 'servidores',
   'loja-criacao': 'servidores',
+  'loja-curso': 'curso',
+  'loja-cursos': 'curso',
 };
 
 // Acrescenta as opções comuns de personalização do painel a um comando
@@ -915,7 +924,7 @@ function corParaHex(cor) {
 
 // Textos/estilo específicos por categoria — cada painel tem a sua mensagem.
 function linhaJaFormatada(texto) {
-  return /^(•|💎|🔹|✨|・|🖥️|🤖)/u.test(texto);
+  return /^(•|💎|🔹|✨|・|🖥️|🤖|📚)/u.test(texto);
 }
 
 function textoPainel(titulo, bullets, extras = {}) {
@@ -1061,6 +1070,19 @@ const PAINEL_TEXTOS = {
       'Melhor qualidade.',
     ],
     { entrega: '🎫 Entrega via ticket', imagem: SERVIDORES_BANNER_URL_PADRAO }
+  ),
+  curso: textoPainel(
+    '📚 CURSOS',
+    [
+      '🔹 Curso Básico: 15€',
+      '🔹 Curso Avançado: 30€',
+      '✨ Incluído:',
+      '・Aulas claras, passo a passo',
+      '・Material pronto a seguir',
+      '・Suporte para tirar dúvidas',
+      '・Do básico ao avançado, no teu ritmo',
+    ],
+    { entrega: '🎫 Entrega via ticket', imagem: CURSO_BANNER_URL_PADRAO }
   ),
 };
 

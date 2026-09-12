@@ -20,7 +20,7 @@ Comandos
   !loja-impulsos  !loja-nitradas  !loja-links  !loja-trial
   !loja-virgem    !loja-aged      !loja-spotify  !loja-membros
   !loja-trampo    !loja-roblox    !loja-fortnite !loja-rockstar
-  !loja-bots      !loja-servidores  !loja-criacao
+  !loja-bots      !loja-servidores  !loja-criacao  !loja-curso
   !tickets        !verificacao    !comandos
   !stock          !stock adicionar 2x impulso 4
   !fechar         (dentro do ticket)
