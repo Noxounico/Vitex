@@ -2,7 +2,8 @@
 echo off
 setlocal EnableExtensions EnableDelayedExpansion
 :: Nox Otimizacao — SEM BOM. @echo off TEM de ser o primeiro comando ASCII.
-:: Nao desativa Defender, SmartScreen, UAC, Anti-Malware, Windows Update, Firewall, rede.
+:: Defender / SmartScreen / Anti-Malware: so nas opcoes 16 e 27, com S.
+:: Nao desativa UAC, Windows Update, Firewall nem a rede.
 
 title Nox Otimizacao
 color 0E
@@ -150,11 +151,25 @@ cls
 echo(
 echo %R%  [RECUSADO] %~1%N%
 echo(
-echo   A Nox Otimizacao NAO desativa Defender, SmartScreen, UAC,
-echo   Anti-Malware, Windows Update, Firewall nem a rede.
-echo   Nenhuma alteracao foi feita.
+echo   A Nox Otimizacao NAO desativa UAC, Windows Update,
+echo   Firewall nem a rede. Nenhuma alteracao foi feita.
 call :pause_back
 goto :eof
+
+:confirm_sec
+cls
+echo(
+echo %R%  AVISO: Isto DESATIVA %~1.%N%
+echo  O PC fica mais exposto. Nao e stealth: as chaves ficam visiveis.
+echo  Tamper Protection (Protecao contra adulteracao) no Windows Security
+echo  pode bloquear servicos/chaves ate a desligares uma vez.
+echo  UAC / Windows Update / firewall / rede NAO sao mexidos.
+echo  Ponto de restauro: so a opcao 1, se quiseres.
+echo(
+set "ans="
+set /p ans=Escreve S para confirmar: 
+if /I not "%ans%"=="S" exit /b 1
+exit /b 0
 
 
 :menu_main
@@ -232,7 +247,7 @@ if "%op%"=="12" goto w_godmode
 if "%op%"=="13" goto w_notif
 if "%op%"=="14" goto w_cortana
 if "%op%"=="15" goto w_feedback
-if "%op%"=="16" call :refuse "Desativar SmartScreen" & goto menu_win
+if "%op%"=="16" goto w_smartscreen
 if "%op%"=="17" goto w_overlay
 if "%op%"=="18" goto w_thumbs
 if "%op%"=="19" goto w_prefetch
@@ -243,7 +258,7 @@ if "%op%"=="23" goto w_hyperv
 if "%op%"=="24" goto w_sfc
 if "%op%"=="25" goto ping_dns
 if "%op%"=="26" goto w_temp
-if "%op%"=="27" call :refuse "Desat. Anti-Malware" & goto menu_win
+if "%op%"=="27" goto w_defender
 if "%op%"=="28" goto w_maps
 if "%op%"=="29" goto w_ntfs
 if "%op%"=="30" goto w_bing
@@ -1001,7 +1016,8 @@ goto menu_clean
 :do_revert_all
 cls
 echo Reverter tweaks do Nox (nao reinstala apps da Loja).
-echo Defender / UAC / SmartScreen / Update / firewall nao sao mexidos.
+echo UAC / Update / firewall / rede nao sao mexidos.
+echo Defender e SmartScreen voltam a ligar-se.
 echo(
 set "ans="
 set /p ans=Escreve S para continuar: 
@@ -1145,7 +1161,7 @@ sc config DiagTrack start= disabled >nul 2>&1
 sc stop dmwappushservice >nul 2>&1
 sc config dmwappushservice start= disabled >nul 2>&1
 call :ok "DiagTrack / dmwappush"
-echo Update e Defender intactos.
+echo Update intacto.
 call :pause_back
 goto menu_win
 :w_wer
@@ -1315,6 +1331,29 @@ if /I not "%ans%"=="S" goto menu_win
 shutdown /r /t 5 /c "Nox Otimizacao"
 goto menu_win
 
+:w_smartscreen
+call :confirm_sec "SmartScreen"
+if errorlevel 1 goto menu_win
+cls
+echo A desativar SmartScreen...
+call :_smart_off
+echo(
+echo Firewall / Update / UAC intactos. Reverter: menu 13.
+call :pause_back
+goto menu_win
+
+:w_defender
+call :confirm_sec "Windows Defender / Anti-Malware"
+if errorlevel 1 goto menu_win
+cls
+echo A desativar Windows Defender / Anti-Malware...
+echo Se falhar: Windows Security - Protecao contra adulteracao - Desligar.
+call :_def_off
+echo(
+echo Firewall / Update / UAC / rede intactos. Reverter: menu 13.
+call :pause_back
+goto menu_win
+
 
 :prio
 cls
@@ -1468,6 +1507,79 @@ schtasks /Change /TN "\Microsoft\Windows\Flighting\OneSettings\RefreshCache" /En
 call :ok "Tarefas agendadas reativadas"
 goto :eof
 
+:_smart_off
+reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer" /v SmartScreenEnabled /t REG_SZ /d Off /f >nul
+reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\AppHost" /v EnableWebContentEvaluation /t REG_DWORD /d 0 /f >nul
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\System" /v EnableSmartScreen /t REG_DWORD /d 0 /f >nul
+reg add "HKLM\SOFTWARE\Policies\Microsoft\MicrosoftEdge\PhishingFilter" /v EnabledV9 /t REG_DWORD /d 0 /f >nul
+reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\AppHost" /v PreventOverride /t REG_DWORD /d 0 /f >nul
+call :ok "SmartScreen Explorer / Edge / apps"
+goto :eof
+
+:_smart_on
+reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer" /v SmartScreenEnabled /t REG_SZ /d Warn /f >nul
+reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\AppHost" /v EnableWebContentEvaluation /t REG_DWORD /d 1 /f >nul
+reg delete "HKLM\SOFTWARE\Policies\Microsoft\Windows\System" /v EnableSmartScreen /f >nul 2>&1
+reg delete "HKLM\SOFTWARE\Policies\Microsoft\MicrosoftEdge\PhishingFilter" /v EnabledV9 /f >nul 2>&1
+call :ok "SmartScreen restaurado"
+goto :eof
+
+:_def_svc
+sc stop "%~1" >nul 2>&1
+sc config "%~1" start= disabled >nul 2>&1
+if errorlevel 1 (
+    echo     [AVISO] %~1 bloqueado — desliga Tamper Protection e tenta outra vez.
+) else (
+    call :ok "%~1"
+)
+goto :eof
+
+:_def_off
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender" /v DisableAntiSpyware /t REG_DWORD /d 1 /f >nul
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender" /v DisableAntiVirus /t REG_DWORD /d 1 /f >nul
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" /v DisableRealtimeMonitoring /t REG_DWORD /d 1 /f >nul
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" /v DisableBehaviorMonitoring /t REG_DWORD /d 1 /f >nul
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" /v DisableOnAccessProtection /t REG_DWORD /d 1 /f >nul
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" /v DisableScanOnRealtimeEnable /t REG_DWORD /d 1 /f >nul
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" /v DisableIOAVProtection /t REG_DWORD /d 1 /f >nul
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Spynet" /v SpynetReporting /t REG_DWORD /d 0 /f >nul
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Spynet" /v SubmitSamplesConsent /t REG_DWORD /d 2 /f >nul
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" /v DisableArchiveScanning /t REG_DWORD /d 1 /f >nul
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" /v DisableCatchupFullScan /t REG_DWORD /d 1 /f >nul
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" /v DisableCatchupQuickScan /t REG_DWORD /d 1 /f >nul
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" /v DisableEmailScanning /t REG_DWORD /d 1 /f >nul
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" /v DisableRemovableDriveScanning /t REG_DWORD /d 1 /f >nul
+call :ok "Politicas Defender (realtime / scans / amostras)"
+powershell -NoProfile -Command "try { Set-MpPreference -DisableRealtimeMonitoring $true -DisableBehaviorMonitoring $true -DisableIOAVProtection $true -DisableScriptScanning $true -SubmitSamplesConsent 2 -MAPSReporting 0 -EA Stop; Write-Host '    [OK] Set-MpPreference' } catch { Write-Host '    [AVISO] Tamper Protection pode estar a bloquear o Defender.' }"
+call :_def_svc WinDefend
+call :_def_svc WdNisSvc
+call :_def_svc Sense
+call :_def_svc SecurityHealthService
+schtasks /Change /TN "\Microsoft\Windows\Windows Defender\Windows Defender Cache Maintenance" /Disable >nul 2>&1
+schtasks /Change /TN "\Microsoft\Windows\Windows Defender\Windows Defender Cleanup" /Disable >nul 2>&1
+schtasks /Change /TN "\Microsoft\Windows\Windows Defender\Windows Defender Scheduled Scan" /Disable >nul 2>&1
+schtasks /Change /TN "\Microsoft\Windows\Windows Defender\Windows Defender Verification" /Disable >nul 2>&1
+call :ok "Tarefas agendadas do Defender"
+echo     Firewall (mpssvc/BFE) e Windows Update nao foram mexidos.
+goto :eof
+
+:_def_on
+reg delete "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender" /f >nul 2>&1
+sc config WinDefend start= auto >nul 2>&1
+sc start WinDefend >nul 2>&1
+sc config WdNisSvc start= demand >nul 2>&1
+sc start WdNisSvc >nul 2>&1
+sc config Sense start= delayed-auto >nul 2>&1
+sc config SecurityHealthService start= demand >nul 2>&1
+sc start SecurityHealthService >nul 2>&1
+schtasks /Change /TN "\Microsoft\Windows\Windows Defender\Windows Defender Cache Maintenance" /Enable >nul 2>&1
+schtasks /Change /TN "\Microsoft\Windows\Windows Defender\Windows Defender Cleanup" /Enable >nul 2>&1
+schtasks /Change /TN "\Microsoft\Windows\Windows Defender\Windows Defender Scheduled Scan" /Enable >nul 2>&1
+schtasks /Change /TN "\Microsoft\Windows\Windows Defender\Windows Defender Verification" /Enable >nul 2>&1
+powershell -NoProfile -Command "try { Set-MpPreference -DisableRealtimeMonitoring $false -DisableBehaviorMonitoring $false -DisableIOAVProtection $false -DisableScriptScanning $false -SubmitSamplesConsent 1 -MAPSReporting 1 -EA SilentlyContinue; Write-Host '    [OK] Defender restaurado' } catch { Write-Host '    [AVISO] Nao foi possivel restaurar via Set-MpPreference' }"
+call :ok "WinDefend / WdNisSvc / SecurityHealth / tarefas"
+goto :eof
+
 :_svc_off
 echo(%~1| findstr /I /X /C:"WinDefend" /C:"Sense" /C:"WdNisSvc" /C:"SecurityHealthService" /C:"wscsvc" /C:"mpssvc" /C:"MpsSvc" /C:"BFE" /C:"wuauserv" /C:"bits" /C:"UsoSvc" /C:"DoSvc" /C:"WaaSMedicSvc" /C:"Dhcp" /C:"Dnscache" /C:"NlaSvc" /C:"netprofm" /C:"nsi" /C:"Winmgmt" /C:"RpcSs" /C:"DcomLaunch" /C:"LSM" /C:"EventLog" /C:"Schedule" /C:"Audiosrv" /C:"AudioEndpointBuilder" /C:"PlugPlay" /C:"Power" /C:"ProfSvc" /C:"UserManager" /C:"SamSs" /C:"CryptSvc" /C:"gpsvc" /C:"WlanSvc" /C:"WinHttpAutoProxySvc" /C:"TrustedInstaller" /C:"MsMpEng" /C:"NisSrv" >nul 2>&1
 if not errorlevel 1 (
@@ -1570,6 +1682,8 @@ reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v
 reg delete "HKLM\SOFTWARE\Policies\Microsoft\Dsh" /v AllowNewsAndInterests /f >nul 2>&1
 call :_bg_apps_on
 call :_sch_restore
+call :_def_on
+call :_smart_on
 reg delete "HKLM\SOFTWARE\Policies\Microsoft\Windows\GameDVR" /f >nul 2>&1
 fsutil behavior set disablelastaccess 2 >nul 2>&1
 powercfg -h on >nul 2>&1

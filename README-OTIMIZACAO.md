@@ -12,8 +12,9 @@ O ficheiro está em ASCII/UTF-8 **sem BOM** para o menu não aparecer duplicado.
 
 1 Restauro · 2 Windows · 3 Jogos · 4 Hardware · 5 Arranque · 6 RAM · 7 Ping · 8 AMD · 9 NVIDIA · 10 Fix · 11 Debloater · 12 Limpeza · 13 Reverter tudo · 14 Reduzir processos / CPU · 15 Remover apps em 2 plano · 16 Sair
 
-**Recusado (aparece, não executa):** SmartScreen, UAC, Anti-Malware, desinstalar a Loja, desinstalar a Calculadora.  
-Windows Update / Firewall / Defender / rede **não** são desligados. O Fix da Update só repara serviços.
+**Windows → 16 SmartScreen e 27 Anti-Malware:** desligam de verdade (pedem `S`). Tamper Protection no Windows Security pode bloquear até a desligares uma vez.  
+**Recusado:** UAC, desinstalar a Loja, desinstalar a Calculadora.  
+Windows Update / Firewall / rede **não** são desligados. O Fix da Update só repara serviços.
 
 Serviços (menu Windows → 8): **inúteis** e **normais**. Opção **14** reduz processos/CPU de fundo. Opção **15** desliga apps da Loja em 2º plano (não fecha Discord/Cursor/browsers).
 
