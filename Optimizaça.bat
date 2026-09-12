@@ -784,35 +784,42 @@ goto menu_xbox
 call :hdr svc
 echo(%C%                                 OTIMIZADOR DE SERVICOS WINDOWS%N%
 echo(
-echo          %C%[  1 ]%N% Desativar Servicos
-echo          %C%[  2 ]%N% Reverter Otimizacao
-echo          %C%[  3 ]%N% Voltar ao Menu Principal
+echo          %C%[  1 ]%N% Desativar servicos INUTEIS                             %C%[  2 ]%N% Desativar servicos NORMAIS
+echo          %C%[  3 ]%N% Reverter servicos                                      %C%[  4 ]%N% Voltar ao Menu Principal
 echo(
 set "op="
 set /p op=                                    Digite a opcao desejada:
-if "%op%"=="1" goto svc_off
-if "%op%"=="2" goto svc_on
-if "%op%"=="3" goto menu_main
+if "%op%"=="1" goto svc_off_junk
+if "%op%"=="2" goto svc_off_norm
+if "%op%"=="3" goto svc_on
+if "%op%"=="4" goto menu_main
 goto menu_svc
 
-:svc_off
+:svc_off_junk
 cls
-echo Desativar servicos opcionais...
-for %%S in (Fax RemoteRegistry RetailDemo WMPNetworkSvc diagnosticshub.standardcollector.service MapsBroker CscService wisvc) do (
-    sc stop %%S >nul 2>&1
-    sc config %%S start= disabled >nul 2>&1
-    call :ok %%S
+echo Desativar servicos INUTEIS via registo (Start=4)...
+echo Defender / Update / firewall / rede nao sao mexidos.
+for %%S in (Fax RemoteRegistry RetailDemo WMPNetworkSvc diagnosticshub.standardcollector.service MapsBroker CscService wisvc AJRouter shpamsvc PhoneSvc WalletService lfsvc SensorService SensorDataService SensrSvc SCardSvr SCPolicySvc TapiSrv WpcMonSvc WorkFolders fhsvc SEMgrSvc WerSvc PcaSvc DiagTrack dmwappushservice XblGameSave XboxNetApiSvc XboxGipSvc AssignedAccessManagerSvc spectrum SharedRealitySvc) do (
+    call :_svc_off %%S
+)
+call :pause_back
+goto menu_svc
+
+:svc_off_norm
+cls
+echo Desativar servicos NORMAIS via registo (Start=4)...
+echo SysMain / Pesquisa / Spooler / Fontes / diagnosticos, etc.
+echo Defender / Update / firewall / rede / audio ficam ligados.
+for %%S in (SysMain WSearch Spooler FontCache DPS DusmSvc TrkWks stisvc WbioSrvc TabletInputService PrintNotify CDPSvc WpnService) do (
+    call :_svc_off %%S
 )
 call :pause_back
 goto menu_svc
 
 :svc_on
 cls
-echo Reverter servicos...
-for %%S in (Fax RemoteRegistry RetailDemo WMPNetworkSvc diagnosticshub.standardcollector.service MapsBroker CscService wisvc) do (
-    sc config %%S start= demand >nul 2>&1
-    call :ok %%S
-)
+echo Reverter servicos (registo + sc)...
+call :_svc_restore_all
 call :pause_back
 goto menu_svc
 
@@ -1021,12 +1028,14 @@ goto menu_games
 
 :do_ram
 cls
-echo Limpando Memoria ram...
-echo Limpando o cache de memoria RAM...
-del /q /f /s "%TEMP%\*" >nul 2>&1
-rundll32.exe advapi32.dll,ProcessIdleTasks
-call :ok "TEMP limpo + idle tasks"
-powershell -NoProfile -Command "$o=Get-CimInstance Win32_OperatingSystem; Write-Host ('RAM livre: {0:N0} MB' -f ($o.FreePhysicalMemory/1024))"
+echo Liberar Memoria RAM
+echo Nao fecha apps. Discord / browser / jogos abertos continuam a usar RAM.
+echo A cortar working sets e a esvaziar a lista standby (rapido)...
+echo(
+powershell -NoProfile -ExecutionPolicy Bypass -EncodedCommand JABjACAAPQAgAEAAJwAKAHUAcwBpAG4AZwAgAFMAeQBzAHQAZQBtADsACgB1AHMAaQBuAGcAIABTAHkAcwB0AGUAbQAuAFIAdQBuAHQAaQBtAGUALgBJAG4AdABlAHIAbwBwAFMAZQByAHYAaQBjAGUAcwA7AAoAcAB1AGIAbABpAGMAIABzAHQAYQB0AGkAYwAgAGMAbABhAHMAcwAgAE4AbwB4AFIAYQBtACAAewAKACAAIABbAEQAbABsAEkAbQBwAG8AcgB0ACgAIgBuAHQAZABsAGwALgBkAGwAbAAiACkAXQAgAHAAdQBiAGwAaQBjACAAcwB0AGEAdABpAGMAIABlAHgAdABlAHIAbgAgAGkAbgB0ACAAUgB0AGwAQQBkAGoAdQBzAHQAUAByAGkAdgBpAGwAZQBnAGUAKABpAG4AdAAgAHAALAAgAGIAbwBvAGwAIABlACwAIABiAG8AbwBsACAAdAAsACAAbwB1AHQAIABiAG8AbwBsACAAdwApADsACgAgACAAWwBEAGwAbABJAG0AcABvAHIAdAAoACIAbgB0AGQAbABsAC4AZABsAGwAIgApAF0AIABwAHUAYgBsAGkAYwAgAHMAdABhAHQAaQBjACAAZQB4AHQAZQByAG4AIABpAG4AdAAgAE4AdABTAGUAdABTAHkAcwB0AGUAbQBJAG4AZgBvAHIAbQBhAHQAaQBvAG4AKABpAG4AdAAgAGMALAAgAHIAZQBmACAAaQBuAHQAIABpACwAIABpAG4AdAAgAGwAKQA7AAoAIAAgAHAAdQBiAGwAaQBjACAAcwB0AGEAdABpAGMAIAB2AG8AaQBkACAARwBvACgAKQAgAHsACgAgACAAIAAgAGIAbwBvAGwAIAB3ADsACgAgACAAIAAgAFIAdABsAEEAZABqAHUAcwB0AFAAcgBpAHYAaQBsAGUAZwBlACgANQAsACAAdAByAHUAZQAsACAAZgBhAGwAcwBlACwAIABvAHUAdAAgAHcAKQA7AAoAIAAgACAAIABSAHQAbABBAGQAagB1AHMAdABQAHIAaQB2AGkAbABlAGcAZQAoADEAMwAsACAAdAByAHUAZQAsACAAZgBhAGwAcwBlACwAIABvAHUAdAAgAHcAKQA7AAoAIAAgACAAIABpAG4AdAAgAHYAOwAKACAAIAAgACAAdgAgAD0AIAAyADsAIABOAHQAUwBlAHQAUwB5AHMAdABlAG0ASQBuAGYAbwByAG0AYQB0AGkAbwBuACgAOAAwACwAIAByAGUAZgAgAHYALAAgADQAKQA7AAoAIAAgACAAIAB2ACAAPQAgADMAOwAgAE4AdABTAGUAdABTAHkAcwB0AGUAbQBJAG4AZgBvAHIAbQBhAHQAaQBvAG4AKAA4ADAALAAgAHIAZQBmACAAdgAsACAANAApADsACgAgACAAIAAgAHYAIAA9ACAANAA7ACAATgB0AFMAZQB0AFMAeQBzAHQAZQBtAEkAbgBmAG8AcgBtAGEAdABpAG8AbgAoADgAMAAsACAAcgBlAGYAIAB2ACwAIAA0ACkAOwAKACAAIAAgACAAdgAgAD0AIAA1ADsAIABOAHQAUwBlAHQAUwB5AHMAdABlAG0ASQBuAGYAbwByAG0AYQB0AGkAbwBuACgAOAAwACwAIAByAGUAZgAgAHYALAAgADQAKQA7AAoAIAAgAH0ACgB9AAoAJwBAAAoAQQBkAGQALQBUAHkAcABlACAAJABjAAoAJABvACAAPQAgAEcAZQB0AC0AQwBpAG0ASQBuAHMAdABhAG4AYwBlACAAVwBpAG4AMwAyAF8ATwBwAGUAcgBhAHQAaQBuAGcAUwB5AHMAdABlAG0ACgAkAHQAIAA9ACAAWwBpAG4AdABdACgAJABvAC4AVABvAHQAYQBsAFYAaQBzAGkAYgBsAGUATQBlAG0AbwByAHkAUwBpAHoAZQAgAC8AIAAxADAAMgA0ACkACgAkAGIAIAA9ACAAWwBpAG4AdABdACgAJABvAC4ARgByAGUAZQBQAGgAeQBzAGkAYwBhAGwATQBlAG0AbwByAHkAIAAvACAAMQAwADIANAApAAoAVwByAGkAdABlAC0ASABvAHMAdAAgACgAIgAgACAAIAAgAEEAbgB0AGUAcwA6ACAAIAB7ADAAfQAgAE0AQgAgAGwAaQB2AHIAZQBzACAALwAgAHsAMQB9ACAATQBCACIAIAAtAGYAIAAkAGIALAAgACQAdAApAAoAWwBOAG8AeABSAGEAbQBdADoAOgBHAG8AKAApAAoAUwB0AGEAcgB0AC0AUwBsAGUAZQBwACAALQBNAGkAbABsAGkAcwBlAGMAbwBuAGQAcwAgADUAMAAwAAoAJABvACAAPQAgAEcAZQB0AC0AQwBpAG0ASQBuAHMAdABhAG4AYwBlACAAVwBpAG4AMwAyAF8ATwBwAGUAcgBhAHQAaQBuAGcAUwB5AHMAdABlAG0ACgAkAHgAIAA9ACAAWwBpAG4AdABdACgAJABvAC4ARgByAGUAZQBQAGgAeQBzAGkAYwBhAGwATQBlAG0AbwByAHkAIAAvACAAMQAwADIANAApAAoAVwByAGkAdABlAC0ASABvAHMAdAAgACgAIgAgACAAIAAgAEQAZQBwAG8AaQBzADoAIAB7ADAAfQAgAE0AQgAgAGwAaQB2AHIAZQBzACAAIAAoAGQAZQBsAHQAYQAgAHsAMQB9ACAATQBCACkAIgAgAC0AZgAgACQAeAAsACAAKAAkAHgAIAAtACAAJABiACkAKQA=
+echo(
+echo TEMP deixa de ser apagado aqui (isso demorava e nao libertava RAM).
+echo Para ficheiros usa o menu 12 Limpeza.
 call :pause_back
 goto menu_main
 
@@ -1331,6 +1340,44 @@ reg add "HKLM\SOFTWARE\Policies\Microsoft\Dsh" /v AllowNewsAndInterests /t REG_D
 call :ok "Dicas / widgets off"
 goto :eof
 
+:_svc_off
+echo(%~1| findstr /I /X /C:"WinDefend" /C:"Sense" /C:"WdNisSvc" /C:"SecurityHealthService" /C:"wscsvc" /C:"mpssvc" /C:"MpsSvc" /C:"BFE" /C:"wuauserv" /C:"bits" /C:"UsoSvc" /C:"DoSvc" /C:"WaaSMedicSvc" /C:"Dhcp" /C:"Dnscache" /C:"NlaSvc" /C:"netprofm" /C:"nsi" /C:"Winmgmt" /C:"RpcSs" /C:"DcomLaunch" /C:"LSM" /C:"EventLog" /C:"Schedule" /C:"Audiosrv" /C:"AudioEndpointBuilder" /C:"PlugPlay" /C:"Power" /C:"ProfSvc" /C:"UserManager" /C:"SamSs" /C:"CryptSvc" /C:"gpsvc" /C:"WlanSvc" /C:"WinHttpAutoProxySvc" /C:"TrustedInstaller" /C:"MsMpEng" /C:"NisSrv" >nul 2>&1
+if not errorlevel 1 (
+    echo     [SKIP] %~1
+    goto :eof
+)
+reg query "HKLM\SYSTEM\CurrentControlSet\Services\%~1" >nul 2>&1
+if errorlevel 1 (
+    echo     [SKIP] %~1
+    goto :eof
+)
+sc stop "%~1" >nul 2>&1
+reg add "HKLM\SYSTEM\CurrentControlSet\Services\%~1" /v Start /t REG_DWORD /d 4 /f >nul
+sc config "%~1" start= disabled >nul 2>&1
+call :ok "%~1"
+goto :eof
+
+:_svc_put
+reg query "HKLM\SYSTEM\CurrentControlSet\Services\%~1" >nul 2>&1 || goto :eof
+reg add "HKLM\SYSTEM\CurrentControlSet\Services\%~1" /v Start /t REG_DWORD /d %~2 /f >nul
+sc config "%~1" start= %~3 >nul 2>&1
+call :ok "%~1"
+goto :eof
+
+:_svc_restore_all
+call :_svc_put SysMain 2 auto
+call :_svc_put WSearch 2 delayed-auto
+call :_svc_put Spooler 2 auto
+call :_svc_put FontCache 2 auto
+call :_svc_put DPS 2 auto
+call :_svc_put CDPSvc 2 auto
+call :_svc_put WpnService 2 auto
+call :_svc_put DiagTrack 2 auto
+for %%S in (Fax RemoteRegistry RetailDemo WMPNetworkSvc diagnosticshub.standardcollector.service MapsBroker CscService wisvc AJRouter shpamsvc PhoneSvc WalletService lfsvc SensorService SensorDataService SensrSvc SCardSvr SCPolicySvc TapiSrv WpcMonSvc WorkFolders fhsvc SEMgrSvc WerSvc PcaSvc dmwappushservice XblGameSave XboxNetApiSvc XboxGipSvc AssignedAccessManagerSvc spectrum SharedRealitySvc DusmSvc TrkWks stisvc WbioSrvc TabletInputService PrintNotify W32Time) do (
+    call :_svc_put %%S 3 demand
+)
+goto :eof
+
 :_clean_temp
 del /q /f /s "%TEMP%\*" >nul 2>&1
 del /q /f /s "%LOCALAPPDATA%\Temp\*" >nul 2>&1
@@ -1400,14 +1447,7 @@ powercfg -setactive 381b4222-2468-4e61-94e6-e41df20cf209 >nul 2>&1
 bcdedit /set hypervisorlaunchtype auto >nul 2>&1
 sc config SysMain start= auto >nul 2>&1
 sc start SysMain >nul 2>&1
-sc config WSearch start= delayed-auto >nul 2>&1
-sc config DiagTrack start= auto >nul 2>&1
-sc config dmwappushservice start= demand >nul 2>&1
-sc config W32Time start= demand >nul 2>&1
-sc config MapsBroker start= demand >nul 2>&1
-for %%S in (Fax RemoteRegistry RetailDemo WMPNetworkSvc diagnosticshub.standardcollector.service MapsBroker CscService wisvc XblGameSave XboxNetApiSvc XboxGipSvc) do (
-    sc config %%S start= demand >nul 2>&1
-)
+call :_svc_restore_all
 sc config NvTelemetryContainer start= demand >nul 2>&1
 sc config "AMD Crash Defender Service" start= demand >nul 2>&1
 sc config "AMD External Events Utility" start= auto >nul 2>&1
