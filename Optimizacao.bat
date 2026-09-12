@@ -6,7 +6,7 @@ setlocal EnableExtensions EnableDelayedExpansion
 
 title Nox Otimizacao
 color 0E
-mode con cols=110 lines=40 >nul 2>&1
+mode con cols=120 lines=48 >nul 2>&1
 chcp 65001 >nul
 echo off
 
@@ -30,12 +30,151 @@ goto menu_main
 :hdr
 cls
 echo(
-echo %C%        ========================================================%N%
-echo %C%              N O X     O T I M I Z A C A O     2026%N%
-echo %C%        ========================================================%N%
-echo %W%                      %~1%N%
+call :art_%~1
+echo %C%        %~2%N%
 echo(
 goto :eof
+
+:art_nox
+echo(%C%      ___           ___           ___%N%
+echo(%C%     /__/\         /  /\         /__/^|%N%
+echo(%C%     \  \:\       /  /::\       ^|  ^|:^|%N%
+echo(%C%      \  \:\     /  /:/\:\      ^|  ^|:^|%N%
+echo(%C%  _____\__\:\   /  /:/  \:\   __^|__^|:^|%N%
+echo(%C% /__/::::::::\ /__/:/ \__\:\ /__/::::\____%N%
+echo(%C% \  \:\~~\~~\/ \  \:\ /  /:/    ~\~~\::::/%N%
+echo(%C%  \  \:\  ~~~   \  \:\  /:/      ^|~~^|:^|~~%N%
+echo(%C%   \  \:\        \  \:\/:/       ^|  ^|:^|%N%
+echo(%C%    \  \:\        \  \::/        ^|  ^|:^|%N%
+echo(%C%     \__\/         \__\/         ^|__^|/%N%
+goto :eof
+
+:art_win
+echo(%C%      ___                       ___          _____          ___           ___           ___%N%
+echo(%C%     /__/\        ___          /__/\        /  /::\        /  /\         /__/\         /  /\ %N%
+echo(%C%    _\_ \:\      /  /\         \  \:\      /  /:/\:\      /  /::\       _\_ \:\       /  /:/_%N%
+echo(%C%   /__/\ \:\    /  /:/          \  \:\    /  /:/  \:\    /  /:/\:\     /__/\ \:\     /  /:/ /\ %N%
+echo(%C%  _\_ \:\ \:\  /__/::\      _____\__\:\  /__/:/ \__\:^|  /  /:/  \:\   _\_ \:\ \:\   /  /:/ /::\ %N%
+echo(%C% /__/\ \:\ \:\ \__\/\:\__  /__/::::::::\ \  \:\ /  /:/ /__/:/ \__\:\ /__/\ \:\ \:\ /__/:/ /:/\:\ %N%
+echo(%C% \  \:\ \:\/:/    \  \:\/\ \  \:\~~\~~\/  \  \:\  /:/  \  \:\ /  /:/ \  \:\ \:\/:/ \  \:\/:/~/:/%N%
+echo(%C%  \  \:\ \::/      \__\::/  \  \:\  ~~~    \  \:\/:/    \  \:\  /:/   \  \:\ \::/   \  \::/ /:/%N%
+echo(%C%   \  \:\/:/       /__/:/    \  \:\         \  \::/      \  \:\/:/     \  \:\/:/     \__\/ /:/%N%
+echo(%C%    \  \::/        \__\/      \  \:\         \__\/        \  \::/       \  \::/        /__/:/%N%
+echo(%C%     \__\/                     \__\/                       \__\/         \__\/         \__\/%N%
+goto :eof
+
+:art_games
+echo(%C%    ___          ___           ___           ___           ___%N%
+echo(%C%   /  /\        /  /\         /  /\         /  /\         /  /\ %N%
+echo(%C%  /  /:/       /  /::\       /  /:/_       /  /::\       /  /:/_%N%
+echo(%C% /__/::\      /  /:/\:\     /  /:/ /\     /  /:/\:\     /  /:/ /\ %N%
+echo(%C% \__\/\:\    /  /:/  \:\   /  /:/_/::\   /  /:/  \:\   /  /:/ /::\ %N%
+echo(%C%    \  \:\  /__/:/ \__\:\ /__/:/__\/\:\ /__/:/ \__\:\ /__/:/ /:/\:\ %N%
+echo(%C%     \__\:\ \  \:\ /  /:/ \  \:\ /~~/:/ \  \:\ /  /:/ \  \:\/:/~/:/%N%
+echo(%C%     /  /:/  \  \:\  /:/   \  \:\  /:/   \  \:\  /:/   \  \::/ /:/%N%
+echo(%C%    /__/:/    \  \:\/:/     \  \:\/:/     \  \:\/:/     \__\/ /:/%N%
+echo(%C%    \__\/      \  \::/       \  \::/       \  \::/        /__/:/%N%
+echo(%C%                \__\/         \__\/         \__\/         \__\/%N%
+goto :eof
+
+:art_hw
+echo(%C%      ___           ___           ___          _____          ___           ___           ___           ___%N%
+echo(%C%     /__/\         /  /\         /  /\        /  /::\        /__/\         /  /\         /  /\         /  /\ %N%
+echo(%C%     \  \:\       /  /::\       /  /::\      /  /:/\:\      _\_ \:\       /  /::\       /  /::\       /  /:/_%N%
+echo(%C%      \__\:\     /  /:/\:\     /  /:/\:\    /  /:/  \:\    /__/\ \:\     /  /:/\:\     /  /:/\:\     /  /:/ /\ %N%
+echo(%C%  ___ /  /::\   /  /:/~/::\   /  /:/~/:/   /__/:/ \__\:^|  _\_ \:\ \:\   /  /:/~/::\   /  /:/~/:/    /  /:/ /:/_%N%
+echo(%C% /__/\  /:/\:\ /__/:/ /:/\:\ /__/:/ /:/___ \  \:\ /  /:/ /__/\ \:\ \:\ /__/:/ /:/\:\ /__/:/ /:/___ /__/:/ /:/ /\ %N%
+echo(%C% \  \:\/:/__\/ \  \:\/:/__\/ \  \:\/:::::/  \  \:\  /:/  \  \:\ \:\/:/ \  \:\/:/__\/ \  \:\/:::::/ \  \:\/:/ /:/%N%
+echo(%C%  \  \::/       \  \::/       \  \::/~~~~    \  \:\/:/    \  \:\ \::/   \  \::/       \  \::/~~~~   \  \::/ /:/%N%
+echo(%C%   \  \:\        \  \:\        \  \:\         \  \::/      \  \:\/:/     \  \:\        \  \:\        \  \:\/:/%N%
+echo(%C%    \  \:\        \  \:\        \  \:\         \__\/        \  \::/       \  \:\        \  \:\        \  \::/%N%
+echo(%C%     \__\/         \__\/         \__\/                       \__\/         \__\/         \__\/         \__\/%N%
+goto :eof
+
+:art_ping
+echo(%C%      ___                     ___           ___%N%
+echo(%C%     /  /\      ___          /__/\         /  /\ %N%
+echo(%C%    /  /::\    /  /\         \  \:\       /  /:/_%N%
+echo(%C%   /  /:/\:\  /  /:/          \  \:\     /  /:/ /\ %N%
+echo(%C%  /  /:/~/:/ /__/::\      _____\__\:\   /  /:/_/::\ %N%
+echo(%C% /__/:/ /:/  \__\/\:\__  /__/::::::::\ /__/:/__\/\:\ %N%
+echo(%C% \  \:\/:/      \  \:\/\ \  \:\~~\~~\/ \  \:\ /~~/:/%N%
+echo(%C%  \  \::/        \__\::/  \  \:\  ~~~   \  \:\  /:/%N%
+echo(%C%   \  \:\        /__/:/    \  \:\        \  \:\/:/%N%
+echo(%C%    \  \:\       \__\/      \  \:\        \  \::/%N%
+echo(%C%     \__\/                   \__\/         \__\/%N%
+goto :eof
+
+:art_amd
+echo(%C%      ___           ___          _____%N%
+echo(%C%     /  /\         /__/\        /  /::\ %N%
+echo(%C%    /  /::\       ^|  ^|::\      /  /:/\:\ %N%
+echo(%C%   /  /:/\:\      ^|  ^|:^|:\    /  /:/  \:\ %N%
+echo(%C%  /  /:/~/::\   __^|__^|:^|\:\  /__/:/ \__\:^|%N%
+echo(%C% /__/:/ /:/\:\ /__/::::^| \:\ \  \:\ /  /:/%N%
+echo(%C% \  \:\/:/__\/ \  \:\~~\__\/  \  \:\  /:/%N%
+echo(%C%  \  \::/       \  \:\         \  \:\/:/%N%
+echo(%C%   \  \:\        \  \:\         \  \::/%N%
+echo(%C%    \  \:\        \  \:\         \__\/%N%
+echo(%C%     \__\/         \__\/%N%
+goto :eof
+
+:art_fix
+echo(%C%      ___                     ___%N%
+echo(%C%     /  /\      ___          /__/^|%N%
+echo(%C%    /  /:/_    /  /\        ^|  ^|:^|%N%
+echo(%C%   /  /:/ /\  /  /:/        ^|  ^|:^|%N%
+echo(%C%  /  /:/ /:/ /__/::\      __^|__^|:^|%N%
+echo(%C% /__/:/ /:/  \__\/\:\__  /__/::::\____%N%
+echo(%C% \  \:\/:/      \  \:\/\    ~\~~\::::/%N%
+echo(%C%  \  \::/        \__\::/     ^|~~^|:^|~~%N%
+echo(%C%   \  \:\        /__/:/      ^|  ^|:^|%N%
+echo(%C%    \  \:\       \__\/       ^|  ^|:^|%N%
+echo(%C%     \__\/                   ^|__^|/%N%
+goto :eof
+
+:art_deb
+echo(%C%     _____          ___                                       ___           ___%N%
+echo(%C%    /  /::\        /  /\         _____                       /  /\         /  /\          ___%N%
+echo(%C%   /  /:/\:\      /  /:/_       /  /::\                     /  /::\       /  /::\        /  /\ %N%
+echo(%C%  /  /:/  \:\    /  /:/ /\     /  /:/\:\    ___     ___    /  /:/\:\     /  /:/\:\      /  /:/%N%
+echo(%C% /__/:/ \__\:^|  /  /:/ /:/_   /  /:/~/::\  /__/\   /  /\  /  /:/  \:\   /  /:/~/::\    /  /:/%N%
+echo(%C% \  \:\ /  /:/ /__/:/ /:/ /\ /__/:/ /:/\:^| \  \:\ /  /:/ /__/:/ \__\:\ /__/:/ /:/\:\  /  /::\ %N%
+echo(%C%  \  \:\  /:/  \  \:\/:/ /:/ \  \:\/:/~/:/  \  \:\  /:/  \  \:\ /  /:/ \  \:\/:/__\/ /__/:/\:\ %N%
+echo(%C%   \  \:\/:/    \  \::/ /:/   \  \::/ /:/    \  \:\/:/    \  \:\  /:/   \  \::/      \__\/  \:\ %N%
+echo(%C%    \  \::/      \  \:\/:/     \  \:\/:/      \  \::/      \  \:\/:/     \  \:\           \  \:\ %N%
+echo(%C%     \__\/        \  \::/       \  \::/        \__\/        \  \::/       \  \:\           \__\/%N%
+echo(%C%                   \__\/         \__\/                       \__\/         \__\/%N%
+goto :eof
+
+:art_xbox
+echo(%C%      ___                         ___           ___%N%
+echo(%C%     /__/^|         _____         /  /\         /__/^|%N%
+echo(%C%    ^|  ^|:^|        /  /::\       /  /::\       ^|  ^|:^|%N%
+echo(%C%    ^|  ^|:^|       /  /:/\:\     /  /:/\:\      ^|  ^|:^|%N%
+echo(%C%  __^|__^|:^|      /  /:/~/::\   /  /:/  \:\   __^|__^|:^|%N%
+echo(%C% /__/::::\____ /__/:/ /:/\:^| /__/:/ \__\:\ /__/::::\____%N%
+echo(%C%    ~\~~\::::/ \  \:\/:/~/:/ \  \:\ /  /:/    ~\~~\::::/%N%
+echo(%C%     ^|~~^|:^|~~   \  \::/ /:/   \  \:\  /:/      ^|~~^|:^|~~%N%
+echo(%C%     ^|  ^|:^|      \  \:\/:/     \  \:\/:/       ^|  ^|:^|%N%
+echo(%C%     ^|  ^|:^|       \  \::/       \  \::/        ^|  ^|:^|%N%
+echo(%C%     ^|__^|/         \__\/         \__\/         ^|__^|/%N%
+goto :eof
+
+:art_svc
+echo(%C%      ___           ___           ___                                    ___           ___           ___%N%
+echo(%C%     /  /\         /  /\         /  /\          ___        ___          /  /\         /  /\         /  /\ %N%
+echo(%C%    /  /:/_       /  /:/_       /  /::\        /__/\      /  /\        /  /:/        /  /::\       /  /:/_%N%
+echo(%C%   /  /:/ /\     /  /:/ /\     /  /:/\:\       \  \:\    /  /:/       /  /:/        /  /:/\:\     /  /:/ /\ %N%
+echo(%C%  /  /:/ /::\   /  /:/ /:/_   /  /:/~/:/        \  \:\  /__/::\      /  /:/  ___   /  /:/  \:\   /  /:/ /::\ %N%
+echo(%C% /__/:/ /:/\:\ /__/:/ /:/ /\ /__/:/ /:/___  ___  \__\:\ \__\/\:\__  /__/:/  /  /\ /__/:/ \__\:\ /__/:/ /:/\:\ %N%
+echo(%C% \  \:\/:/~/:/ \  \:\/:/ /:/ \  \:\/:::::/ /__/\ ^|  ^|:^|    \  \:\/\ \  \:\ /  /:/ \  \:\ /  /:/ \  \:\/:/~/:/%N%
+echo(%C%  \  \::/ /:/   \  \::/ /:/   \  \::/~~~~  \  \:\^|  ^|:^|     \__\::/  \  \:\  /:/   \  \:\  /:/   \  \::/ /:/%N%
+echo(%C%   \__\/ /:/     \  \:\/:/     \  \:\       \  \:\__^|:^|     /__/:/    \  \:\/:/     \  \:\/:/     \__\/ /:/%N%
+echo(%C%     /__/:/       \  \::/       \  \:\       \__\::::/      \__\/      \  \::/       \  \::/        /__/:/%N%
+echo(%C%     \__\/         \__\/         \__\/           ~~~~                   \__\/         \__\/         \__\/%N%
+goto :eof
+
 
 :ok
 echo     [OK] %~1
@@ -59,7 +198,7 @@ goto :eof
 
 
 :menu_main
-call :hdr "Selecione o numero da opcao que deseja executar:"
+call :hdr nox "Selecione o numero da opcao que deseja executar:"
 echo   %C%[ 1 ]%N% Criar Ponto de Restauracao               %C%[ 2 ]%N% Otimizar Windows                        
 echo   %C%[ 3 ]%N% Otimizacao de Jogos                      %C%[ 4 ]%N% Otimizacao de Perifericos               
 echo   %C%[ 5 ]%N% Config. inicializacao do Windows         %C%[ 6 ]%N% Liberar Memoria Ram                     
@@ -85,7 +224,7 @@ goto menu_main
 
 
 :menu_win
-call :hdr "Escolha a opcao que voce quer otimizar:"
+call :hdr win "Escolha a opcao que voce quer otimizar:"
 echo   %C%[ 1 ]%N% Otimizar Energia                         %C%[ 2 ]%N% Desat. Efeitos Visuais                  
 echo   %C%[ 3 ]%N% Tweaks de Privacidade                    %C%[ 4 ]%N% Desat. tarefas e servicos de Telemetria 
 echo   %C%[ 5 ]%N% Desative TOTALMENTE a XBOX               %C%[ 6 ]%N% Desativar Relatorios de Erro            
@@ -150,9 +289,7 @@ goto menu_win
 
 
 :menu_hw
-call :hdr "HARDWARE"
-echo %C%        Escolha a opcao que voce quer otimizar:%N%
-echo(
+call :hdr hw "Escolha a opcao que voce quer otimizar:"
 echo   %C%[ 1 ]%N% Otimizar HDD                             %C%[ 2 ]%N% Otimizar SSD                            
 echo   %C%[ 3 ]%N% Verificar Temperatura                    %C%[ 4 ]%N% Otimizar Teclado                        
 echo   %C%[ 5 ]%N% Otimizar Mouse                           %C%[ 6 ]%N% Reverter Otimizacao                     
@@ -227,9 +364,7 @@ goto menu_hw
 
 
 :menu_ping
-call :hdr "PING"
-echo %W%        Selecione o numero da opcao que deseja executar:%N%
-echo(
+call :hdr ping "Selecione o numero da opcao que deseja executar:"
 echo   %C%[ 1 ]%N% Desativar Economia de Energia da Rede    %C%[ 2 ]%N% Otimizar TCP (Latencia)                 
 echo   %C%[ 3 ]%N% Remover limitacao de Rede                %C%[ 4 ]%N% Limpar cache de DNS                     
 echo   %C%[ 5 ]%N% Escolher o Melhor DNS                    %C%[ 6 ]%N% Voltar ao Menu Principal                
@@ -298,9 +433,7 @@ goto menu_ping
 
 
 :menu_amd
-call :hdr "AMD"
-echo %C%        Escolha a opcao que voce quer otimizar:%N%
-echo(
+call :hdr amd "Escolha a opcao que voce quer otimizar:"
 echo   %C%[ 1 ]%N% Desativar MPO                            %C%[ 2 ]%N% Desativar AMD Crash Defender            
 echo   %C%[ 3 ]%N% Desat. GPU Scheduling                    %C%[ 4 ]%N% Desativar AMD Overlay e Telemetria      
 echo   %C%[ 5 ]%N% Instalar o Driver AMD                    %C%[ 6 ]%N% Voltar Ao Menu Principal                
@@ -360,9 +493,7 @@ goto menu_amd
 
 
 :menu_fix
-call :hdr "FIX"
-echo %C%        Escolha a opcao que voce quer otimizar:%N%
-echo(
+call :hdr fix "Escolha a opcao que voce quer otimizar:"
 echo   %C%[ 1 ]%N% Fix Loja do windows nao baixa nada       %C%[ 2 ]%N% Fix Anticheat Bloqueando Jogo           
 echo   %C%[ 3 ]%N% Fix Pc nao desliga (Fica so encerrando)  %C%[ 4 ]%N% Fix Tela preta apos boot                
 echo   %C%[ 5 ]%N% Fix Notebook nao sai do modo aviao       %C%[ 6 ]%N% Fix Bluetooth Parou                     
@@ -522,9 +653,7 @@ goto menu_fix
 
 
 :menu_deb
-call :hdr "DEBLOATER"
-echo %W%        Escolha qual Bloatware Remover:%N%
-echo(
+call :hdr deb "Escolha qual Bloatware Remover:"
 echo   %C%[ 1 ]%N% Usar todos (CUIDADO)                     %C%[ 2 ]%N% Remover officehub                       
 echo   %C%[ 3 ]%N% Remover Cortana                          %C%[ 4 ]%N% Remover Copilot                         
 echo   %C%[ 5 ]%N% Remover Loja do Windows                  %C%[ 6 ]%N% Remover a Xbox                          
@@ -633,11 +762,7 @@ goto menu_deb
 
 
 :menu_xbox
-call :hdr "XBOX"
-echo   ========================================
-echo        MENU DE OTIMIZACAO DO PC
-echo   ========================================
-echo(
+call :hdr xbox "MENU DE OTIMIZACAO DO PC"
 echo   [1] Iniciar Otimizacao (Remover Xbox)
 echo   [2] Reverter Otimizacao (Restaurar Xbox)
 echo   [3] Voltar ao Menu Principal
@@ -677,11 +802,7 @@ goto menu_xbox
 
 
 :menu_svc
-call :hdr "SERVICOS"
-echo   ========================================
-echo        OTIMIZADOR DE SERVICOS WINDOWS
-echo   ========================================
-echo(
+call :hdr svc "OTIMIZADOR DE SERVICOS WINDOWS"
 echo   [1] Desativar Servicos
 echo   [2] Reverter Otimizacao
 echo   [3] Voltar ao Menu Principal
@@ -716,9 +837,7 @@ goto menu_svc
 
 
 :menu_games
-call :hdr "JOGOS"
-echo %W%        Escolha o jogo que voce quer priorizar:%N%
-echo(
+call :hdr games "Escolha o jogo que voce quer priorizar:"
 echo   %C%[ 1 ]%N% Fortnite                                 %C%[ 2 ]%N% Gta V                                   
 echo   %C%[ 3 ]%N% FiveM                                    %C%[ 4 ]%N% CS2                                     
 echo   %C%[ 5 ]%N% Minecraft                                %C%[ 6 ]%N% Valorant                                
