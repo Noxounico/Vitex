@@ -1,0 +1,15 @@
+# Dependencies
+node_modules/
+
+# Secrets
+.env
+.env.local
+.env.*.local
+
+# Runtime / logs
+*.log
+npm-debug.log*
+.DS_Store
+
+# Spotify auth temp
+.spotify-tokens.json
