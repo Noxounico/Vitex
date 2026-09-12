@@ -1047,12 +1047,7 @@ cls
 echo Reduzir processos ativos e CPU de fundo
 echo NAO fecha Cursor, Discord, browsers nem jogos.
 echo Defender / Update / firewall / rede / audio ficam ligados.
-echo(
-set "ans="
-set /p ans=Escreve S para criar ponto de restauro e continuar: 
-if /I not "%ans%"=="S" goto menu_main
-echo(
-call :_restore_silent
+echo Ponto de restauro: so na opcao 1 do menu principal, se quiseres.
 echo(
 echo --- Antes ---
 call :_cpu_snap
@@ -1087,12 +1082,8 @@ echo Remover aplicativos em 2 plano
 echo Apps da Loja / UWP deixam de correr em segundo plano.
 echo NAO fecha Cursor, Discord, browsers nem jogos.
 echo Defender / Update / firewall / rede / audio ficam ligados.
+echo Ponto de restauro: so na opcao 1 do menu principal, se quiseres.
 echo(
-set "ans="
-set /p ans=Escreve S para criar ponto de restauro e continuar: 
-if /I not "%ans%"=="S" goto menu_main
-echo(
-call :_restore_silent
 call :_bg_apps_off
 echo(
 echo O que mudou:
@@ -1404,10 +1395,6 @@ reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" 
 reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v TaskbarDa /t REG_DWORD /d 0 /f >nul
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Dsh" /v AllowNewsAndInterests /t REG_DWORD /d 0 /f >nul
 call :ok "Dicas / widgets off"
-goto :eof
-
-:_restore_silent
-powershell -NoProfile -ExecutionPolicy Bypass -Command "try { Checkpoint-Computer -Description 'Nox Otimizacao' -RestorePointType MODIFY_SETTINGS; Write-Host '    [OK] Ponto de restauro' } catch { Write-Host '    [AVISO] Ponto de restauro falhou' }"
 goto :eof
 
 :_bg_apps_off
