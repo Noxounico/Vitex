@@ -228,7 +228,10 @@ async function gerarImagemPainel({ imagemUrl, titulo, bullets, entrega, precoTex
 // comando /loja, que reenvia o ficheiro para o Discord de cada vez.
 const LOJA_BANNER_URL_PADRAO =
   process.env.LOJA_BANNER_URL ||
-  'https://media.discordapp.net/attachments/1545383446208315422/1545780646473891962/banner-loja.jpg?ex=6aa3fb69&is=6aa2a9e9&hm=f77d4ddcfd49941ea186279776ed50c55ae6aa81d83dc49780ab3ed45926712e&=&format=webp';
+  'https://media.discordapp.net/attachments/1534183602764648579/1548294918164844564/image.png?ex=6aa68982&is=6aa53802&hm=4829bc3f18bfae690c3d977ef4451e3ff45d35b174a6576c32e465bd044c6462&=&format=webp&quality=lossless&width=1521&height=856';
+const ROCKSTAR_BANNER_URL_PADRAO =
+  process.env.ROCKSTAR_BANNER_URL ||
+  'https://media.discordapp.net/attachments/1534183602764648579/1548294136258363402/image.png?ex=6aa688c7&is=6aa53747&hm=6cb393edf3a8c2ec085e18a56458dcecb016aa7aa45d5fcba820f36d5b1aec58&=&format=webp&quality=lossless';
 const IMPULSOS_BANNER_URL_PADRAO =
   process.env.IMPULSOS_BANNER_URL ||
   'https://media.discordapp.net/attachments/1545383446208315422/1548284773825253436/content.png?ex=6aa6800f&is=6aa52e8f&hm=3377ae5e84218e84f07e8a08cae9313bdf37e9936b8793032dc9a3675b1a2457&=&format=webp&quality=lossless&width=550&height=310';
@@ -1033,12 +1036,16 @@ const PAINEL_TEXTOS = {
     'ALL FULL ACCESS.',
     'Melhor qualidade.',
   ]),
-  rockstar: textoPainel('ROCKSTAR ACC\'S', [
-    'Recebe uma conta Full Acesso.',
-    'ALL FULL ACCESS.',
-    'Melhor qualidade.',
-    'Entrega automática no privado.',
-  ]),
+  rockstar: textoPainel(
+    'ROCKSTAR ACC\'S',
+    [
+      'Recebe uma conta Full Acesso.',
+      'ALL FULL ACCESS.',
+      'Melhor qualidade.',
+      'Entrega automática no privado.',
+    ],
+    { imagem: ROCKSTAR_BANNER_URL_PADRAO }
+  ),
   bots: textoPainel(
     '🤖 BOTS DISCORD',
     [
