@@ -374,7 +374,8 @@ const PRODUTOS_SEED = [
   { nome: '1 Impulso', preco: eur(1), categoria: 'Impulsos' },
   { nome: '2 Impulsos', preco: eur(2), categoria: 'Impulsos' },
   { nome: '7 Impulsos', preco: eur(7), categoria: 'Impulsos' },
-  { nome: '14 Impulsos', preco: eur(14), categoria: 'Impulsos' },
+  { nome: '14 Impulsos', preco: eur(12), categoria: 'Impulsos' },
+  { nome: '24 Impulsos', preco: eur(20), categoria: 'Impulsos' },
 
   // --- Canal de nitradas ---
   { nome: 'Nitrada Mensal', preco: eur(5), categoria: 'Nitradas' },
@@ -2753,7 +2754,6 @@ function embedBemvindo(member, convite) {
         `Fica à vontade, e se precisares de ajuda abre um ticket.`
     )
     .setThumbnail(avatar)
-    .setImage(avatar)
     .addFields(fields)
     .setFooter({ text: member.user.username, iconURL: avatar })
     .setTimestamp();

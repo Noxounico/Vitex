@@ -35,7 +35,8 @@ const CATALOG = [
       { name: '1 Impulso', priceCents: cents(1) },
       { name: '2 Impulsos', priceCents: cents(2) },
       { name: '7 Impulsos', priceCents: cents(7) },
-      { name: '14 Impulsos', priceCents: cents(14) },
+      { name: '14 Impulsos', priceCents: cents(12) },
+      { name: '24 Impulsos', priceCents: cents(20) },
     ],
   },
   {
