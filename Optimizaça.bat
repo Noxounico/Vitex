@@ -1,11 +1,11 @@
 @echo off
 echo off
 setlocal EnableExtensions EnableDelayedExpansion
-:: Nox Otimizacao — SEM BOM. @echo off TEM de ser o primeiro comando ASCII.
+:: VENIX Otimizacao — SEM BOM. @echo off TEM de ser o primeiro comando ASCII.
 :: Defender / SmartScreen / Anti-Malware: so nas opcoes 16 e 27, com S.
 :: Nao desativa UAC, Windows Update, Firewall nem a rede.
 
-title Nox Otimizacao
+title VENIX Otimizacao
 color 0E
 mode con cols=140 lines=48 >nul 2>&1
 chcp 65001 >nul
@@ -35,12 +35,12 @@ call :art_%~1
 echo(
 goto :eof
 
-:art_nox
-echo(%C%                                        _   _  _____  __%N%
-echo(%C%                                       ^| \ ^| ^|/ _ \ \/ /%N%
-echo(%C%                                       ^|  \^| ^| ^| ^| \  /%N%
-echo(%C%                                       ^| ^|\  ^| ^|_^| /  \ %N%
-echo(%C%                                       ^|_^| \_^|\___/_/\_\ %N%
+:art_venix
+echo(%C%                                   __     _______ _   _ _____  __%N%
+echo(%C%                                   \ \   / / ____^| \ ^| ^|_ _\ \/ /%N%
+echo(%C%                                    \ \ / /^|  _^| ^|  \^| ^|^| ^| \  / %N%
+echo(%C%                                     \ V / ^| ^|___^| ^|\  ^|^| ^| /  \ %N%
+echo(%C%                                     \_/  ^|_____^|_^| \_|___/_/\_\ %N%
 echo(
 echo(%C%                     ___ _____ ___ __  __ ___ _____   _    ____    _    ___%N%
 echo(%C%                    / _ \_   _^|_ _^|  \/  ^|_ _^|__  /  / \  / ___^|  / \  / _ \ %N%
@@ -151,7 +151,7 @@ cls
 echo(
 echo %R%  [RECUSADO] %~1%N%
 echo(
-echo   A Nox Otimizacao NAO desativa UAC, Windows Update,
+echo   A VENIX Otimizacao NAO desativa UAC, Windows Update,
 echo   Firewall nem a rede. Nenhuma alteracao foi feita.
 call :pause_back
 goto :eof
@@ -173,7 +173,7 @@ exit /b 0
 
 
 :menu_main
-call :hdr nox
+call :hdr venix
 echo(%C%                        Selecione o numero da opcao que deseja executar:%N%
 echo(
 echo          %C%[  1 ]%N% Criar Ponto de Restauracao                             %C%[  2 ]%N% Otimizar Windows
@@ -750,7 +750,7 @@ goto menu_deb
 :db_undo
 cls
 echo Reverter Debloaters: instala outra vez a partir da Microsoft Store.
-echo Ou usa o ponto de restauracao Nox Otimizacao.
+echo Ou usa o ponto de restauracao VENIX Otimizacao.
 start ms-windows-store:
 call :pause_back
 goto menu_deb
@@ -890,7 +890,7 @@ goto menu_games
 :do_restore
 cls
 echo A criar ponto de restauracao...
-powershell -NoProfile -ExecutionPolicy Bypass -Command "try { Checkpoint-Computer -Description 'Nox Otimizacao' -RestorePointType MODIFY_SETTINGS; Write-Host '[OK] Ponto criado.' } catch { Write-Host '[AVISO] Nao foi possivel criar o ponto.'; Write-Host $_.Exception.Message }"
+powershell -NoProfile -ExecutionPolicy Bypass -Command "try { Checkpoint-Computer -Description 'VENIX Otimizacao' -RestorePointType MODIFY_SETTINGS; Write-Host '[OK] Ponto criado.' } catch { Write-Host '[AVISO] Nao foi possivel criar o ponto.'; Write-Host $_.Exception.Message }"
 call :pause_back
 goto menu_main
 
@@ -908,7 +908,7 @@ call :hdr start
 echo(%C%                        Selecione o numero da opcao que deseja executar:%N%
 echo(
 echo          %C%[  1 ]%N% Remover atraso de arranque                             %C%[  2 ]%N% Listar programas na inicializacao
-echo          %C%[  3 ]%N% Desativar um item da inicializacao                     %C%[  4 ]%N% Reativar itens desligados pelo Nox
+echo          %C%[  3 ]%N% Desativar um item da inicializacao                     %C%[  4 ]%N% Reativar itens desligados pelo VENIX
 echo          %C%[  5 ]%N% Voltar ao Menu Principal
 echo(
 set "op="
@@ -941,17 +941,17 @@ goto menu_start
 cls
 echo Desativar um item de HKCU Run ou da pasta Startup.
 echo Escreve o nome exacto (ex: OneDrive). Nao mexe em Defender.
-set "NOX_ITEM="
-set /p NOX_ITEM=Nome do item: 
-if not defined NOX_ITEM goto menu_start
-powershell -NoProfile -ExecutionPolicy Bypass -Command "$n=$env:NOX_ITEM.Trim(); if ($n -notmatch '^[A-Za-z0-9 ._\-()]+$') { Write-Host '[ERRO] Nome invalido.'; exit 0 }; if ($n -match 'SecurityHealth|Defender|MsMpEng|NisSrv|smartscreen') { Write-Host '[RECUSADO] Item de seguranca.'; exit 0 }; $rk='HKCU:\Software\Microsoft\Windows\CurrentVersion\Run'; $bk='HKCU:\Software\NoxOtimizacao\StartupBackup'; $done=$false; if (Test-Path $rk) { $p=Get-ItemProperty $rk -EA SilentlyContinue; if ($p.PSObject.Properties.Name -contains $n) { New-Item $bk -Force | Out-Null; New-ItemProperty $bk -Name $n -Value $p.$n -PropertyType String -Force | Out-Null; Remove-ItemProperty $rk -Name $n -Force; Write-Host ('    [OK] HKCU Run: '+$n); $done=$true } }; $sf=Join-Path $env:APPDATA 'Microsoft\Windows\Start Menu\Programs\Startup'; $hold=Join-Path $env:LOCALAPPDATA 'NoxOtimizacao\startup-disabled'; Get-ChildItem $sf -EA SilentlyContinue | Where-Object { $_.BaseName -eq $n -or $_.Name -eq $n } | ForEach-Object { New-Item $hold -ItemType Directory -Force | Out-Null; Move-Item $_.FullName (Join-Path $hold $_.Name) -Force; Write-Host ('    [OK] atalho: '+$_.Name); $done=$true }; if (-not $done) { Write-Host '[AVISO] Nao encontrei esse item em HKCU Run nem na pasta Startup.' }"
+set "VENIX_ITEM="
+set /p VENIX_ITEM=Nome do item: 
+if not defined VENIX_ITEM goto menu_start
+powershell -NoProfile -ExecutionPolicy Bypass -Command "$n=$env:VENIX_ITEM.Trim(); if ($n -notmatch '^[A-Za-z0-9 ._\-()]+$') { Write-Host '[ERRO] Nome invalido.'; exit 0 }; if ($n -match 'SecurityHealth|Defender|MsMpEng|NisSrv|smartscreen') { Write-Host '[RECUSADO] Item de seguranca.'; exit 0 }; $rk='HKCU:\Software\Microsoft\Windows\CurrentVersion\Run'; $bk='HKCU:\Software\VenixOtimizacao\StartupBackup'; $done=$false; if (Test-Path $rk) { $p=Get-ItemProperty $rk -EA SilentlyContinue; if ($p.PSObject.Properties.Name -contains $n) { New-Item $bk -Force | Out-Null; New-ItemProperty $bk -Name $n -Value $p.$n -PropertyType String -Force | Out-Null; Remove-ItemProperty $rk -Name $n -Force; Write-Host ('    [OK] HKCU Run: '+$n); $done=$true } }; $sf=Join-Path $env:APPDATA 'Microsoft\Windows\Start Menu\Programs\Startup'; $hold=Join-Path $env:LOCALAPPDATA 'VenixOtimizacao\startup-disabled'; Get-ChildItem $sf -EA SilentlyContinue | Where-Object { $_.BaseName -eq $n -or $_.Name -eq $n } | ForEach-Object { New-Item $hold -ItemType Directory -Force | Out-Null; Move-Item $_.FullName (Join-Path $hold $_.Name) -Force; Write-Host ('    [OK] atalho: '+$_.Name); $done=$true }; if (-not $done) { Write-Host '[AVISO] Nao encontrei esse item em HKCU Run nem na pasta Startup.' }"
 call :pause_back
 goto menu_start
 
 :st_on
 cls
-echo Reativar itens desligados pelo Nox...
-powershell -NoProfile -ExecutionPolicy Bypass -Command "$bk='HKCU:\Software\NoxOtimizacao\StartupBackup'; $rk='HKCU:\Software\Microsoft\Windows\CurrentVersion\Run'; if (Test-Path $bk) { $p=Get-ItemProperty $bk; $p.PSObject.Properties | Where-Object {$_.Name -notlike 'PS*'} | ForEach-Object { New-ItemProperty $rk -Name $_.Name -Value $_.Value -PropertyType String -Force | Out-Null; Write-Host ('    [OK] Run: '+$_.Name) }; Remove-Item $bk -Recurse -Force }; $hold=Join-Path $env:LOCALAPPDATA 'NoxOtimizacao\startup-disabled'; $sf=Join-Path $env:APPDATA 'Microsoft\Windows\Start Menu\Programs\Startup'; if (Test-Path $hold) { Get-ChildItem $hold -EA SilentlyContinue | ForEach-Object { Move-Item $_.FullName (Join-Path $sf $_.Name) -Force; Write-Host ('    [OK] atalho: '+$_.Name) } }; Write-Host '    [OK] inicializacao restaurada'"
+echo Reativar itens desligados pelo VENIX...
+powershell -NoProfile -ExecutionPolicy Bypass -Command "$rk='HKCU:\Software\Microsoft\Windows\CurrentVersion\Run'; $sf=Join-Path $env:APPDATA 'Microsoft\Windows\Start Menu\Programs\Startup'; foreach($name in @('VenixOtimizacao','NoxOtimizacao')){ $bk='HKCU:\Software\'+$name+'\StartupBackup'; if (Test-Path $bk) { $p=Get-ItemProperty $bk; $p.PSObject.Properties | Where-Object {$_.Name -notlike 'PS*'} | ForEach-Object { New-ItemProperty $rk -Name $_.Name -Value $_.Value -PropertyType String -Force | Out-Null; Write-Host ('    [OK] Run: '+$_.Name) }; Remove-Item $bk -Recurse -Force -EA SilentlyContinue }; $hold=Join-Path $env:LOCALAPPDATA ($name+'\startup-disabled'); if (Test-Path $hold) { Get-ChildItem $hold -EA SilentlyContinue | ForEach-Object { Move-Item $_.FullName (Join-Path $sf $_.Name) -Force; Write-Host ('    [OK] atalho: '+$_.Name) } } }; Write-Host '    [OK] inicializacao restaurada'"
 call :pause_back
 goto menu_start
 
@@ -1015,7 +1015,7 @@ goto menu_clean
 
 :do_revert_all
 cls
-echo Reverter tweaks do Nox (nao reinstala apps da Loja).
+echo Reverter tweaks do VENIX (nao reinstala apps da Loja).
 echo UAC / Update / firewall / rede nao sao mexidos.
 echo Defender e SmartScreen voltam a ligar-se.
 echo(
@@ -1033,14 +1033,14 @@ echo So o nome do ficheiro (sem ^& ^| ^< ^>).
 set "exe="
 set /p exe=EXE: 
 if not defined exe goto menu_games
-set "NOX_EXE=%exe%"
-powershell -NoProfile -ExecutionPolicy Bypass -Command "$n=$env:NOX_EXE; if (-not $n) { exit 2 }; $n=$n.Trim().Trim([char]34); if ($n -notmatch '\.exe$') { $n += '.exe' }; $n=[IO.Path]::GetFileName($n); if ($n -notmatch '^[A-Za-z0-9 ._\-()\[\]]+\.exe$') { exit 2 }; Set-Content -Path ($env:TEMP+'\nox-exe.txt') -Value $n -Encoding ASCII"
+set "VENIX_EXE=%exe%"
+powershell -NoProfile -ExecutionPolicy Bypass -Command "$n=$env:VENIX_EXE; if (-not $n) { exit 2 }; $n=$n.Trim().Trim([char]34); if ($n -notmatch '\.exe$') { $n += '.exe' }; $n=[IO.Path]::GetFileName($n); if ($n -notmatch '^[A-Za-z0-9 ._\-()\[\]]+\.exe$') { exit 2 }; Set-Content -Path ($env:TEMP+'\venix-exe.txt') -Value $n -Encoding ASCII"
 if errorlevel 2 (
     echo Nome invalido.
     call :pause_back
     goto menu_games
 )
-set /p exe=<"%TEMP%\nox-exe.txt"
+set /p exe=<"%TEMP%\venix-exe.txt"
 if not defined exe goto menu_games
 call :prio "Custom" "%exe%"
 goto menu_games
@@ -1126,7 +1126,7 @@ goto menu_main
 
 :do_sair
 cls
-echo Nox Otimizacao - ate a proxima.
+echo VENIX Otimizacao - ate a proxima.
 pause
 endlocal
 exit /b 0
@@ -1328,7 +1328,7 @@ cls
 set "ans="
 set /p ans=Reiniciar o PC? Escreve S: 
 if /I not "%ans%"=="S" goto menu_win
-shutdown /r /t 5 /c "Nox Otimizacao"
+shutdown /r /t 5 /c "VENIX Otimizacao"
 goto menu_win
 
 :w_smartscreen
@@ -1363,7 +1363,7 @@ call :_hags_on
 call :_mmcss
 reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\%~2\PerfOptions" /v CpuPriorityClass /t REG_DWORD /d 3 /f >nul
 reg add "HKCU\Software\Microsoft\DirectX\UserGpuPreferences" /v "%~2" /t REG_SZ /d "GpuPreference=2;" /f >nul
-reg add "HKCU\Software\NoxOtimizacao\Prio" /v "%~2" /t REG_SZ /d 1 /f >nul
+reg add "HKCU\Software\VenixOtimizacao\Prio" /v "%~2" /t REG_SZ /d 1 /f >nul
 call :ok "%~1 CPU High + GPU"
 call :pause_back
 goto :eof
@@ -1695,15 +1695,19 @@ call :_svc_restore_all
 sc config NvTelemetryContainer start= demand >nul 2>&1
 sc config "AMD Crash Defender Service" start= demand >nul 2>&1
 sc config "AMD External Events Utility" start= auto >nul 2>&1
-powershell -NoProfile -Command "Enable-MMAgent -MemoryCompression -EA SilentlyContinue; Get-NetAdapter -EA SilentlyContinue | ForEach-Object { try { Enable-NetAdapterPowerManagement -Name $_.Name -EA SilentlyContinue } catch {} ; try { Set-DnsClientServerAddress -InterfaceIndex $_.ifIndex -ResetServerAddresses -EA SilentlyContinue } catch {} }; $k='HKCU:\Software\NoxOtimizacao\Prio'; if (Test-Path $k) { $p=Get-ItemProperty $k; $p.PSObject.Properties | Where-Object {$_.Name -notlike 'PS*'} | ForEach-Object { Remove-Item ('HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\'+$_.Name+'\PerfOptions') -Recurse -EA SilentlyContinue; Remove-ItemProperty -Path 'HKCU:\Software\Microsoft\DirectX\UserGpuPreferences' -Name $_.Name -EA SilentlyContinue; Write-Host ('    [OK] prio: '+$_.Name) }; Remove-Item $k -Recurse -Force -EA SilentlyContinue }"
+powershell -NoProfile -Command "Enable-MMAgent -MemoryCompression -EA SilentlyContinue; Get-NetAdapter -EA SilentlyContinue | ForEach-Object { try { Enable-NetAdapterPowerManagement -Name $_.Name -EA SilentlyContinue } catch {} ; try { Set-DnsClientServerAddress -InterfaceIndex $_.ifIndex -ResetServerAddresses -EA SilentlyContinue } catch {} }; foreach($k in @('HKCU:\Software\VenixOtimizacao\Prio','HKCU:\Software\NoxOtimizacao\Prio')){ if (Test-Path $k) { $p=Get-ItemProperty $k; $p.PSObject.Properties | Where-Object {$_.Name -notlike 'PS*'} | ForEach-Object { Remove-Item ('HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\'+$_.Name+'\PerfOptions') -Recurse -EA SilentlyContinue; Remove-ItemProperty -Path 'HKCU:\Software\Microsoft\DirectX\UserGpuPreferences' -Name $_.Name -EA SilentlyContinue; Write-Host ('    [OK] prio: '+$_.Name) }; Remove-Item $k -Recurse -Force -EA SilentlyContinue } }"
 for /f "tokens=*" %%I in ('reg query "HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces" 2^>nul') do (
     reg delete "%%I" /v TcpAckFrequency /f >nul 2>&1
     reg delete "%%I" /v TCPNoDelay /f >nul 2>&1
 )
 call :st_on_silent
-call :ok "Tweaks Nox revertidos (apps da Loja nao voltam sozinhas)"
+reg delete "HKCU\Software\VenixOtimizacao" /f >nul 2>&1
+reg delete "HKCU\Software\NoxOtimizacao" /f >nul 2>&1
+if exist "%LOCALAPPDATA%\VenixOtimizacao" rd /s /q "%LOCALAPPDATA%\VenixOtimizacao" >nul 2>&1
+if exist "%LOCALAPPDATA%\NoxOtimizacao" rd /s /q "%LOCALAPPDATA%\NoxOtimizacao" >nul 2>&1
+call :ok "Tweaks VENIX revertidos (apps da Loja nao voltam sozinhas)"
 goto :eof
 
 :st_on_silent
-powershell -NoProfile -ExecutionPolicy Bypass -Command "$bk='HKCU:\Software\NoxOtimizacao\StartupBackup'; $rk='HKCU:\Software\Microsoft\Windows\CurrentVersion\Run'; if (Test-Path $bk) { $p=Get-ItemProperty $bk; $p.PSObject.Properties | Where-Object {$_.Name -notlike 'PS*'} | ForEach-Object { New-ItemProperty $rk -Name $_.Name -Value $_.Value -PropertyType String -Force | Out-Null; Write-Host ('    [OK] Run: '+$_.Name) }; Remove-Item $bk -Recurse -Force -EA SilentlyContinue }; $hold=Join-Path $env:LOCALAPPDATA 'NoxOtimizacao\startup-disabled'; $sf=Join-Path $env:APPDATA 'Microsoft\Windows\Start Menu\Programs\Startup'; if (Test-Path $hold) { Get-ChildItem $hold -EA SilentlyContinue | ForEach-Object { Move-Item $_.FullName (Join-Path $sf $_.Name) -Force; Write-Host ('    [OK] atalho: '+$_.Name) } }"
+powershell -NoProfile -ExecutionPolicy Bypass -Command "$rk='HKCU:\Software\Microsoft\Windows\CurrentVersion\Run'; $sf=Join-Path $env:APPDATA 'Microsoft\Windows\Start Menu\Programs\Startup'; foreach($name in @('VenixOtimizacao','NoxOtimizacao')){ $bk='HKCU:\Software\'+$name+'\StartupBackup'; if (Test-Path $bk) { $p=Get-ItemProperty $bk; $p.PSObject.Properties | Where-Object {$_.Name -notlike 'PS*'} | ForEach-Object { New-ItemProperty $rk -Name $_.Name -Value $_.Value -PropertyType String -Force | Out-Null; Write-Host ('    [OK] Run: '+$_.Name) }; Remove-Item $bk -Recurse -Force -EA SilentlyContinue }; $hold=Join-Path $env:LOCALAPPDATA ($name+'\startup-disabled'); if (Test-Path $hold) { Get-ChildItem $hold -EA SilentlyContinue | ForEach-Object { Move-Item $_.FullName (Join-Path $sf $_.Name) -Force; Write-Host ('    [OK] atalho: '+$_.Name) } } }"
 goto :eof
