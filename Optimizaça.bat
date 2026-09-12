@@ -120,6 +120,22 @@ echo(%C%                          ___) ^| ^|___^|  _ ^< \ V /  ^| ^| ^|__^| ^|_^
 echo(%C%                         ^|____/^|_____^|_^| \_\ \_/  ^|___\____\___/^|____/%N%
 goto :eof
 
+:art_clean
+echo(%C%                      ____ _     _____    _    _   _%N%
+echo(%C%                     / ___^| ^|   ^| ____^|  / \  ^| \ ^| ^|%N%
+echo(%C%                    ^| ^|   ^| ^|   ^|  _^|   / _ \ ^|  \^| ^|%N%
+echo(%C%                    ^| ^|___^| ^|___^| ^|___ / ___ \^| ^|\  ^|%N%
+echo(%C%                     \____^|_____^|_____/_/   \_\_^| \_|%N%
+goto :eof
+
+:art_start
+echo(%C%                         ____ _____  _    ____ _____%N%
+echo(%C%                        / ___^|_   _^|/ \  ^|  _ \_   _^|%N%
+echo(%C%                        \___ \ ^| ^| / _ \ ^| ^|_) ^|^| ^|%N%
+echo(%C%                         ___) ^|^| ^|/ ___ \^|  _ ^< ^| ^|%N%
+echo(%C%                        ^|____/ ^|_/_/   \_\_^| \_\ |_|%N%
+goto :eof
+
 :ok
 echo     [OK] %~1
 goto :eof
@@ -150,7 +166,8 @@ echo          %C%[  3 ]%N% Otimizacao de Jogos                                  
 echo          %C%[  5 ]%N% Config. inicializacao do Windows                       %C%[  6 ]%N% Liberar Memoria Ram
 echo          %C%[  7 ]%N% Melhorar Conexao/Ping                                  %C%[  8 ]%N% Otimizar AMD
 echo          %C%[  9 ]%N% Otimizar NVIDIA                                        %C%[ 10 ]%N% Fix de Erros
-echo          %C%[ 11 ]%N% Debloater                                              %C%[ 12 ]%N% Sair
+echo          %C%[ 11 ]%N% Debloater                                              %C%[ 12 ]%N% Limpeza do sistema
+echo          %C%[ 13 ]%N% Reverter tudo                                          %C%[ 14 ]%N% Sair
 echo(
 set "op="
 set /p op=                                       Escolha uma opcao:
@@ -158,14 +175,16 @@ if "%op%"=="1" goto do_restore
 if "%op%"=="2" goto menu_win
 if "%op%"=="3" goto menu_games
 if "%op%"=="4" goto menu_hw
-if "%op%"=="5" goto do_startup
+if "%op%"=="5" goto menu_start
 if "%op%"=="6" goto do_ram
 if "%op%"=="7" goto menu_ping
 if "%op%"=="8" goto menu_amd
 if "%op%"=="9" goto do_nvidia
 if "%op%"=="10" goto menu_fix
 if "%op%"=="11" goto menu_deb
-if "%op%"=="12" goto do_sair
+if "%op%"=="12" goto menu_clean
+if "%op%"=="13" goto do_revert_all
+if "%op%"=="14" goto do_sair
 goto menu_main
 
 
@@ -812,7 +831,8 @@ echo          %C%[ 13 ]%N% Euro Truck Simulator (1 e 2)                         
 echo          %C%[ 15 ]%N% Cult of the Lamb                                       %C%[ 16 ]%N% ULTRAKILL
 echo          %C%[ 17 ]%N% Blood Strike                                           %C%[ 18 ]%N% Arena Breakout
 echo          %C%[ 19 ]%N% Resident Evil 4 Remake                                 %C%[ 20 ]%N% Resident Evil 2 Remake
-echo          %C%[ 21 ]%N% Tweaks globais                                         %C%[ 22 ]%N% Menu Principal
+echo          %C%[ 21 ]%N% Tweaks globais                                         %C%[ 22 ]%N% Priorizar EXE custom
+echo          %C%[ 23 ]%N% Menu Principal
 echo(
 set "op="
 set /p op=                                        Digite o numero:
@@ -837,7 +857,8 @@ if "%op%"=="18" call :prio ArenaBreakout ArenaBreakout.exe & goto menu_games
 if "%op%"=="19" call :prio RE4 re4.exe & goto menu_games
 if "%op%"=="20" call :prio RE2 re2.exe & goto menu_games
 if "%op%"=="21" goto do_games_global
-if "%op%"=="22" goto menu_main
+if "%op%"=="22" goto do_exe_custom
+if "%op%"=="23" goto menu_main
 goto menu_games
 
 
@@ -857,13 +878,146 @@ call :_mmcss
 call :pause_back
 goto menu_games
 
-:do_startup
+:menu_start
+call :hdr start
+echo(%C%                        Selecione o numero da opcao que deseja executar:%N%
+echo(
+echo          %C%[  1 ]%N% Remover atraso de arranque                             %C%[  2 ]%N% Listar programas na inicializacao
+echo          %C%[  3 ]%N% Desativar um item da inicializacao                     %C%[  4 ]%N% Reativar itens desligados pelo Nox
+echo          %C%[  5 ]%N% Voltar ao Menu Principal
+echo(
+set "op="
+set /p op=                                        Digite o numero:
+if "%op%"=="1" goto st_delay
+if "%op%"=="2" goto st_list
+if "%op%"=="3" goto st_off
+if "%op%"=="4" goto st_on
+if "%op%"=="5" goto menu_main
+goto menu_start
+
+:st_delay
 cls
 echo Config. inicializacao...
 reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Serialize" /v StartupDelayInMSec /t REG_DWORD /d 0 /f >nul
 call :ok "Atraso de arranque = 0"
 call :pause_back
+goto menu_start
+
+:st_list
+cls
+echo Programas na inicializacao
+echo HKLM e so leitura. Defender / SecurityHealth nao se desativam.
+echo(
+powershell -NoProfile -ExecutionPolicy Bypass -Command "Write-Host '--- HKCU Run ---'; $r=Get-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Run' -EA SilentlyContinue; if($r){ $r.PSObject.Properties | Where-Object {$_.Name -notlike 'PS*'} | ForEach-Object { Write-Host ('  '+$_.Name+' = '+$_.Value) } } else { Write-Host '  (vazio)' }; Write-Host ''; Write-Host '--- Pasta Startup ---'; $p=Join-Path $env:APPDATA 'Microsoft\Windows\Start Menu\Programs\Startup'; Get-ChildItem $p -EA SilentlyContinue | Where-Object {$_.Name -ne 'desktop.ini'} | ForEach-Object { Write-Host ('  '+$_.Name) }; Write-Host ''; Write-Host '--- HKLM Run (so leitura) ---'; $r=Get-ItemProperty -Path 'HKLM:\Software\Microsoft\Windows\CurrentVersion\Run' -EA SilentlyContinue; if($r){ $r.PSObject.Properties | Where-Object {$_.Name -notlike 'PS*'} | ForEach-Object { Write-Host ('  '+$_.Name) } }"
+call :pause_back
+goto menu_start
+
+:st_off
+cls
+echo Desativar um item de HKCU Run ou da pasta Startup.
+echo Escreve o nome exacto (ex: OneDrive). Nao mexe em Defender.
+set "NOX_ITEM="
+set /p NOX_ITEM=Nome do item: 
+if not defined NOX_ITEM goto menu_start
+powershell -NoProfile -ExecutionPolicy Bypass -Command "$n=$env:NOX_ITEM.Trim(); if ($n -notmatch '^[A-Za-z0-9 ._\-()]+$') { Write-Host '[ERRO] Nome invalido.'; exit 0 }; if ($n -match 'SecurityHealth|Defender|MsMpEng|NisSrv|smartscreen') { Write-Host '[RECUSADO] Item de seguranca.'; exit 0 }; $rk='HKCU:\Software\Microsoft\Windows\CurrentVersion\Run'; $bk='HKCU:\Software\NoxOtimizacao\StartupBackup'; $done=$false; if (Test-Path $rk) { $p=Get-ItemProperty $rk -EA SilentlyContinue; if ($p.PSObject.Properties.Name -contains $n) { New-Item $bk -Force | Out-Null; New-ItemProperty $bk -Name $n -Value $p.$n -PropertyType String -Force | Out-Null; Remove-ItemProperty $rk -Name $n -Force; Write-Host ('    [OK] HKCU Run: '+$n); $done=$true } }; $sf=Join-Path $env:APPDATA 'Microsoft\Windows\Start Menu\Programs\Startup'; $hold=Join-Path $env:LOCALAPPDATA 'NoxOtimizacao\startup-disabled'; Get-ChildItem $sf -EA SilentlyContinue | Where-Object { $_.BaseName -eq $n -or $_.Name -eq $n } | ForEach-Object { New-Item $hold -ItemType Directory -Force | Out-Null; Move-Item $_.FullName (Join-Path $hold $_.Name) -Force; Write-Host ('    [OK] atalho: '+$_.Name); $done=$true }; if (-not $done) { Write-Host '[AVISO] Nao encontrei esse item em HKCU Run nem na pasta Startup.' }"
+call :pause_back
+goto menu_start
+
+:st_on
+cls
+echo Reativar itens desligados pelo Nox...
+powershell -NoProfile -ExecutionPolicy Bypass -Command "$bk='HKCU:\Software\NoxOtimizacao\StartupBackup'; $rk='HKCU:\Software\Microsoft\Windows\CurrentVersion\Run'; if (Test-Path $bk) { $p=Get-ItemProperty $bk; $p.PSObject.Properties | Where-Object {$_.Name -notlike 'PS*'} | ForEach-Object { New-ItemProperty $rk -Name $_.Name -Value $_.Value -PropertyType String -Force | Out-Null; Write-Host ('    [OK] Run: '+$_.Name) }; Remove-Item $bk -Recurse -Force }; $hold=Join-Path $env:LOCALAPPDATA 'NoxOtimizacao\startup-disabled'; $sf=Join-Path $env:APPDATA 'Microsoft\Windows\Start Menu\Programs\Startup'; if (Test-Path $hold) { Get-ChildItem $hold -EA SilentlyContinue | ForEach-Object { Move-Item $_.FullName (Join-Path $sf $_.Name) -Force; Write-Host ('    [OK] atalho: '+$_.Name) } }; Write-Host '    [OK] inicializacao restaurada'"
+call :pause_back
+goto menu_start
+
+:menu_clean
+call :hdr clean
+echo(%C%                            Escolha o que queres limpar:%N%
+echo(
+echo          %C%[  1 ]%N% Limpar TEMP                                            %C%[  2 ]%N% Esvaziar Reciclagem
+echo          %C%[  3 ]%N% Limpar cache Delivery Optimization                     %C%[  4 ]%N% Limpar miniaturas
+echo          %C%[  5 ]%N% Limpeza completa                                       %C%[  6 ]%N% Voltar ao Menu Principal
+echo(
+set "op="
+set /p op=                                        Digite o numero:
+if "%op%"=="1" goto cl_temp
+if "%op%"=="2" goto cl_bin
+if "%op%"=="3" goto cl_do
+if "%op%"=="4" goto cl_thumbs
+if "%op%"=="5" goto cl_all
+if "%op%"=="6" goto menu_main
+goto menu_clean
+
+:cl_temp
+cls
+echo Limpando TEMP...
+call :_clean_temp
+call :pause_back
+goto menu_clean
+
+:cl_bin
+cls
+echo Esvaziar Reciclagem...
+call :_clean_bin
+call :pause_back
+goto menu_clean
+
+:cl_do
+cls
+echo Limpar cache Delivery Optimization (Windows Update fica ligado)...
+call :_clean_do
+call :pause_back
+goto menu_clean
+
+:cl_thumbs
+cls
+echo Limpar miniaturas...
+call :_clean_thumbs
+call :pause_back
+goto menu_clean
+
+:cl_all
+cls
+echo Limpeza completa...
+call :_clean_temp
+call :_clean_bin
+call :_clean_do
+call :_clean_thumbs
+ipconfig /flushdns >nul
+call :ok "DNS flush"
+call :pause_back
+goto menu_clean
+
+:do_revert_all
+cls
+echo Reverter tweaks do Nox (nao reinstala apps da Loja).
+echo Defender / UAC / SmartScreen / Update / firewall nao sao mexidos.
+echo(
+set "ans="
+set /p ans=Escreve S para continuar: 
+if /I not "%ans%"=="S" goto menu_main
+call :_revert_all
+call :pause_back
 goto menu_main
+
+:do_exe_custom
+cls
+echo Priorizar um EXE qualquer. Exemplo: jogo.exe
+echo So o nome do ficheiro (sem ^& ^| ^< ^>).
+set "exe="
+set /p exe=EXE: 
+if not defined exe goto menu_games
+set "NOX_EXE=%exe%"
+powershell -NoProfile -ExecutionPolicy Bypass -Command "$n=$env:NOX_EXE; if (-not $n) { exit 2 }; $n=$n.Trim().Trim([char]34); if ($n -notmatch '\.exe$') { $n += '.exe' }; $n=[IO.Path]::GetFileName($n); if ($n -notmatch '^[A-Za-z0-9 ._\-()\[\]]+\.exe$') { exit 2 }; Set-Content -Path ($env:TEMP+'\nox-exe.txt') -Value $n -Encoding ASCII"
+if errorlevel 2 (
+    echo Nome invalido.
+    call :pause_back
+    goto menu_games
+)
+set /p exe=<"%TEMP%\nox-exe.txt"
+if not defined exe goto menu_games
+call :prio "Custom" "%exe%"
+goto menu_games
 
 :do_ram
 cls
@@ -1104,6 +1258,7 @@ call :_hags_on
 call :_mmcss
 reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\%~2\PerfOptions" /v CpuPriorityClass /t REG_DWORD /d 3 /f >nul
 reg add "HKCU\Software\Microsoft\DirectX\UserGpuPreferences" /v "%~2" /t REG_SZ /d "GpuPreference=2;" /f >nul
+reg add "HKCU\Software\NoxOtimizacao\Prio" /v "%~2" /t REG_SZ /d 1 /f >nul
 call :ok "%~1 CPU High + GPU"
 call :pause_back
 goto :eof
@@ -1174,4 +1329,97 @@ reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" 
 reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v TaskbarDa /t REG_DWORD /d 0 /f >nul
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Dsh" /v AllowNewsAndInterests /t REG_DWORD /d 0 /f >nul
 call :ok "Dicas / widgets off"
+goto :eof
+
+:_clean_temp
+del /q /f /s "%TEMP%\*" >nul 2>&1
+del /q /f /s "%LOCALAPPDATA%\Temp\*" >nul 2>&1
+if exist "%WINDIR%\Temp" del /q /f /s "%WINDIR%\Temp\*" >nul 2>&1
+call :ok "TEMP limpo"
+goto :eof
+
+:_clean_bin
+powershell -NoProfile -Command "Clear-RecycleBin -Force -EA SilentlyContinue; Write-Host '    [OK] Reciclagem'"
+goto :eof
+
+:_clean_do
+powershell -NoProfile -Command "try { Delete-DeliveryOptimizationCache -Force -EA Stop; Write-Host '    [OK] Delivery Optimization' } catch { $p='C:\Windows\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Cache'; if (Test-Path $p) { Get-ChildItem $p -Recurse -Force -EA SilentlyContinue | Remove-Item -Recurse -Force -EA SilentlyContinue; Write-Host '    [OK] cache DO' } else { Write-Host '    [OK] nada a limpar' } }"
+goto :eof
+
+:_clean_thumbs
+taskkill /f /im explorer.exe >nul 2>&1
+timeout /t 1 /nobreak >nul
+del /f /s /q "%LocalAppData%\Microsoft\Windows\Explorer\thumbcache_*.db" >nul 2>&1
+start explorer.exe
+call :ok "Miniaturas"
+goto :eof
+
+:_revert_all
+echo A reverter...
+reg add "HKCU\Control Panel\Mouse" /v MouseSpeed /t REG_SZ /d 1 /f >nul
+reg add "HKCU\Control Panel\Mouse" /v MouseThreshold1 /t REG_SZ /d 6 /f >nul
+reg add "HKCU\Control Panel\Mouse" /v MouseThreshold2 /t REG_SZ /d 10 /f >nul
+reg add "HKCU\Control Panel\Keyboard" /v KeyboardDelay /t REG_SZ /d 1 /f >nul
+reg add "HKCU\Control Panel\Keyboard" /v KeyboardSpeed /t REG_SZ /d 31 /f >nul
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects" /v VisualFXSetting /t REG_DWORD /d 0 /f >nul
+reg add "HKCU\Control Panel\Desktop\WindowMetrics" /v MinAnimate /t REG_SZ /d 1 /f >nul
+reg add "HKCU\Control Panel\Desktop" /v DragFullWindows /t REG_SZ /d 1 /f >nul
+reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v EnableTransparency /t REG_DWORD /d 1 /f >nul
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v TaskbarAnimations /t REG_DWORD /d 1 /f >nul
+reg add "HKCU\Software\Microsoft\Windows\DWM" /v EnableAeroPeek /t REG_DWORD /d 1 /f >nul
+reg delete "HKLM\SOFTWARE\Policies\Microsoft\Windows\DWM" /v DisallowAnimations /f >nul 2>&1
+reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\AdvertisingInfo" /v Enabled /t REG_DWORD /d 1 /f >nul
+reg delete "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Privacy" /v TailoredExperiencesWithDiagnosticDataEnabled /f >nul 2>&1
+reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\GameDVR" /v AppCaptureEnabled /t REG_DWORD /d 1 /f >nul
+reg add "HKCU\System\GameConfigStore" /v GameDVR_Enabled /t REG_DWORD /d 1 /f >nul
+reg delete "HKLM\SOFTWARE\Policies\Microsoft\Windows\GameDVR" /v AllowGameDVR /f >nul 2>&1
+reg delete "HKLM\SOFTWARE\Policies\Microsoft\Windows\Windows Search" /v AllowCortana /f >nul 2>&1
+reg delete "HKCU\Software\Policies\Microsoft\Windows\WindowsCopilot" /v TurnOffWindowsCopilot /f >nul 2>&1
+reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v ShowCopilotButton /f >nul 2>&1
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\PushNotifications" /v ToastEnabled /t REG_DWORD /d 1 /f >nul
+reg delete "HKCU\SOFTWARE\Microsoft\Siuf\Rules" /v NumberOfSIUFInPeriod /f >nul 2>&1
+reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer" /v AltTabSettings /f >nul 2>&1
+reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v SeparateProcess /f >nul 2>&1
+reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Search" /v BingSearchEnabled /f >nul 2>&1
+reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\SearchSettings" /v IsDynamicSearchBoxEnabled /f >nul 2>&1
+reg delete "HKLM\SOFTWARE\Policies\Microsoft\WindowsStore" /v AutoDownload /f >nul 2>&1
+reg delete "HKLM\SOFTWARE\Microsoft\Windows\Dwm" /v OverlayTestMode /f >nul 2>&1
+reg add "HKLM\SYSTEM\CurrentControlSet\Control\GraphicsDrivers" /v HwSchMode /t REG_DWORD /d 2 /f >nul
+reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile" /v NetworkThrottlingIndex /t REG_DWORD /d 10 /f >nul
+reg add "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management\PrefetchParameters" /v EnablePrefetcher /t REG_DWORD /d 3 /f >nul
+reg delete "HKLM\SOFTWARE\Microsoft\Windows\Windows Error Reporting" /v Disabled /f >nul 2>&1
+reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Serialize" /v StartupDelayInMSec /f >nul 2>&1
+reg delete "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /v SoftLandingEnabled /f >nul 2>&1
+reg delete "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /v SystemPaneSuggestionsEnabled /f >nul 2>&1
+reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v TaskbarDa /f >nul 2>&1
+reg delete "HKLM\SOFTWARE\Policies\Microsoft\Dsh" /v AllowNewsAndInterests /f >nul 2>&1
+reg delete "HKLM\SOFTWARE\Policies\Microsoft\Windows\GameDVR" /f >nul 2>&1
+fsutil behavior set disablelastaccess 2 >nul 2>&1
+powercfg -h on >nul 2>&1
+powercfg -setactive 381b4222-2468-4e61-94e6-e41df20cf209 >nul 2>&1
+bcdedit /set hypervisorlaunchtype auto >nul 2>&1
+sc config SysMain start= auto >nul 2>&1
+sc start SysMain >nul 2>&1
+sc config WSearch start= delayed-auto >nul 2>&1
+sc config DiagTrack start= auto >nul 2>&1
+sc config dmwappushservice start= demand >nul 2>&1
+sc config W32Time start= demand >nul 2>&1
+sc config MapsBroker start= demand >nul 2>&1
+for %%S in (Fax RemoteRegistry RetailDemo WMPNetworkSvc diagnosticshub.standardcollector.service MapsBroker CscService wisvc XblGameSave XboxNetApiSvc XboxGipSvc) do (
+    sc config %%S start= demand >nul 2>&1
+)
+sc config NvTelemetryContainer start= demand >nul 2>&1
+sc config "AMD Crash Defender Service" start= demand >nul 2>&1
+sc config "AMD External Events Utility" start= auto >nul 2>&1
+powershell -NoProfile -Command "Enable-MMAgent -MemoryCompression -EA SilentlyContinue; Get-NetAdapter -EA SilentlyContinue | ForEach-Object { try { Enable-NetAdapterPowerManagement -Name $_.Name -EA SilentlyContinue } catch {} ; try { Set-DnsClientServerAddress -InterfaceIndex $_.ifIndex -ResetServerAddresses -EA SilentlyContinue } catch {} }; $k='HKCU:\Software\NoxOtimizacao\Prio'; if (Test-Path $k) { $p=Get-ItemProperty $k; $p.PSObject.Properties | Where-Object {$_.Name -notlike 'PS*'} | ForEach-Object { Remove-Item ('HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\'+$_.Name+'\PerfOptions') -Recurse -EA SilentlyContinue; Remove-ItemProperty -Path 'HKCU:\Software\Microsoft\DirectX\UserGpuPreferences' -Name $_.Name -EA SilentlyContinue; Write-Host ('    [OK] prio: '+$_.Name) }; Remove-Item $k -Recurse -Force -EA SilentlyContinue }"
+for /f "tokens=*" %%I in ('reg query "HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces" 2^>nul') do (
+    reg delete "%%I" /v TcpAckFrequency /f >nul 2>&1
+    reg delete "%%I" /v TCPNoDelay /f >nul 2>&1
+)
+call :st_on_silent
+call :ok "Tweaks Nox revertidos (apps da Loja nao voltam sozinhas)"
+goto :eof
+
+:st_on_silent
+powershell -NoProfile -ExecutionPolicy Bypass -Command "$bk='HKCU:\Software\NoxOtimizacao\StartupBackup'; $rk='HKCU:\Software\Microsoft\Windows\CurrentVersion\Run'; if (Test-Path $bk) { $p=Get-ItemProperty $bk; $p.PSObject.Properties | Where-Object {$_.Name -notlike 'PS*'} | ForEach-Object { New-ItemProperty $rk -Name $_.Name -Value $_.Value -PropertyType String -Force | Out-Null; Write-Host ('    [OK] Run: '+$_.Name) }; Remove-Item $bk -Recurse -Force -EA SilentlyContinue }; $hold=Join-Path $env:LOCALAPPDATA 'NoxOtimizacao\startup-disabled'; $sf=Join-Path $env:APPDATA 'Microsoft\Windows\Start Menu\Programs\Startup'; if (Test-Path $hold) { Get-ChildItem $hold -EA SilentlyContinue | ForEach-Object { Move-Item $_.FullName (Join-Path $sf $_.Name) -Force; Write-Host ('    [OK] atalho: '+$_.Name) } }"
 goto :eof
