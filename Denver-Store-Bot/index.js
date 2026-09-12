@@ -440,7 +440,7 @@ const PRODUTOS_SEED = [
   { nome: '20 Rockstar Acc', preco: eur(15), categoria: 'rockstar' },
 
   // --- Canal de bots Discord ---
-  { nome: 'Bot Personalizado', preco: eur(10), categoria: 'bots' },
+  { nome: 'Bot Personalizado', preco: eur(15), categoria: 'bots' },
   { nome: 'Manutenção Mensal', preco: eur(10), categoria: 'bots' },
 
   // --- Canal de criação de servidores Discord ---
@@ -1051,7 +1051,7 @@ const PAINEL_TEXTOS = {
   bots: textoPainel(
     '🤖 BOTS DISCORD',
     [
-      '🔹 Bot Personalizado: 10€',
+      '🔹 Bot Personalizado: 15€+',
       '🔹 Manutenção: 10€ / mês',
       '✨ Incluído:',
       '・Bot à medida do teu servidor',
