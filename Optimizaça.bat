@@ -6,7 +6,7 @@ setlocal EnableExtensions EnableDelayedExpansion
 
 title Nox Otimizacao
 color 0E
-mode con cols=100 lines=42 >nul 2>&1
+mode con cols=140 lines=48 >nul 2>&1
 chcp 65001 >nul
 echo off
 
@@ -145,12 +145,12 @@ goto :eof
 call :hdr nox
 echo(%C%                        Selecione o numero da opcao que deseja executar:%N%
 echo(
-echo         %C%[ 1 ]%N% Criar Ponto de Restauracao        %C%[ 2 ]%N% Otimizar Windows
-echo         %C%[ 3 ]%N% Otimizacao de Jogos               %C%[ 4 ]%N% Otimizacao de Perifericos
-echo         %C%[ 5 ]%N% Config. inicializacao do Windows  %C%[ 6 ]%N% Liberar Memoria Ram
-echo         %C%[ 7 ]%N% Melhorar Conexao/Ping             %C%[ 8 ]%N% Otimizar AMD
-echo         %C%[ 9 ]%N% Otimizar NVIDIA                   %C%[ 10 ]%N% Fix de Erros
-echo         %C%[ 11 ]%N% Debloater                        %C%[ 12 ]%N% Sair
+echo          %C%[  1 ]%N% Criar Ponto de Restauracao                             %C%[  2 ]%N% Otimizar Windows
+echo          %C%[  3 ]%N% Otimizacao de Jogos                                    %C%[  4 ]%N% Otimizacao de Perifericos
+echo          %C%[  5 ]%N% Config. inicializacao do Windows                       %C%[  6 ]%N% Liberar Memoria Ram
+echo          %C%[  7 ]%N% Melhorar Conexao/Ping                                  %C%[  8 ]%N% Otimizar AMD
+echo          %C%[  9 ]%N% Otimizar NVIDIA                                        %C%[ 10 ]%N% Fix de Erros
+echo          %C%[ 11 ]%N% Debloater                                              %C%[ 12 ]%N% Sair
 echo(
 set "op="
 set /p op=                                       Escolha uma opcao:
@@ -173,25 +173,25 @@ goto menu_main
 call :hdr win
 echo(%C%                            Escolha a opcao que voce quer otimizar:%N%
 echo(
-echo         %C%[ 1 ]%N% Otimizar Energia                  %C%[ 2 ]%N% Desat. Efeitos Visuais
-echo         %C%[ 3 ]%N% Tweaks de Privacidade             %C%[ 4 ]%N% Desat. tarefas e servicos de Telemetria
-echo         %C%[ 5 ]%N% Desative TOTALMENTE a XBOX        %C%[ 6 ]%N% Desativar Relatorios de Erro
-echo         %C%[ 7 ]%N% Otimizar ALT +TAB                 %C%[ 8 ]%N% Desative Servicos Inuteis
-echo         %C%[ 9 ]%N% Desat. Hibernacao                 %C%[ 10 ]%N% Otimizar Explorer
-echo         %C%[ 11 ]%N% Desat. Indexacao de pesquisa     %C%[ 12 ]%N% Ativar God Mode
-echo         %C%[ 13 ]%N% Desativar Notificacoes           %C%[ 14 ]%N% Desativar Cortana
-echo         %C%[ 15 ]%N% Bloquear Envio de feedback automatico%C%[ 16 ]%N% Desativar SmartScreen
-echo         %C%[ 17 ]%N% Desativar Overlays (Xbox)        %C%[ 18 ]%N% Resetar Cache de Miniaturas
-echo         %C%[ 19 ]%N% Desat. Prefetch e Superfetch     %C%[ 20 ]%N% Fechar Explorer
-echo         %C%[ 21 ]%N% Iniciar Explorer                 %C%[ 22 ]%N% Desat. UAC
-echo         %C%[ 23 ]%N% Desativar Hyper-V (Maquina Virtual)%C%[ 24 ]%N% Verificar/Arrumar arquivos
-echo         %C%[ 25 ]%N% Limpar Cache de Rede             %C%[ 26 ]%N% Limpar Cache do Windows
-echo         %C%[ 27 ]%N% Desat. Anti-Malware              %C%[ 28 ]%N% Desat. Download Maps Manager
-echo         %C%[ 29 ]%N% Desat. TimeStamp                 %C%[ 30 ]%N% Desativar Bing Search
-echo         %C%[ 31 ]%N% Desat. Servico de Relogio do Win.%C%[ 32 ]%N% Desat. Sugestoes de pesquisa
-echo         %C%[ 33 ]%N% Desat. Animacoes no Sistema      %C%[ 34 ]%N% Forcar Windows a priorizar Jogos
-echo         %C%[ 35 ]%N% Desat. Memory Compression        %C%[ 36 ]%N% Desat. Atualizacoes Auto. da Microsoft Store
-echo         %C%[ 37 ]%N% REINICIAR PC                     %C%[ 38 ]%N% Menu Principal
+echo          %C%[  1 ]%N% Otimizar Energia                                       %C%[  2 ]%N% Desat. Efeitos Visuais
+echo          %C%[  3 ]%N% Tweaks de Privacidade                                  %C%[  4 ]%N% Desat. tarefas e servicos de Telemetria
+echo          %C%[  5 ]%N% Desative TOTALMENTE a XBOX                             %C%[  6 ]%N% Desativar Relatorios de Erro
+echo          %C%[  7 ]%N% Otimizar ALT +TAB                                      %C%[  8 ]%N% Desative Servicos Inuteis
+echo          %C%[  9 ]%N% Desat. Hibernacao                                      %C%[ 10 ]%N% Otimizar Explorer
+echo          %C%[ 11 ]%N% Desat. Indexacao de pesquisa                           %C%[ 12 ]%N% Ativar God Mode
+echo          %C%[ 13 ]%N% Desativar Notificacoes                                 %C%[ 14 ]%N% Desativar Cortana
+echo          %C%[ 15 ]%N% Bloquear Envio de feedback automatico                  %C%[ 16 ]%N% Desativar SmartScreen
+echo          %C%[ 17 ]%N% Desativar Overlays (Xbox)                              %C%[ 18 ]%N% Resetar Cache de Miniaturas
+echo          %C%[ 19 ]%N% Desat. Prefetch e Superfetch                           %C%[ 20 ]%N% Fechar Explorer
+echo          %C%[ 21 ]%N% Iniciar Explorer                                       %C%[ 22 ]%N% Desat. UAC
+echo          %C%[ 23 ]%N% Desativar Hyper-V (Maquina Virtual)                    %C%[ 24 ]%N% Verificar/Arrumar arquivos
+echo          %C%[ 25 ]%N% Limpar Cache de Rede                                   %C%[ 26 ]%N% Limpar Cache do Windows
+echo          %C%[ 27 ]%N% Desat. Anti-Malware                                    %C%[ 28 ]%N% Desat. Download Maps Manager
+echo          %C%[ 29 ]%N% Desat. TimeStamp                                       %C%[ 30 ]%N% Desativar Bing Search
+echo          %C%[ 31 ]%N% Desat. Servico de Relogio do Win.                      %C%[ 32 ]%N% Desat. Sugestoes de pesquisa
+echo          %C%[ 33 ]%N% Desat. Animacoes no Sistema                            %C%[ 34 ]%N% Forcar Windows a priorizar Jogos
+echo          %C%[ 35 ]%N% Desat. Memory Compression                              %C%[ 36 ]%N% Desat. Atualizacoes Auto. da Microsoft Store
+echo          %C%[ 37 ]%N% REINICIAR PC                                           %C%[ 38 ]%N% Menu Principal
 echo(
 set "op="
 set /p op=                                        Digite o numero:
@@ -240,10 +240,10 @@ goto menu_win
 call :hdr hw
 echo(%C%                            Escolha a opcao que voce quer otimizar:%N%
 echo(
-echo         %C%[ 1 ]%N% Otimizar HDD                      %C%[ 2 ]%N% Otimizar SSD
-echo         %C%[ 3 ]%N% Verificar Temperatura             %C%[ 4 ]%N% Otimizar Teclado
-echo         %C%[ 5 ]%N% Otimizar Mouse                    %C%[ 6 ]%N% Reverter Otimizacao
-echo         %C%[ 7 ]%N% Voltar ao Menu Principal
+echo          %C%[  1 ]%N% Otimizar HDD                                           %C%[  2 ]%N% Otimizar SSD
+echo          %C%[  3 ]%N% Verificar Temperatura                                  %C%[  4 ]%N% Otimizar Teclado
+echo          %C%[  5 ]%N% Otimizar Mouse                                         %C%[  6 ]%N% Reverter Otimizacao
+echo          %C%[  7 ]%N% Voltar ao Menu Principal
 echo(
 set "op="
 set /p op=                                        Digite o numero:
@@ -317,9 +317,9 @@ goto menu_hw
 call :hdr ping
 echo(%C%                        Selecione o numero da opcao que deseja executar:%N%
 echo(
-echo         %C%[ 1 ]%N% Desativar Economia de Energia da Rede%C%[ 2 ]%N% Otimizar TCP (Latencia)
-echo         %C%[ 3 ]%N% Remover limitacao de Rede         %C%[ 4 ]%N% Limpar cache de DNS
-echo         %C%[ 5 ]%N% Escolher o Melhor DNS             %C%[ 6 ]%N% Voltar ao Menu Principal
+echo          %C%[  1 ]%N% Desativar Economia de Energia da Rede                  %C%[  2 ]%N% Otimizar TCP (Latencia)
+echo          %C%[  3 ]%N% Remover limitacao de Rede                              %C%[  4 ]%N% Limpar cache de DNS
+echo          %C%[  5 ]%N% Escolher o Melhor DNS                                  %C%[  6 ]%N% Voltar ao Menu Principal
 echo(
 set "op="
 set /p op=                                        Digite o numero:
@@ -372,9 +372,9 @@ goto menu_ping
 :ping_best
 cls
 echo Escolher o Melhor DNS
-echo         [1] Cloudflare 1.1.1.1
-echo         [2] Google 8.8.8.8
-echo         [3] Cancelar
+echo          %C%[  1 ]%N% Cloudflare 1.1.1.1
+echo          %C%[  2 ]%N% Google 8.8.8.8
+echo          %C%[  3 ]%N% Cancelar
 set "d="
 set /p d=Numero: 
 if "%d%"=="1" powershell -NoProfile -Command "Get-NetAdapter | Where-Object Status -eq 'Up' | ForEach-Object { Set-DnsClientServerAddress -InterfaceIndex $_.ifIndex -ServerAddresses '1.1.1.1','1.0.0.1' }"
@@ -388,9 +388,9 @@ goto menu_ping
 call :hdr amd
 echo(%C%                            Escolha a opcao que voce quer otimizar:%N%
 echo(
-echo         %C%[ 1 ]%N% Desativar MPO                     %C%[ 2 ]%N% Desativar AMD Crash Defender
-echo         %C%[ 3 ]%N% Desat. GPU Scheduling             %C%[ 4 ]%N% Desativar AMD Overlay e Telemetria
-echo         %C%[ 5 ]%N% Instalar o Driver AMD             %C%[ 6 ]%N% Voltar Ao Menu Principal
+echo          %C%[  1 ]%N% Desativar MPO                                          %C%[  2 ]%N% Desativar AMD Crash Defender
+echo          %C%[  3 ]%N% Desat. GPU Scheduling                                  %C%[  4 ]%N% Desativar AMD Overlay e Telemetria
+echo          %C%[  5 ]%N% Instalar o Driver AMD                                  %C%[  6 ]%N% Voltar Ao Menu Principal
 echo(
 set "op="
 set /p op=                                        Digite o numero:
@@ -450,15 +450,15 @@ goto menu_amd
 call :hdr fix
 echo(%C%                            Escolha a opcao que voce quer otimizar:%N%
 echo(
-echo         %C%[ 1 ]%N% Fix Loja do windows nao baixa nada%C%[ 2 ]%N% Fix Anticheat Bloqueando Jogo
-echo         %C%[ 3 ]%N% Fix Pc nao desliga (Fica so encerrando)%C%[ 4 ]%N% Fix Tela preta apos boot
-echo         %C%[ 5 ]%N% Fix Notebook nao sai do modo aviao%C%[ 6 ]%N% Fix Bluetooth Parou
-echo         %C%[ 7 ]%N% Fix AUDIO                         %C%[ 8 ]%N% Fix Reativar WI-FI
-echo         %C%[ 9 ]%N% Fix Audio Bugado                  %C%[ 10 ]%N% Fix Servicos Xbox
-echo         %C%[ 11 ]%N% Fix Xbox app e Game Pass         %C%[ 12 ]%N% Fix Erros de Disco
-echo         %C%[ 13 ]%N% Fix de Rede e Internet           %C%[ 14 ]%N% Fix Menu iniciar e Barra de Tarefas
-echo         %C%[ 15 ]%N% Fix Microsoft Store              %C%[ 16 ]%N% Fix Windows Update
-echo         %C%[ 17 ]%N% Fix de arquivos Corrompidos      %C%[ 18 ]%N% Voltar ao Menu Principal
+echo          %C%[  1 ]%N% Fix Loja do windows nao baixa nada                     %C%[  2 ]%N% Fix Anticheat Bloqueando Jogo
+echo          %C%[  3 ]%N% Fix Pc nao desliga (Fica so encerrando)                %C%[  4 ]%N% Fix Tela preta apos boot
+echo          %C%[  5 ]%N% Fix Notebook nao sai do modo aviao                     %C%[  6 ]%N% Fix Bluetooth Parou
+echo          %C%[  7 ]%N% Fix AUDIO                                              %C%[  8 ]%N% Fix Reativar WI-FI
+echo          %C%[  9 ]%N% Fix Audio Bugado                                       %C%[ 10 ]%N% Fix Servicos Xbox
+echo          %C%[ 11 ]%N% Fix Xbox app e Game Pass                               %C%[ 12 ]%N% Fix Erros de Disco
+echo          %C%[ 13 ]%N% Fix de Rede e Internet                                 %C%[ 14 ]%N% Fix Menu iniciar e Barra de Tarefas
+echo          %C%[ 15 ]%N% Fix Microsoft Store                                    %C%[ 16 ]%N% Fix Windows Update
+echo          %C%[ 17 ]%N% Fix de arquivos Corrompidos                            %C%[ 18 ]%N% Voltar ao Menu Principal
 echo(
 set "op="
 set /p op=                                        Digite o numero:
@@ -612,21 +612,21 @@ goto menu_fix
 call :hdr deb
 echo(%C%                                Escolha qual Bloatware Remover:%N%
 echo(
-echo         %C%[ 1 ]%N% Usar todos (CUIDADO)              %C%[ 2 ]%N% Remover officehub
-echo         %C%[ 3 ]%N% Remover Cortana                   %C%[ 4 ]%N% Remover Copilot
-echo         %C%[ 5 ]%N% Remover Loja do Windows           %C%[ 6 ]%N% Remover a Xbox
-echo         %C%[ 7 ]%N% Remover Windows Photos            %C%[ 8 ]%N% Remover Windows People
-echo         %C%[ 9 ]%N% Remover Windows Music             %C%[ 10 ]%N% Remover Windows Messaging
-echo         %C%[ 11 ]%N% Remover Windows Maps             %C%[ 12 ]%N% Remover Windows Groove
-echo         %C%[ 13 ]%N% Remover Windows GetStarted       %C%[ 14 ]%N% Remover Calendario
-echo         %C%[ 15 ]%N% Remover Calculadora              %C%[ 16 ]%N% Remover Windows Alarms
-echo         %C%[ 17 ]%N% Remover 3DBuilder                %C%[ 18 ]%N% Remover Windows Camera
-echo         %C%[ 19 ]%N% Remover Noticias                 %C%[ 20 ]%N% Remover OneDrive
-echo         %C%[ 21 ]%N% Remover Anuncios e sugestoes     %C%[ 22 ]%N% Remover Emails
-echo         %C%[ 23 ]%N% Remover Outlook                  %C%[ 24 ]%N% Remover Assistencia Rapida
-echo         %C%[ 25 ]%N% Remover Microsoft To do          %C%[ 26 ]%N% Remover Solitaire e jogos Casuais
-echo         %C%[ 27 ]%N% Remover Clima                    %C%[ 28 ]%N% Remover Hub de Comentarios
-echo         %C%[ 29 ]%N% Reverter Debloaters              %C%[ 30 ]%N% Voltar Ao Menu Principal
+echo          %C%[  1 ]%N% Usar todos (CUIDADO)                                   %C%[  2 ]%N% Remover officehub
+echo          %C%[  3 ]%N% Remover Cortana                                        %C%[  4 ]%N% Remover Copilot
+echo          %C%[  5 ]%N% Remover Loja do Windows                                %C%[  6 ]%N% Remover a Xbox
+echo          %C%[  7 ]%N% Remover Windows Photos                                 %C%[  8 ]%N% Remover Windows People
+echo          %C%[  9 ]%N% Remover Windows Music                                  %C%[ 10 ]%N% Remover Windows Messaging
+echo          %C%[ 11 ]%N% Remover Windows Maps                                   %C%[ 12 ]%N% Remover Windows Groove
+echo          %C%[ 13 ]%N% Remover Windows GetStarted                             %C%[ 14 ]%N% Remover Calendario
+echo          %C%[ 15 ]%N% Remover Calculadora                                    %C%[ 16 ]%N% Remover Windows Alarms
+echo          %C%[ 17 ]%N% Remover 3DBuilder                                      %C%[ 18 ]%N% Remover Windows Camera
+echo          %C%[ 19 ]%N% Remover Noticias                                       %C%[ 20 ]%N% Remover OneDrive
+echo          %C%[ 21 ]%N% Remover Anuncios e sugestoes                           %C%[ 22 ]%N% Remover Emails
+echo          %C%[ 23 ]%N% Remover Outlook                                        %C%[ 24 ]%N% Remover Assistencia Rapida
+echo          %C%[ 25 ]%N% Remover Microsoft To do                                %C%[ 26 ]%N% Remover Solitaire e jogos Casuais
+echo          %C%[ 27 ]%N% Remover Clima                                          %C%[ 28 ]%N% Remover Hub de Comentarios
+echo          %C%[ 29 ]%N% Reverter Debloaters                                    %C%[ 30 ]%N% Voltar Ao Menu Principal
 echo(
 set "op="
 set /p op=                                       Escolha uma opcao:
@@ -723,9 +723,9 @@ goto menu_deb
 call :hdr xbox
 echo(%C%                                    MENU DE OTIMIZACAO DO PC%N%
 echo(
-echo         [1] Iniciar Otimizacao (Remover Xbox)
-echo         [2] Reverter Otimizacao (Restaurar Xbox)
-echo         [3] Voltar ao Menu Principal
+echo          %C%[  1 ]%N% Iniciar Otimizacao (Remover Xbox)
+echo          %C%[  2 ]%N% Reverter Otimizacao (Restaurar Xbox)
+echo          %C%[  3 ]%N% Voltar ao Menu Principal
 echo(
 set "op="
 set /p op=                                    Digite a opcao desejada:
@@ -765,9 +765,9 @@ goto menu_xbox
 call :hdr svc
 echo(%C%                                 OTIMIZADOR DE SERVICOS WINDOWS%N%
 echo(
-echo         [1] Desativar Servicos
-echo         [2] Reverter Otimizacao
-echo         [3] Voltar ao Menu Principal
+echo          %C%[  1 ]%N% Desativar Servicos
+echo          %C%[  2 ]%N% Reverter Otimizacao
+echo          %C%[  3 ]%N% Voltar ao Menu Principal
 echo(
 set "op="
 set /p op=                                    Digite a opcao desejada:
@@ -802,17 +802,17 @@ goto menu_svc
 call :hdr games
 echo(%C%                            Escolha o jogo que voce quer priorizar:%N%
 echo(
-echo         %C%[ 1 ]%N% Fortnite                          %C%[ 2 ]%N% Gta V
-echo         %C%[ 3 ]%N% FiveM                             %C%[ 4 ]%N% CS2
-echo         %C%[ 5 ]%N% Minecraft                         %C%[ 6 ]%N% Valorant
-echo         %C%[ 7 ]%N% League of Legends                 %C%[ 8 ]%N% Warzone
-echo         %C%[ 9 ]%N% Apex Legends                      %C%[ 10 ]%N% Roblox
-echo         %C%[ 11 ]%N% God Of War (2018 e ragnarok)     %C%[ 12 ]%N% MTA
-echo         %C%[ 13 ]%N% Euro Truck Simulator (1 e 2)     %C%[ 14 ]%N% Rainbow Six Siege
-echo         %C%[ 15 ]%N% Cult of the Lamb                 %C%[ 16 ]%N% ULTRAKILL
-echo         %C%[ 17 ]%N% Blood Strike                     %C%[ 18 ]%N% Arena Breakout
-echo         %C%[ 19 ]%N% Resident Evil 4 Remake           %C%[ 20 ]%N% Resident Evil 2 Remake
-echo         %C%[ 21 ]%N% Tweaks globais                   %C%[ 22 ]%N% Menu Principal
+echo          %C%[  1 ]%N% Fortnite                                               %C%[  2 ]%N% Gta V
+echo          %C%[  3 ]%N% FiveM                                                  %C%[  4 ]%N% CS2
+echo          %C%[  5 ]%N% Minecraft                                              %C%[  6 ]%N% Valorant
+echo          %C%[  7 ]%N% League of Legends                                      %C%[  8 ]%N% Warzone
+echo          %C%[  9 ]%N% Apex Legends                                           %C%[ 10 ]%N% Roblox
+echo          %C%[ 11 ]%N% God Of War (2018 e ragnarok)                           %C%[ 12 ]%N% MTA
+echo          %C%[ 13 ]%N% Euro Truck Simulator (1 e 2)                           %C%[ 14 ]%N% Rainbow Six Siege
+echo          %C%[ 15 ]%N% Cult of the Lamb                                       %C%[ 16 ]%N% ULTRAKILL
+echo          %C%[ 17 ]%N% Blood Strike                                           %C%[ 18 ]%N% Arena Breakout
+echo          %C%[ 19 ]%N% Resident Evil 4 Remake                                 %C%[ 20 ]%N% Resident Evil 2 Remake
+echo          %C%[ 21 ]%N% Tweaks globais                                         %C%[ 22 ]%N% Menu Principal
 echo(
 set "op="
 set /p op=                                        Digite o numero:
