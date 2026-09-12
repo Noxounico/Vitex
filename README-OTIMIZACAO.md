@@ -1,45 +1,31 @@
-# Boost FPS Nox — Optimização
+# Nox Otimização (`Optimizacao.bat`)
 
-Ferramenta **Windows 10/11** em menu (laranja, opções numeradas).  
+Ferramenta **Windows 10/11** em menu de duas colunas (números laranja).  
 Ficheiros: `Optimizacao.bat` e a cópia `Optimizaça.bat` (mesmo conteúdo).
 
 ## Como usar
 
 1. Botão direito → **Executar como administrador**.
-2. Escolhe o número no menu (Enter).
-3. Cria um **ponto de restauro** (opção 1) antes do resto.
-4. Reinicia o PC depois de energia / NVIDIA / AMD / HAGS.
+2. Cria um **ponto de restauro** (opção **1**) antes do resto.
+3. Escolhe o número e Enter.
+4. Reinicia depois de energia / NVIDIA / AMD / Hyper-V / HAGS.
 
 ## Menu principal
 
-| # | Opção | O que faz |
-|---|--------|-----------|
-| 1 | Ponto de restauração | Checkpoint do sistema |
-| 2 | Otimizar Windows | Submenu (efeitos, energia, Explorer, etc.) |
-| 3 | Otimização de jogos | Game Mode + prioridade CPU/GPU por jogo |
-| 4 | Periféricos | Desliga aceleração do rato |
-| 5 | Inicialização | Atraso de arranque = 0 |
-| 6 | RAM | Limpa `%TEMP%` do utilizador + tarefas idle |
-| 7 | Ping | Sem throttle MMCSS + TCPNoDelay (rede **continua ligada**) |
-| 8 | AMD | HAGS + ULPS off se houver GPU AMD |
-| 9 | NVIDIA | HAGS + desliga só telemetria NVIDIA se existir |
-| 10 | Fix de erros | `sfc` + DISM RestoreHealth |
-| 11 | Debloater leve | Widgets, dicas, destaques — **não desinstala** o Windows |
-| 12 | Sair | |
+1 Criar Ponto de Restauração · 2 Otimizar Windows · 3 Otimização de Jogos · 4 Otimização de Periféricos · 5 Config. inicialização do Windows · 6 Liberar Memória Ram · 7 Melhorar Conexão/Ping · 8 Otimizar AMD · 9 Otimizar NVIDIA · 10 Fix de Erros · 11 Debloater · 12 Sair
 
-Jogos no submenu 3: Fortnite, GTA V, FiveM, CS2, Minecraft, Valorant, LoL, Warzone, Apex, Roblox, GoW, MTA, ETS2, R6, Cult of the Lamb, ULTRAKILL, Blood Strike, Arena Breakout, RE4/RE2 Remake.
+**Otimizar Windows** tem as 38 opções do ecrã de referência (energia, visuais, Xbox, serviços, Explorer, etc.).  
+Opção 5 abre o menu Xbox (remover / restaurar). Opção 8 abre o otimizador de serviços (desativar / reverter).
 
-## O que **não** toca (de propósito)
+## Recusado de propósito (aparece no menu, não executa)
 
-- Windows Defender / SmartScreen / Anti-Malware  
-- UAC  
-- Windows Update  
-- Firewall  
-- Wi‑Fi / Ethernet / IPv6  
-- Ficheiros de sistema (só temp do utilizador e cache de miniaturas)  
-- Sem tarefas agendadas nem cópia para a pasta de arranque  
+- **16** Desativar SmartScreen  
+- **22** Desat. UAC  
+- **27** Desat. Anti-Malware  
+
+Também **não** mexe em Windows Defender, Windows Update, Firewall nem na rede.
 
 ## Reverter
 
-Definições → Sistema → Recuperação → restauro `Boost FPS Nox Optimizacao`.  
-Plano de energia: *Equilibrado*. Rato: voltar a marcar “Melhorar precisão do ponteiro”.
+Definições → Sistema → Recuperação → ponto `Nox Otimizacao`.  
+Xbox e serviços têm opção **Reverter** no próprio submenu.
