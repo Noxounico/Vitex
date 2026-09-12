@@ -1072,10 +1072,8 @@ const PAINEL_TEXTOS = {
     { entrega: '🎫 Entrega via ticket', imagem: SERVIDORES_BANNER_URL_PADRAO }
   ),
   curso: textoPainel(
-    '📚 CURSOS',
+    '<:f0446f42e4d3476db13d1d82c01a77a5:1548459242413883422> Curso SS',
     [
-      '🔹 Curso Básico: 15€',
-      '🔹 Curso Avançado: 30€',
       '✨ Incluído:',
       '・Aulas claras, passo a passo',
       '・Material pronto a seguir',
