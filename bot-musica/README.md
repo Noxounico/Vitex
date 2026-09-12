@@ -76,18 +76,22 @@ No Discord:
 - Precisas de Spotify ativo (app ou web) a tocar na conta autorizada.
 - Premium facilita controlo remoto consistente.
 
+## Deploy (Railway, Render, etc.)
+
+- **Start command:** `npm start`
+- **Root directory:** `/` (raiz do repo)
+- Define as variáveis de ambiente no painel do hosting (não uses ficheiro `.env` no servidor se o painel já as define)
+
 ## Estrutura
 
 ```
 bot-musica/
-├── src/
-│   ├── index.js      # Discord client e comandos
-│   ├── sync.js       # Loop de espelhamento
-│   ├── spotify.js    # Cliente Spotify API
-│   ├── player.js     # Voz Discord + YouTube
-│   └── config.js
-├── scripts/
-│   └── spotify-auth.js
+├── index.js          # Discord client e comandos
+├── sync.js           # Loop de espelhamento
+├── spotify.js        # Cliente Spotify API
+├── player.js         # Voz Discord + YouTube
+├── config.js
+├── spotify-auth.js   # OAuth Spotify (npm run auth:spotify)
 ├── .env.example
 └── package.json
 ```
