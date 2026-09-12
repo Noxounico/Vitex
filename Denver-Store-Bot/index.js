@@ -240,7 +240,7 @@ const LINKS_BANNER_URL_PADRAO =
   'https://media.discordapp.net/attachments/1545383446208315422/1547880624872751134/content.png?ex=6aa507ab&is=6aa3b62b&hm=6262b3f6c612c8213bf519bd02310c41d84b8aab76041d519a5ad7e8cab0bb70&=&format=webp&quality=lossless&width=1519&height=856';
 const BOTS_BANNER_URL_PADRAO =
   process.env.BOTS_BANNER_URL ||
-  'https://media.discordapp.net/attachments/1545383446208315422/1547885597614673930/content.png?ex=6aa50c4c&is=6aa3bacc&hm=6216ab9c06261dec24a30a8d4fa993c5dbd10071b63ec530e5a1717d84dbeb75&=&format=webp&quality=lossless&width=1518&height=856';
+  'https://media.discordapp.net/attachments/1547020344873848932/1548465734990958592/content.png?ex=6aa72898&is=6aa5d718&hm=3d36a74595db5f72a0af0a443299491b981a5f61aa051230422cef03c4a2b1c0&=&format=webp&quality=lossless&width=1518&height=856';
 const SERVIDORES_BANNER_URL_PADRAO =
   process.env.SERVIDORES_BANNER_URL ||
   'https://cdn.discordapp.com/attachments/1545383446208315422/1547886814973399082/content.png?ex=6aa50d6f&is=6aa3bbef&hm=dd92545b597805591310259bdd63813beceef8c46afb95a8f96228739fbd2538&';
