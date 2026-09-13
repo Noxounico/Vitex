@@ -6,17 +6,20 @@ setlocal EnableExtensions EnableDelayedExpansion
 :: Nao desativa UAC, Windows Update, Firewall nem a rede.
 
 title VENIX Otimizacao
-color 0E
-mode con cols=140 lines=48 >nul 2>&1
+color 0F
+mode con cols=140 lines=52 >nul 2>&1
 chcp 65001 >nul
 echo off
 
 for /F %%A in ('echo prompt $E^| cmd') do set "E=%%A"
 set "C=%E%[38;5;208m"
+set "Y=%E%[38;5;220m"
 set "W=%E%[97m"
 set "G=%E%[90m"
+set "D=%E%[38;5;240m"
 set "R=%E%[91m"
 set "P=%E%[95m"
+set "K=%E%[38;5;82m"
 set "N=%E%[0m"
 
 net session >nul 2>&1
@@ -31,114 +34,150 @@ goto menu_main
 :hdr
 cls
 echo(
+call :bar_top
 call :art_%~1
+call :bar_bot
 echo(
+goto :eof
+
+:bar_top
+echo(%C%               ╔════════════════════════════════════════════════════════════════════════════════════════════════════════════╗%N%
+goto :eof
+
+:bar_bot
+echo(%C%               ╚════════════════════════════════════════════════════════════════════════════════════════════════════════════╝%N%
+goto :eof
+
+:ask
+echo(
+set "op="
+set /p op=                                               %C%^> %N%
 goto :eof
 
 :art_venix
-echo(%C%                                   __     _______ _   _ _____  __%N%
-echo(%C%                                   \ \   / / ____^| \ ^| ^|_ _\ \/ /%N%
-echo(%C%                                    \ \ / /^|  _^| ^|  \^| ^|^| ^| \  / %N%
-echo(%C%                                     \ V / ^| ^|___^| ^|\  ^|^| ^| /  \ %N%
-echo(%C%                                     \_/  ^|_____^|_^| \_|___/_/\_\ %N%
-echo(
-echo(%C%                     ___ _____ ___ __  __ ___ _____   _    ____    _    ___%N%
-echo(%C%                    / _ \_   _^|_ _^|  \/  ^|_ _^|__  /  / \  / ___^|  / \  / _ \ %N%
-echo(%C%                   ^| ^| ^| ^|^| ^|  ^| ^|^| ^|\/^| ^|^| ^|  / /  / _ \^| ^|     / _ \^| ^| ^| ^|%N%
-echo(%C%                   ^| ^|_^| ^|^| ^|  ^| ^|^| ^|  ^| ^|^| ^| / /_ / ___ \ ^|___ / ___ \ ^|_^| ^|%N%
-echo(%C%                    \___/ ^|_^| ^|___^|_^|  ^|_^|___/____/_/   \_\____/_/   \_\___/%N%
+echo(%C%               ║                                                                                                            ║%N%
+echo(%C%               ║                                     _    _________   _______  __                                           ║%N%
+echo(%C%               ║                                    ^| ^|  / / ____/ ^| / /  _/ ^|/ /                                           ║%N%
+echo(%C%               ║                                    ^| ^| / / __/ /  ^|/ // / ^|   /                                            ║%N%
+echo(%C%               ║                                    ^| ^|/ / /___/ /^|  // / /   ^|                                             ║%N%
+echo(%C%               ║                                    ^|___/_____/_/ ^|_/___//_/^|_^|                                             ║%N%
+echo(%C%               ║                                                                                                            ║%N%
+echo(%C%               ║                                    O T I M I Z A C A O   W I N D O W S                                     ║%N%
+echo(%C%               ║                                                                                                            ║%N%
 goto :eof
 
 :art_win
-echo(%C%                       __        _____ _   _ ____   _____        ______%N%
-echo(%C%                       \ \      / /_ _^| \ ^| ^|  _ \ / _ \ \      / / ___^|%N%
-echo(%C%                        \ \ /\ / / ^| ^|^|  \^| ^| ^| ^| ^| ^| ^| \ \ /\ / /\___ \ %N%
-echo(%C%                         \ V  V /  ^| ^|^| ^|\  ^| ^|_^| ^| ^|_^| ^|\ V  V /  ___) ^|%N%
-echo(%C%                          \_/\_/  ^|___^|_^| \_^|____/ \___/  \_/\_/  ^|____/%N%
+echo(%C%               ║                                                                                                            ║%N%
+echo(%C%               ║                               _       _______   ______  ____ _       _______                               ║%N%
+echo(%C%               ║                              ^| ^|     / /  _/ ^| / / __ \/ __ \ ^|     / / ___/                               ║%N%
+echo(%C%               ║                              ^| ^| /^| / // //  ^|/ / / / / / / / ^| /^| / /\__ \                                ║%N%
+echo(%C%               ║                              ^| ^|/ ^|/ // // /^|  / /_/ / /_/ /^| ^|/ ^|/ /___/ /                                ║%N%
+echo(%C%               ║                              ^|__/^|__/___/_/ ^|_/_____/\____/ ^|__/^|__//____/                                 ║%N%
+echo(%C%               ║                                                                                                            ║%N%
 goto :eof
 
 :art_games
-echo(%C%                                     _  ___   ____  ___  ____%N%
-echo(%C%                                    ^| ^|/ _ \ / ___^|/ _ \/ ___^|%N%
-echo(%C%                                 _  ^| ^| ^| ^| ^| ^|  _^| ^| ^| \___ \ %N%
-echo(%C%                                ^| ^|_^| ^| ^|_^| ^| ^|_^| ^| ^|_^| ^|___) ^|%N%
-echo(%C%                                 \___/ \___/ \____^|\___/^|____/%N%
+echo(%C%               ║                                                                                                            ║%N%
+echo(%C%               ║                                             ______  __________  _____                                      ║%N%
+echo(%C%               ║                                            / / __ \/ ____/ __ \/ ___/                                      ║%N%
+echo(%C%               ║                                       __  / / / / / / __/ / / /\__ \                                       ║%N%
+echo(%C%               ║                                      / /_/ / /_/ / /_/ / /_/ /___/ /                                       ║%N%
+echo(%C%               ║                                      \____/\____/\____/\____//____/                                        ║%N%
+echo(%C%               ║                                                                                                            ║%N%
 goto :eof
 
 :art_hw
-echo(%C%                      _   _    _    ____  ______        ___    ____  _____%N%
-echo(%C%                     ^| ^| ^| ^|  / \  ^|  _ \^|  _ \ \      / / \  ^|  _ \^| ____^|%N%
-echo(%C%                     ^| ^|_^| ^| / _ \ ^| ^|_) ^| ^| ^| \ \ /\ / / _ \ ^| ^|_) ^|  _^|%N%
-echo(%C%                     ^|  _  ^|/ ___ \^|  _ ^<^| ^|_^| ^|\ V  V / ___ \^|  _ ^<^| ^|___%N%
-echo(%C%                     ^|_^| ^|_/_/   \_\_^| \_\____/  \_/\_/_/   \_\_^| \_\_____^|%N%
+echo(%C%               ║                                                                                                            ║%N%
+echo(%C%               ║                            _   _    _    ____  ______        ___    ____  _____                            ║%N%
+echo(%C%               ║                           ^| ^| ^| ^|  / \  ^|  _ \^|  _ \ \      / / \  ^|  _ \^| ____^|                           ║%N%
+echo(%C%               ║                           ^| ^|_^| ^| / _ \ ^| ^|_) ^| ^| ^| \ \ /\ / / _ \ ^| ^|_) ^|  _^|                             ║%N%
+echo(%C%               ║                           ^|  _  ^|/ ___ \^|  _ ^<^| ^|_^| ^|\ V  V / ___ \^|  _ ^<^| ^|___                            ║%N%
+echo(%C%               ║                           ^|_^| ^|_/_/   \_\_^| \_\____/  \_/\_/_/   \_\_^| \_\_____^|                           ║%N%
+echo(%C%               ║                                                                                                            ║%N%
 goto :eof
 
 :art_ping
-echo(%C%                                      ____ ___ _   _  ____%N%
-echo(%C%                                     ^|  _ \_ _^| \ ^| ^|/ ___^|%N%
-echo(%C%                                     ^| ^|_) ^| ^|^|  \^| ^| ^|  _%N%
-echo(%C%                                     ^|  __/^| ^|^| ^|\  ^| ^|_^| ^|%N%
-echo(%C%                                     ^|_^|  ^|___^|_^| \_^|\____^|%N%
+echo(%C%               ║                                                                                                            ║%N%
+echo(%C%               ║                                             ____  _____   ________                                         ║%N%
+echo(%C%               ║                                            / __ \/  _/ ^| / / ____/                                         ║%N%
+echo(%C%               ║                                           / /_/ // //  ^|/ / / __                                           ║%N%
+echo(%C%               ║                                          / ____// // /^|  / /_/ /                                           ║%N%
+echo(%C%               ║                                         /_/   /___/_/ ^|_/\____/                                            ║%N%
+echo(%C%               ║                                                                                                            ║%N%
 goto :eof
 
 :art_amd
-echo(%C%                                         _    __  __ ____%N%
-echo(%C%                                        / \  ^|  \/  ^|  _ \ %N%
-echo(%C%                                       / _ \ ^| ^|\/^| ^| ^| ^| ^|%N%
-echo(%C%                                      / ___ \^| ^|  ^| ^| ^|_^| ^|%N%
-echo(%C%                                     /_/   \_\_^|  ^|_^|____/%N%
+echo(%C%               ║                                                                                                            ║%N%
+echo(%C%               ║                                              ___    __  _______                                            ║%N%
+echo(%C%               ║                                             /   ^|  /  ^|/  / __ \                                           ║%N%
+echo(%C%               ║                                            / /^| ^| / /^|_/ / / / /                                           ║%N%
+echo(%C%               ║                                           / ___ ^|/ /  / / /_/ /                                            ║%N%
+echo(%C%               ║                                          /_/  ^|_/_/  /_/_____/                                             ║%N%
+echo(%C%               ║                                                                                                            ║%N%
 goto :eof
 
 :art_fix
-echo(%C%                                         _____ _____  __%N%
-echo(%C%                                        ^|  ___^|_ _\ \/ /%N%
-echo(%C%                                        ^| ^|_   ^| ^| \  /%N%
-echo(%C%                                        ^|  _^|  ^| ^| /  \ %N%
-echo(%C%                                        ^|_^|   ^|___/_/\_\ %N%
+echo(%C%               ║                                                                                                            ║%N%
+echo(%C%               ║                                                ___________  __                                             ║%N%
+echo(%C%               ║                                               / ____/  _/ ^|/ /                                             ║%N%
+echo(%C%               ║                                              / /_   / / ^|   /                                              ║%N%
+echo(%C%               ║                                             / __/ _/ / /   ^|                                               ║%N%
+echo(%C%               ║                                            /_/   /___//_/^|_^|                                               ║%N%
+echo(%C%               ║                                                                                                            ║%N%
 goto :eof
 
 :art_deb
-echo(%C%                            ____  _____ ____  _     ___    _  _____%N%
-echo(%C%                           ^|  _ \^| ____^| __ )^| ^|   / _ \  / \^|_   _^|%N%
-echo(%C%                           ^| ^| ^| ^|  _^| ^|  _ \^| ^|  ^| ^| ^| ^|/ _ \ ^| ^|%N%
-echo(%C%                           ^| ^|_^| ^| ^|___^| ^|_) ^| ^|__^| ^|_^| / ___ \^| ^|%N%
-echo(%C%                           ^|____/^|_____^|____/^|_____\___/_/   \_\_^|%N%
+echo(%C%               ║                                                                                                            ║%N%
+echo(%C%               ║                                  ____  _____ ____  _     ___    _  _____                                   ║%N%
+echo(%C%               ║                                 ^|  _ \^| ____^| __ )^| ^|   / _ \  / \^|_   _^|                                  ║%N%
+echo(%C%               ║                                 ^| ^| ^| ^|  _^| ^|  _ \^| ^|  ^| ^| ^| ^|/ _ \ ^| ^|                                    ║%N%
+echo(%C%               ║                                 ^| ^|_^| ^| ^|___^| ^|_) ^| ^|__^| ^|_^| / ___ \^| ^|                                    ║%N%
+echo(%C%               ║                                 ^|____/^|_____^|____/^|_____\___/_/   \_\_^|                                    ║%N%
+echo(%C%               ║                                                                                                            ║%N%
 goto :eof
 
 :art_xbox
-echo(%C%                                     __  ______   _____  __%N%
-echo(%C%                                     \ \/ / __ ) / _ \ \/ /%N%
-echo(%C%                                      \  /^|  _ \^| ^| ^| \  /%N%
-echo(%C%                                      /  \^| ^|_) ^| ^|_^| /  \ %N%
-echo(%C%                                     /_/\_\____/ \___/_/\_\ %N%
+echo(%C%               ║                                                                                                            ║%N%
+echo(%C%               ║                                            _  __ ____  ____ _  __                                          ║%N%
+echo(%C%               ║                                           ^| ^|/ // __ )/ __ \ ^|/ /                                          ║%N%
+echo(%C%               ║                                           ^|   // __  / / / /   /                                           ║%N%
+echo(%C%               ║                                          /   ^|/ /_/ / /_/ /   ^|                                            ║%N%
+echo(%C%               ║                                         /_/^|_/_____/\____/_/^|_^|                                            ║%N%
+echo(%C%               ║                                                                                                            ║%N%
 goto :eof
 
 :art_svc
-echo(%C%                          ____  _____ ______     _____ ____ ___  ____%N%
-echo(%C%                         / ___^|^| ____^|  _ \ \   / /_ _/ ___/ _ \/ ___^|%N%
-echo(%C%                         \___ \^|  _^| ^| ^|_) \ \ / / ^| ^| ^|  ^| ^| ^| \___ \ %N%
-echo(%C%                          ___) ^| ^|___^|  _ ^< \ V /  ^| ^| ^|__^| ^|_^| ^|___) ^|%N%
-echo(%C%                         ^|____/^|_____^|_^| \_\ \_/  ^|___\____\___/^|____/%N%
+echo(%C%               ║                                                                                                            ║%N%
+echo(%C%               ║                                ____  _____ ______     _____ ____ ___  ____                                 ║%N%
+echo(%C%               ║                               / ___^|^| ____^|  _ \ \   / /_ _/ ___/ _ \/ ___^|                                ║%N%
+echo(%C%               ║                               \___ \^|  _^| ^| ^|_) \ \ / / ^| ^| ^|  ^| ^| ^| \___ \                                ║%N%
+echo(%C%               ║                                ___) ^| ^|___^|  _ ^< \ V /  ^| ^| ^|__^| ^|_^| ^|___) ^|                               ║%N%
+echo(%C%               ║                               ^|____/^|_____^|_^| \_\ \_/  ^|___\____\___/^|____/                                ║%N%
+echo(%C%               ║                                                                                                            ║%N%
 goto :eof
 
 :art_clean
-echo(%C%                      ____ _     _____    _    _   _%N%
-echo(%C%                     / ___^| ^|   ^| ____^|  / \  ^| \ ^| ^|%N%
-echo(%C%                    ^| ^|   ^| ^|   ^|  _^|   / _ \ ^|  \^| ^|%N%
-echo(%C%                    ^| ^|___^| ^|___^| ^|___ / ___ \^| ^|\  ^|%N%
-echo(%C%                     \____^|_____^|_____/_/   \_\_^| \_|%N%
+echo(%C%               ║                                                                                                            ║%N%
+echo(%C%               ║                                       ____ _     _____    _    _   _                                       ║%N%
+echo(%C%               ║                                      / ___^| ^|   ^| ____^|  / \  ^| \ ^| ^|                                      ║%N%
+echo(%C%               ║                                     ^| ^|   ^| ^|   ^|  _^|   / _ \ ^|  \^| ^|                                      ║%N%
+echo(%C%               ║                                     ^| ^|___^| ^|___^| ^|___ / ___ \^| ^|\  ^|                                      ║%N%
+echo(%C%               ║                                      \____^|_____^|_____/_/   \_\_^| \_^|                                      ║%N%
+echo(%C%               ║                                                                                                            ║%N%
 goto :eof
 
 :art_start
-echo(%C%                         ____ _____  _    ____ _____%N%
-echo(%C%                        / ___^|_   _^|/ \  ^|  _ \_   _^|%N%
-echo(%C%                        \___ \ ^| ^| / _ \ ^| ^|_) ^|^| ^|%N%
-echo(%C%                         ___) ^|^| ^|/ ___ \^|  _ ^< ^| ^|%N%
-echo(%C%                        ^|____/ ^|_/_/   \_\_^| \_\ |_|%N%
+echo(%C%               ║                                                                                                            ║%N%
+echo(%C%               ║                                        ____ _____  _    ____ _____                                         ║%N%
+echo(%C%               ║                                       / ___^|_   _^|/ \  ^|  _ \_   _^|                                        ║%N%
+echo(%C%               ║                                       \___ \ ^| ^| / _ \ ^| ^|_) ^|^| ^|                                          ║%N%
+echo(%C%               ║                                        ___) ^|^| ^|/ ___ \^|  _ ^< ^| ^|                                          ║%N%
+echo(%C%               ║                                       ^|____/ ^|_/_/   \_\_^| \_\^|_^|                                          ║%N%
+echo(%C%               ║                                                                                                            ║%N%
 goto :eof
 
 :ok
-echo     [OK] %~1
+echo     %K%[OK]%N% %~1
 goto :eof
 
 :pause_back
@@ -149,7 +188,7 @@ goto :eof
 :refuse
 cls
 echo(
-echo %R%  [RECUSADO] %~1%N%
+echo %R%  [ RECUSADO ] %~1%N%
 echo(
 echo   A VENIX Otimizacao NAO desativa UAC, Windows Update,
 echo   Firewall nem a rede. Nenhuma alteracao foi feita.
@@ -159,7 +198,7 @@ goto :eof
 :confirm_sec
 cls
 echo(
-echo %R%  AVISO: Isto DESATIVA %~1.%N%
+echo %R%  [ AVISO ] Isto DESATIVA %~1.%N%
 echo  O PC fica mais exposto. Nao e stealth: as chaves ficam visiveis.
 echo  Tamper Protection (Protecao contra adulteracao) no Windows Security
 echo  pode bloquear servicos/chaves ate a desligares uma vez.
@@ -174,19 +213,19 @@ exit /b 0
 
 :menu_main
 call :hdr venix
-echo(%C%                        Selecione o numero da opcao que deseja executar:%N%
-echo(
-echo          %C%[  1 ]%N% Criar Ponto de Restauracao                             %C%[  2 ]%N% Otimizar Windows
-echo          %C%[  3 ]%N% Otimizacao de Jogos                                    %C%[  4 ]%N% Otimizacao de Perifericos
-echo          %C%[  5 ]%N% Config. inicializacao do Windows                       %C%[  6 ]%N% Liberar Memoria Ram
-echo          %C%[  7 ]%N% Melhorar Conexao/Ping                                  %C%[  8 ]%N% Otimizar AMD
-echo          %C%[  9 ]%N% Otimizar NVIDIA                                        %C%[ 10 ]%N% Fix de Erros
-echo          %C%[ 11 ]%N% Debloater                                              %C%[ 12 ]%N% Limpeza do sistema
-echo          %C%[ 13 ]%N% Reverter tudo                                          %C%[ 14 ]%N% Reduzir processos / CPU
-echo          %C%[ 15 ]%N% Remover apps em 2 plano                                %C%[ 16 ]%N% Sair
-echo(
-set "op="
-set /p op=                                       Escolha uma opcao:
+echo(%C%               ╔════════════════════════════════════════════════════════════════════════════════════════════════════════════╗%N%
+echo(%C%               ║%Y%                                               MENU PRINCIPAL                                               %C%║%N%
+echo(%C%               ╠════════════════════════════════════════════════════════════════════════════════════════════════════════════╣%N%
+echo(%C%               ║%N% %C%[  1 ]%N%%W% Criar Ponto de Restauracao                   %N%  %C%[  2 ]%N%%W% Otimizar Windows                             %N% %C%║%N%
+echo(%C%               ║%N% %C%[  3 ]%N%%W% Otimizacao de Jogos                          %N%  %C%[  4 ]%N%%W% Otimizacao de Perifericos                    %N% %C%║%N%
+echo(%C%               ║%N% %C%[  5 ]%N%%W% Config. inicializacao do Windows             %N%  %C%[  6 ]%N%%W% Liberar Memoria Ram                          %N% %C%║%N%
+echo(%C%               ║%N% %C%[  7 ]%N%%W% Melhorar Conexao/Ping                        %N%  %C%[  8 ]%N%%W% Otimizar AMD                                 %N% %C%║%N%
+echo(%C%               ║%N% %C%[  9 ]%N%%W% Otimizar NVIDIA                              %N%  %C%[ 10 ]%N%%W% Fix de Erros                                 %N% %C%║%N%
+echo(%C%               ║%N% %C%[ 11 ]%N%%W% Debloater                                    %N%  %C%[ 12 ]%N%%W% Limpeza do sistema                           %N% %C%║%N%
+echo(%C%               ║%N% %C%[ 13 ]%N%%W% Reverter tudo                                %N%  %C%[ 14 ]%N%%W% Reduzir processos / CPU                      %N% %C%║%N%
+echo(%C%               ║%N% %C%[ 15 ]%N%%W% Remover apps em 2 plano                      %N%  %C%[ 16 ]%N%%W% Sair                                         %N% %C%║%N%
+echo(%C%               ╚════════════════════════════════════════════════════════════════════════════════════════════════════════════╝%N%
+call :ask
 if "%op%"=="1" goto do_restore
 if "%op%"=="2" goto menu_win
 if "%op%"=="3" goto menu_games
@@ -208,30 +247,30 @@ goto menu_main
 
 :menu_win
 call :hdr win
-echo(%C%                            Escolha a opcao que voce quer otimizar:%N%
-echo(
-echo          %C%[  1 ]%N% Otimizar Energia                                       %C%[  2 ]%N% Desat. Efeitos Visuais
-echo          %C%[  3 ]%N% Tweaks de Privacidade                                  %C%[  4 ]%N% Desat. tarefas e servicos de Telemetria
-echo          %C%[  5 ]%N% Desative TOTALMENTE a XBOX                             %C%[  6 ]%N% Desativar Relatorios de Erro
-echo          %C%[  7 ]%N% Otimizar ALT +TAB                                      %C%[  8 ]%N% Desative Servicos Inuteis
-echo          %C%[  9 ]%N% Desat. Hibernacao                                      %C%[ 10 ]%N% Otimizar Explorer
-echo          %C%[ 11 ]%N% Desat. Indexacao de pesquisa                           %C%[ 12 ]%N% Ativar God Mode
-echo          %C%[ 13 ]%N% Desativar Notificacoes                                 %C%[ 14 ]%N% Desativar Cortana
-echo          %C%[ 15 ]%N% Bloquear Envio de feedback automatico                  %C%[ 16 ]%N% Desativar SmartScreen
-echo          %C%[ 17 ]%N% Desativar Overlays (Xbox)                              %C%[ 18 ]%N% Resetar Cache de Miniaturas
-echo          %C%[ 19 ]%N% Desat. Prefetch e Superfetch                           %C%[ 20 ]%N% Fechar Explorer
-echo          %C%[ 21 ]%N% Iniciar Explorer                                       %C%[ 22 ]%N% Desat. UAC
-echo          %C%[ 23 ]%N% Desativar Hyper-V (Maquina Virtual)                    %C%[ 24 ]%N% Verificar/Arrumar arquivos
-echo          %C%[ 25 ]%N% Limpar Cache de Rede                                   %C%[ 26 ]%N% Limpar Cache do Windows
-echo          %C%[ 27 ]%N% Desat. Anti-Malware                                    %C%[ 28 ]%N% Desat. Download Maps Manager
-echo          %C%[ 29 ]%N% Desat. TimeStamp                                       %C%[ 30 ]%N% Desativar Bing Search
-echo          %C%[ 31 ]%N% Desat. Servico de Relogio do Win.                      %C%[ 32 ]%N% Desat. Sugestoes de pesquisa
-echo          %C%[ 33 ]%N% Desat. Animacoes no Sistema                            %C%[ 34 ]%N% Forcar Windows a priorizar Jogos
-echo          %C%[ 35 ]%N% Desat. Memory Compression                              %C%[ 36 ]%N% Desat. Atualizacoes Auto. da Microsoft Store
-echo          %C%[ 37 ]%N% REINICIAR PC                                           %C%[ 38 ]%N% Menu Principal
-echo(
-set "op="
-set /p op=                                        Digite o numero:
+echo(%C%               ╔════════════════════════════════════════════════════════════════════════════════════════════════════════════╗%N%
+echo(%C%               ║%Y%                                                  WINDOWS                                                   %C%║%N%
+echo(%C%               ╠════════════════════════════════════════════════════════════════════════════════════════════════════════════╣%N%
+echo(%C%               ║%N% %C%[  1 ]%N%%W% Otimizar Energia                             %N%  %C%[  2 ]%N%%W% Desat. Efeitos Visuais                       %N% %C%║%N%
+echo(%C%               ║%N% %C%[  3 ]%N%%W% Tweaks de Privacidade                        %N%  %C%[  4 ]%N%%W% Desat. tarefas e servicos de Telemetria      %N% %C%║%N%
+echo(%C%               ║%N% %C%[  5 ]%N%%W% Desative TOTALMENTE a XBOX                   %N%  %C%[  6 ]%N%%W% Desativar Relatorios de Erro                 %N% %C%║%N%
+echo(%C%               ║%N% %C%[  7 ]%N%%W% Otimizar ALT +TAB                            %N%  %C%[  8 ]%N%%W% Desative Servicos Inuteis                    %N% %C%║%N%
+echo(%C%               ║%N% %C%[  9 ]%N%%W% Desat. Hibernacao                            %N%  %C%[ 10 ]%N%%W% Otimizar Explorer                            %N% %C%║%N%
+echo(%C%               ║%N% %C%[ 11 ]%N%%W% Desat. Indexacao de pesquisa                 %N%  %C%[ 12 ]%N%%W% Ativar God Mode                              %N% %C%║%N%
+echo(%C%               ║%N% %C%[ 13 ]%N%%W% Desativar Notificacoes                       %N%  %C%[ 14 ]%N%%W% Desativar Cortana                            %N% %C%║%N%
+echo(%C%               ║%N% %C%[ 15 ]%N%%W% Bloquear Envio de feedback automatico        %N%  %C%[ 16 ]%N%%W% Desativar SmartScreen                        %N% %C%║%N%
+echo(%C%               ║%N% %C%[ 17 ]%N%%W% Desativar Overlays (Xbox)                    %N%  %C%[ 18 ]%N%%W% Resetar Cache de Miniaturas                  %N% %C%║%N%
+echo(%C%               ║%N% %C%[ 19 ]%N%%W% Desat. Prefetch e Superfetch                 %N%  %C%[ 20 ]%N%%W% Fechar Explorer                              %N% %C%║%N%
+echo(%C%               ║%N% %C%[ 21 ]%N%%W% Iniciar Explorer                             %N%  %C%[ 22 ]%N%%W% Desat. UAC                                   %N% %C%║%N%
+echo(%C%               ║%N% %C%[ 23 ]%N%%W% Desativar Hyper-V (Maquina Virtual)          %N%  %C%[ 24 ]%N%%W% Verificar/Arrumar arquivos                   %N% %C%║%N%
+echo(%C%               ║%N% %C%[ 25 ]%N%%W% Limpar Cache de Rede                         %N%  %C%[ 26 ]%N%%W% Limpar Cache do Windows                      %N% %C%║%N%
+echo(%C%               ║%N% %C%[ 27 ]%N%%W% Desat. Anti-Malware                          %N%  %C%[ 28 ]%N%%W% Desat. Download Maps Manager                 %N% %C%║%N%
+echo(%C%               ║%N% %C%[ 29 ]%N%%W% Desat. TimeStamp                             %N%  %C%[ 30 ]%N%%W% Desativar Bing Search                        %N% %C%║%N%
+echo(%C%               ║%N% %C%[ 31 ]%N%%W% Desat. Servico de Relogio do Win.            %N%  %C%[ 32 ]%N%%W% Desat. Sugestoes de pesquisa                 %N% %C%║%N%
+echo(%C%               ║%N% %C%[ 33 ]%N%%W% Desat. Animacoes no Sistema                  %N%  %C%[ 34 ]%N%%W% Forcar Windows a priorizar Jogos             %N% %C%║%N%
+echo(%C%               ║%N% %C%[ 35 ]%N%%W% Desat. Memory Compression                    %N%  %C%[ 36 ]%N%%W% Desat. Atualizacoes Auto. da Microsoft Store %N% %C%║%N%
+echo(%C%               ║%N% %C%[ 37 ]%N%%W% REINICIAR PC                                 %N%  %C%[ 38 ]%N%%W% Menu Principal                               %N% %C%║%N%
+echo(%C%               ╚════════════════════════════════════════════════════════════════════════════════════════════════════════════╝%N%
+call :ask
 if "%op%"=="1" goto w_energia
 if "%op%"=="2" goto w_visual
 if "%op%"=="3" goto w_privacy
@@ -275,15 +314,15 @@ goto menu_win
 
 :menu_hw
 call :hdr hw
-echo(%C%                            Escolha a opcao que voce quer otimizar:%N%
-echo(
-echo          %C%[  1 ]%N% Otimizar HDD                                           %C%[  2 ]%N% Otimizar SSD
-echo          %C%[  3 ]%N% Verificar Temperatura                                  %C%[  4 ]%N% Otimizar Teclado
-echo          %C%[  5 ]%N% Otimizar Mouse                                         %C%[  6 ]%N% Reverter Otimizacao
-echo          %C%[  7 ]%N% Voltar ao Menu Principal
-echo(
-set "op="
-set /p op=                                        Digite o numero:
+echo(%C%               ╔════════════════════════════════════════════════════════════════════════════════════════════════════════════╗%N%
+echo(%C%               ║%Y%                                                PERIFERICOS                                                 %C%║%N%
+echo(%C%               ╠════════════════════════════════════════════════════════════════════════════════════════════════════════════╣%N%
+echo(%C%               ║%N% %C%[  1 ]%N%%W% Otimizar HDD                                 %N%  %C%[  2 ]%N%%W% Otimizar SSD                                 %N% %C%║%N%
+echo(%C%               ║%N% %C%[  3 ]%N%%W% Verificar Temperatura                        %N%  %C%[  4 ]%N%%W% Otimizar Teclado                             %N% %C%║%N%
+echo(%C%               ║%N% %C%[  5 ]%N%%W% Otimizar Mouse                               %N%  %C%[  6 ]%N%%W% Reverter Otimizacao                          %N% %C%║%N%
+echo(%C%               ║%N% %C%[  7 ]%N%%W% Voltar ao Menu Principal                     %N%                                                       %C%║%N%
+echo(%C%               ╚════════════════════════════════════════════════════════════════════════════════════════════════════════════╝%N%
+call :ask
 if "%op%"=="1" goto hw_hdd
 if "%op%"=="2" goto hw_ssd
 if "%op%"=="3" goto hw_temp
@@ -352,14 +391,14 @@ goto menu_hw
 
 :menu_ping
 call :hdr ping
-echo(%C%                        Selecione o numero da opcao que deseja executar:%N%
-echo(
-echo          %C%[  1 ]%N% Desativar Economia de Energia da Rede                  %C%[  2 ]%N% Otimizar TCP (Latencia)
-echo          %C%[  3 ]%N% Remover limitacao de Rede                              %C%[  4 ]%N% Limpar cache de DNS
-echo          %C%[  5 ]%N% Escolher o Melhor DNS                                  %C%[  6 ]%N% Voltar ao Menu Principal
-echo(
-set "op="
-set /p op=                                        Digite o numero:
+echo(%C%               ╔════════════════════════════════════════════════════════════════════════════════════════════════════════════╗%N%
+echo(%C%               ║%Y%                                                PING / REDE                                                 %C%║%N%
+echo(%C%               ╠════════════════════════════════════════════════════════════════════════════════════════════════════════════╣%N%
+echo(%C%               ║%N% %C%[  1 ]%N%%W% Desativar Economia de Energia da Rede        %N%  %C%[  2 ]%N%%W% Otimizar TCP (Latencia)                      %N% %C%║%N%
+echo(%C%               ║%N% %C%[  3 ]%N%%W% Remover limitacao de Rede                    %N%  %C%[  4 ]%N%%W% Limpar cache de DNS                          %N% %C%║%N%
+echo(%C%               ║%N% %C%[  5 ]%N%%W% Escolher o Melhor DNS                        %N%  %C%[  6 ]%N%%W% Voltar ao Menu Principal                     %N% %C%║%N%
+echo(%C%               ╚════════════════════════════════════════════════════════════════════════════════════════════════════════════╝%N%
+call :ask
 if "%op%"=="1" goto ping_eco
 if "%op%"=="2" goto ping_tcp
 if "%op%"=="3" goto ping_lim
@@ -408,12 +447,13 @@ goto menu_ping
 
 :ping_best
 cls
-echo Escolher o Melhor DNS
-echo          %C%[  1 ]%N% Cloudflare 1.1.1.1
-echo          %C%[  2 ]%N% Google 8.8.8.8
-echo          %C%[  3 ]%N% Cancelar
+echo(%C%  Escolher o Melhor DNS%N%
+echo(
+echo          %C%[  1 ]%N%%W% Cloudflare 1.1.1.1%N%
+echo          %C%[  2 ]%N%%W% Google 8.8.8.8%N%
+echo          %C%[  3 ]%N%%W% Cancelar%N%
 set "d="
-set /p d=Numero: 
+set /p d=                                          %C%^> %N%
 if "%d%"=="1" powershell -NoProfile -Command "Get-NetAdapter | Where-Object Status -eq 'Up' | ForEach-Object { Set-DnsClientServerAddress -InterfaceIndex $_.ifIndex -ServerAddresses '1.1.1.1','1.0.0.1' }"
 if "%d%"=="2" powershell -NoProfile -Command "Get-NetAdapter | Where-Object Status -eq 'Up' | ForEach-Object { Set-DnsClientServerAddress -InterfaceIndex $_.ifIndex -ServerAddresses '8.8.8.8','8.8.4.4' }"
 call :ok "DNS aplicado nas placas ativas"
@@ -423,14 +463,14 @@ goto menu_ping
 
 :menu_amd
 call :hdr amd
-echo(%C%                            Escolha a opcao que voce quer otimizar:%N%
-echo(
-echo          %C%[  1 ]%N% Desativar MPO                                          %C%[  2 ]%N% Desativar AMD Crash Defender
-echo          %C%[  3 ]%N% Desat. GPU Scheduling                                  %C%[  4 ]%N% Desativar AMD Overlay e Telemetria
-echo          %C%[  5 ]%N% Instalar o Driver AMD                                  %C%[  6 ]%N% Voltar Ao Menu Principal
-echo(
-set "op="
-set /p op=                                        Digite o numero:
+echo(%C%               ╔════════════════════════════════════════════════════════════════════════════════════════════════════════════╗%N%
+echo(%C%               ║%Y%                                                    AMD                                                     %C%║%N%
+echo(%C%               ╠════════════════════════════════════════════════════════════════════════════════════════════════════════════╣%N%
+echo(%C%               ║%N% %C%[  1 ]%N%%W% Desativar MPO                                %N%  %C%[  2 ]%N%%W% Desativar AMD Crash Defender                 %N% %C%║%N%
+echo(%C%               ║%N% %C%[  3 ]%N%%W% Desat. GPU Scheduling                        %N%  %C%[  4 ]%N%%W% Desativar AMD Overlay e Telemetria           %N% %C%║%N%
+echo(%C%               ║%N% %C%[  5 ]%N%%W% Instalar o Driver AMD                        %N%  %C%[  6 ]%N%%W% Voltar Ao Menu Principal                     %N% %C%║%N%
+echo(%C%               ╚════════════════════════════════════════════════════════════════════════════════════════════════════════════╝%N%
+call :ask
 if "%op%"=="1" goto amd_mpo
 if "%op%"=="2" goto amd_crash
 if "%op%"=="3" goto amd_hags
@@ -485,20 +525,20 @@ goto menu_amd
 
 :menu_fix
 call :hdr fix
-echo(%C%                            Escolha a opcao que voce quer otimizar:%N%
-echo(
-echo          %C%[  1 ]%N% Fix Loja do windows nao baixa nada                     %C%[  2 ]%N% Fix Anticheat Bloqueando Jogo
-echo          %C%[  3 ]%N% Fix Pc nao desliga (Fica so encerrando)                %C%[  4 ]%N% Fix Tela preta apos boot
-echo          %C%[  5 ]%N% Fix Notebook nao sai do modo aviao                     %C%[  6 ]%N% Fix Bluetooth Parou
-echo          %C%[  7 ]%N% Fix AUDIO                                              %C%[  8 ]%N% Fix Reativar WI-FI
-echo          %C%[  9 ]%N% Fix Audio Bugado                                       %C%[ 10 ]%N% Fix Servicos Xbox
-echo          %C%[ 11 ]%N% Fix Xbox app e Game Pass                               %C%[ 12 ]%N% Fix Erros de Disco
-echo          %C%[ 13 ]%N% Fix de Rede e Internet                                 %C%[ 14 ]%N% Fix Menu iniciar e Barra de Tarefas
-echo          %C%[ 15 ]%N% Fix Microsoft Store                                    %C%[ 16 ]%N% Fix Windows Update
-echo          %C%[ 17 ]%N% Fix de arquivos Corrompidos                            %C%[ 18 ]%N% Voltar ao Menu Principal
-echo(
-set "op="
-set /p op=                                        Digite o numero:
+echo(%C%               ╔════════════════════════════════════════════════════════════════════════════════════════════════════════════╗%N%
+echo(%C%               ║%Y%                                                FIX DE ERROS                                                %C%║%N%
+echo(%C%               ╠════════════════════════════════════════════════════════════════════════════════════════════════════════════╣%N%
+echo(%C%               ║%N% %C%[  1 ]%N%%W% Fix Loja do windows nao baixa nada           %N%  %C%[  2 ]%N%%W% Fix Anticheat Bloqueando Jogo                %N% %C%║%N%
+echo(%C%               ║%N% %C%[  3 ]%N%%W% Fix Pc nao desliga (Fica so encerrando)      %N%  %C%[  4 ]%N%%W% Fix Tela preta apos boot                     %N% %C%║%N%
+echo(%C%               ║%N% %C%[  5 ]%N%%W% Fix Notebook nao sai do modo aviao           %N%  %C%[  6 ]%N%%W% Fix Bluetooth Parou                          %N% %C%║%N%
+echo(%C%               ║%N% %C%[  7 ]%N%%W% Fix AUDIO                                    %N%  %C%[  8 ]%N%%W% Fix Reativar WI-FI                           %N% %C%║%N%
+echo(%C%               ║%N% %C%[  9 ]%N%%W% Fix Audio Bugado                             %N%  %C%[ 10 ]%N%%W% Fix Servicos Xbox                            %N% %C%║%N%
+echo(%C%               ║%N% %C%[ 11 ]%N%%W% Fix Xbox app e Game Pass                     %N%  %C%[ 12 ]%N%%W% Fix Erros de Disco                           %N% %C%║%N%
+echo(%C%               ║%N% %C%[ 13 ]%N%%W% Fix de Rede e Internet                       %N%  %C%[ 14 ]%N%%W% Fix Menu iniciar e Barra de Tarefas          %N% %C%║%N%
+echo(%C%               ║%N% %C%[ 15 ]%N%%W% Fix Microsoft Store                          %N%  %C%[ 16 ]%N%%W% Fix Windows Update                           %N% %C%║%N%
+echo(%C%               ║%N% %C%[ 17 ]%N%%W% Fix de arquivos Corrompidos                  %N%  %C%[ 18 ]%N%%W% Voltar ao Menu Principal                     %N% %C%║%N%
+echo(%C%               ╚════════════════════════════════════════════════════════════════════════════════════════════════════════════╝%N%
+call :ask
 if "%op%"=="1" goto fx_loja
 if "%op%"=="2" goto fx_ac
 if "%op%"=="3" goto fx_off
@@ -647,26 +687,26 @@ goto menu_fix
 
 :menu_deb
 call :hdr deb
-echo(%C%                                Escolha qual Bloatware Remover:%N%
-echo(
-echo          %C%[  1 ]%N% Usar todos (CUIDADO)                                   %C%[  2 ]%N% Remover officehub
-echo          %C%[  3 ]%N% Remover Cortana                                        %C%[  4 ]%N% Remover Copilot
-echo          %C%[  5 ]%N% Remover Loja do Windows                                %C%[  6 ]%N% Remover a Xbox
-echo          %C%[  7 ]%N% Remover Windows Photos                                 %C%[  8 ]%N% Remover Windows People
-echo          %C%[  9 ]%N% Remover Windows Music                                  %C%[ 10 ]%N% Remover Windows Messaging
-echo          %C%[ 11 ]%N% Remover Windows Maps                                   %C%[ 12 ]%N% Remover Windows Groove
-echo          %C%[ 13 ]%N% Remover Windows GetStarted                             %C%[ 14 ]%N% Remover Calendario
-echo          %C%[ 15 ]%N% Remover Calculadora                                    %C%[ 16 ]%N% Remover Windows Alarms
-echo          %C%[ 17 ]%N% Remover 3DBuilder                                      %C%[ 18 ]%N% Remover Windows Camera
-echo          %C%[ 19 ]%N% Remover Noticias                                       %C%[ 20 ]%N% Remover OneDrive
-echo          %C%[ 21 ]%N% Remover Anuncios e sugestoes                           %C%[ 22 ]%N% Remover Emails
-echo          %C%[ 23 ]%N% Remover Outlook                                        %C%[ 24 ]%N% Remover Assistencia Rapida
-echo          %C%[ 25 ]%N% Remover Microsoft To do                                %C%[ 26 ]%N% Remover Solitaire e jogos Casuais
-echo          %C%[ 27 ]%N% Remover Clima                                          %C%[ 28 ]%N% Remover Hub de Comentarios
-echo          %C%[ 29 ]%N% Reverter Debloaters                                    %C%[ 30 ]%N% Voltar Ao Menu Principal
-echo(
-set "op="
-set /p op=                                       Escolha uma opcao:
+echo(%C%               ╔════════════════════════════════════════════════════════════════════════════════════════════════════════════╗%N%
+echo(%C%               ║%Y%                                                 DEBLOATER                                                  %C%║%N%
+echo(%C%               ╠════════════════════════════════════════════════════════════════════════════════════════════════════════════╣%N%
+echo(%C%               ║%N% %C%[  1 ]%N%%W% Usar todos (CUIDADO)                         %N%  %C%[  2 ]%N%%W% Remover officehub                            %N% %C%║%N%
+echo(%C%               ║%N% %C%[  3 ]%N%%W% Remover Cortana                              %N%  %C%[  4 ]%N%%W% Remover Copilot                              %N% %C%║%N%
+echo(%C%               ║%N% %C%[  5 ]%N%%W% Remover Loja do Windows                      %N%  %C%[  6 ]%N%%W% Remover a Xbox                               %N% %C%║%N%
+echo(%C%               ║%N% %C%[  7 ]%N%%W% Remover Windows Photos                       %N%  %C%[  8 ]%N%%W% Remover Windows People                       %N% %C%║%N%
+echo(%C%               ║%N% %C%[  9 ]%N%%W% Remover Windows Music                        %N%  %C%[ 10 ]%N%%W% Remover Windows Messaging                    %N% %C%║%N%
+echo(%C%               ║%N% %C%[ 11 ]%N%%W% Remover Windows Maps                         %N%  %C%[ 12 ]%N%%W% Remover Windows Groove                       %N% %C%║%N%
+echo(%C%               ║%N% %C%[ 13 ]%N%%W% Remover Windows GetStarted                   %N%  %C%[ 14 ]%N%%W% Remover Calendario                           %N% %C%║%N%
+echo(%C%               ║%N% %C%[ 15 ]%N%%W% Remover Calculadora                          %N%  %C%[ 16 ]%N%%W% Remover Windows Alarms                       %N% %C%║%N%
+echo(%C%               ║%N% %C%[ 17 ]%N%%W% Remover 3DBuilder                            %N%  %C%[ 18 ]%N%%W% Remover Windows Camera                       %N% %C%║%N%
+echo(%C%               ║%N% %C%[ 19 ]%N%%W% Remover Noticias                             %N%  %C%[ 20 ]%N%%W% Remover OneDrive                             %N% %C%║%N%
+echo(%C%               ║%N% %C%[ 21 ]%N%%W% Remover Anuncios e sugestoes                 %N%  %C%[ 22 ]%N%%W% Remover Emails                               %N% %C%║%N%
+echo(%C%               ║%N% %C%[ 23 ]%N%%W% Remover Outlook                              %N%  %C%[ 24 ]%N%%W% Remover Assistencia Rapida                   %N% %C%║%N%
+echo(%C%               ║%N% %C%[ 25 ]%N%%W% Remover Microsoft To do                      %N%  %C%[ 26 ]%N%%W% Remover Solitaire e jogos Casuais            %N% %C%║%N%
+echo(%C%               ║%N% %C%[ 27 ]%N%%W% Remover Clima                                %N%  %C%[ 28 ]%N%%W% Remover Hub de Comentarios                   %N% %C%║%N%
+echo(%C%               ║%N% %C%[ 29 ]%N%%W% Reverter Debloaters                          %N%  %C%[ 30 ]%N%%W% Voltar Ao Menu Principal                     %N% %C%║%N%
+echo(%C%               ╚════════════════════════════════════════════════════════════════════════════════════════════════════════════╝%N%
+call :ask
 if "%op%"=="1" goto db_all
 if "%op%"=="2" call :appx Microsoft.MicrosoftOfficeHub & goto menu_deb
 if "%op%"=="3" goto db_cortana
@@ -758,14 +798,13 @@ goto menu_deb
 
 :menu_xbox
 call :hdr xbox
-echo(%C%                                    MENU DE OTIMIZACAO DO PC%N%
-echo(
-echo          %C%[  1 ]%N% Iniciar Otimizacao (Remover Xbox)
-echo          %C%[  2 ]%N% Reverter Otimizacao (Restaurar Xbox)
-echo          %C%[  3 ]%N% Voltar ao Menu Principal
-echo(
-set "op="
-set /p op=                                    Digite a opcao desejada:
+echo(%C%               ╔════════════════════════════════════════════════════════════════════════════════════════════════════════════╗%N%
+echo(%C%               ║%Y%                                                    XBOX                                                    %C%║%N%
+echo(%C%               ╠════════════════════════════════════════════════════════════════════════════════════════════════════════════╣%N%
+echo(%C%               ║%N% %C%[  1 ]%N%%W% Iniciar Otimizacao (Remover Xbox)            %N%  %C%[  2 ]%N%%W% Reverter Otimizacao (Restaurar Xbox)         %N% %C%║%N%
+echo(%C%               ║%N% %C%[  3 ]%N%%W% Voltar ao Menu Principal                     %N%                                                       %C%║%N%
+echo(%C%               ╚════════════════════════════════════════════════════════════════════════════════════════════════════════════╝%N%
+call :ask
 if "%op%"=="1" goto xbox_off
 if "%op%"=="2" goto xbox_on
 if "%op%"=="3" goto menu_main
@@ -800,13 +839,13 @@ goto menu_xbox
 
 :menu_svc
 call :hdr svc
-echo(%C%                                 OTIMIZADOR DE SERVICOS WINDOWS%N%
-echo(
-echo          %C%[  1 ]%N% Desativar servicos INUTEIS                             %C%[  2 ]%N% Desativar servicos NORMAIS
-echo          %C%[  3 ]%N% Reverter servicos                                      %C%[  4 ]%N% Voltar ao Menu Principal
-echo(
-set "op="
-set /p op=                                    Digite a opcao desejada:
+echo(%C%               ╔════════════════════════════════════════════════════════════════════════════════════════════════════════════╗%N%
+echo(%C%               ║%Y%                                              SERVICOS WINDOWS                                              %C%║%N%
+echo(%C%               ╠════════════════════════════════════════════════════════════════════════════════════════════════════════════╣%N%
+echo(%C%               ║%N% %C%[  1 ]%N%%W% Desativar servicos INUTEIS                   %N%  %C%[  2 ]%N%%W% Desativar servicos NORMAIS                   %N% %C%║%N%
+echo(%C%               ║%N% %C%[  3 ]%N%%W% Reverter servicos                            %N%  %C%[  4 ]%N%%W% Voltar ao Menu Principal                     %N% %C%║%N%
+echo(%C%               ╚════════════════════════════════════════════════════════════════════════════════════════════════════════════╝%N%
+call :ask
 if "%op%"=="1" goto svc_off_junk
 if "%op%"=="2" goto svc_off_norm
 if "%op%"=="3" goto svc_on
@@ -844,23 +883,23 @@ goto menu_svc
 
 :menu_games
 call :hdr games
-echo(%C%                            Escolha o jogo que voce quer priorizar:%N%
-echo(
-echo          %C%[  1 ]%N% Fortnite                                               %C%[  2 ]%N% Gta V
-echo          %C%[  3 ]%N% FiveM                                                  %C%[  4 ]%N% CS2
-echo          %C%[  5 ]%N% Minecraft                                              %C%[  6 ]%N% Valorant
-echo          %C%[  7 ]%N% League of Legends                                      %C%[  8 ]%N% Warzone
-echo          %C%[  9 ]%N% Apex Legends                                           %C%[ 10 ]%N% Roblox
-echo          %C%[ 11 ]%N% God Of War (2018 e ragnarok)                           %C%[ 12 ]%N% MTA
-echo          %C%[ 13 ]%N% Euro Truck Simulator (1 e 2)                           %C%[ 14 ]%N% Rainbow Six Siege
-echo          %C%[ 15 ]%N% Cult of the Lamb                                       %C%[ 16 ]%N% ULTRAKILL
-echo          %C%[ 17 ]%N% Blood Strike                                           %C%[ 18 ]%N% Arena Breakout
-echo          %C%[ 19 ]%N% Resident Evil 4 Remake                                 %C%[ 20 ]%N% Resident Evil 2 Remake
-echo          %C%[ 21 ]%N% Tweaks globais                                         %C%[ 22 ]%N% Priorizar EXE custom
-echo          %C%[ 23 ]%N% Menu Principal
-echo(
-set "op="
-set /p op=                                        Digite o numero:
+echo(%C%               ╔════════════════════════════════════════════════════════════════════════════════════════════════════════════╗%N%
+echo(%C%               ║%Y%                                                   JOGOS                                                    %C%║%N%
+echo(%C%               ╠════════════════════════════════════════════════════════════════════════════════════════════════════════════╣%N%
+echo(%C%               ║%N% %C%[  1 ]%N%%W% Fortnite                                     %N%  %C%[  2 ]%N%%W% Gta V                                        %N% %C%║%N%
+echo(%C%               ║%N% %C%[  3 ]%N%%W% FiveM                                        %N%  %C%[  4 ]%N%%W% CS2                                          %N% %C%║%N%
+echo(%C%               ║%N% %C%[  5 ]%N%%W% Minecraft                                    %N%  %C%[  6 ]%N%%W% Valorant                                     %N% %C%║%N%
+echo(%C%               ║%N% %C%[  7 ]%N%%W% League of Legends                            %N%  %C%[  8 ]%N%%W% Warzone                                      %N% %C%║%N%
+echo(%C%               ║%N% %C%[  9 ]%N%%W% Apex Legends                                 %N%  %C%[ 10 ]%N%%W% Roblox                                       %N% %C%║%N%
+echo(%C%               ║%N% %C%[ 11 ]%N%%W% God Of War (2018 e ragnarok)                 %N%  %C%[ 12 ]%N%%W% MTA                                          %N% %C%║%N%
+echo(%C%               ║%N% %C%[ 13 ]%N%%W% Euro Truck Simulator (1 e 2)                 %N%  %C%[ 14 ]%N%%W% Rainbow Six Siege                            %N% %C%║%N%
+echo(%C%               ║%N% %C%[ 15 ]%N%%W% Cult of the Lamb                             %N%  %C%[ 16 ]%N%%W% ULTRAKILL                                    %N% %C%║%N%
+echo(%C%               ║%N% %C%[ 17 ]%N%%W% Blood Strike                                 %N%  %C%[ 18 ]%N%%W% Arena Breakout                               %N% %C%║%N%
+echo(%C%               ║%N% %C%[ 19 ]%N%%W% Resident Evil 4 Remake                       %N%  %C%[ 20 ]%N%%W% Resident Evil 2 Remake                       %N% %C%║%N%
+echo(%C%               ║%N% %C%[ 21 ]%N%%W% Tweaks globais                               %N%  %C%[ 22 ]%N%%W% Priorizar EXE custom                         %N% %C%║%N%
+echo(%C%               ║%N% %C%[ 23 ]%N%%W% Menu Principal                               %N%                                                       %C%║%N%
+echo(%C%               ╚════════════════════════════════════════════════════════════════════════════════════════════════════════════╝%N%
+call :ask
 if "%op%"=="1" call :prio Fortnite FortniteClient-Win64-Shipping.exe & goto menu_games
 if "%op%"=="2" call :prio "GTA V" GTA5.exe & goto menu_games
 if "%op%"=="3" call :prio FiveM FiveM.exe & goto menu_games
@@ -905,14 +944,14 @@ goto menu_games
 
 :menu_start
 call :hdr start
-echo(%C%                        Selecione o numero da opcao que deseja executar:%N%
-echo(
-echo          %C%[  1 ]%N% Remover atraso de arranque                             %C%[  2 ]%N% Listar programas na inicializacao
-echo          %C%[  3 ]%N% Desativar um item da inicializacao                     %C%[  4 ]%N% Reativar itens desligados pelo VENIX
-echo          %C%[  5 ]%N% Voltar ao Menu Principal
-echo(
-set "op="
-set /p op=                                        Digite o numero:
+echo(%C%               ╔════════════════════════════════════════════════════════════════════════════════════════════════════════════╗%N%
+echo(%C%               ║%Y%                                               INICIALIZACAO                                                %C%║%N%
+echo(%C%               ╠════════════════════════════════════════════════════════════════════════════════════════════════════════════╣%N%
+echo(%C%               ║%N% %C%[  1 ]%N%%W% Remover atraso de arranque                   %N%  %C%[  2 ]%N%%W% Listar programas na inicializacao            %N% %C%║%N%
+echo(%C%               ║%N% %C%[  3 ]%N%%W% Desativar um item da inicializacao           %N%  %C%[  4 ]%N%%W% Reativar itens desligados pelo VENIX         %N% %C%║%N%
+echo(%C%               ║%N% %C%[  5 ]%N%%W% Voltar ao Menu Principal                     %N%                                                       %C%║%N%
+echo(%C%               ╚════════════════════════════════════════════════════════════════════════════════════════════════════════════╝%N%
+call :ask
 if "%op%"=="1" goto st_delay
 if "%op%"=="2" goto st_list
 if "%op%"=="3" goto st_off
@@ -957,14 +996,14 @@ goto menu_start
 
 :menu_clean
 call :hdr clean
-echo(%C%                            Escolha o que queres limpar:%N%
-echo(
-echo          %C%[  1 ]%N% Limpar TEMP                                            %C%[  2 ]%N% Esvaziar Reciclagem
-echo          %C%[  3 ]%N% Limpar cache Delivery Optimization                     %C%[  4 ]%N% Limpar miniaturas
-echo          %C%[  5 ]%N% Limpeza completa                                       %C%[  6 ]%N% Voltar ao Menu Principal
-echo(
-set "op="
-set /p op=                                        Digite o numero:
+echo(%C%               ╔════════════════════════════════════════════════════════════════════════════════════════════════════════════╗%N%
+echo(%C%               ║%Y%                                                  LIMPEZA                                                   %C%║%N%
+echo(%C%               ╠════════════════════════════════════════════════════════════════════════════════════════════════════════════╣%N%
+echo(%C%               ║%N% %C%[  1 ]%N%%W% Limpar TEMP                                  %N%  %C%[  2 ]%N%%W% Esvaziar Reciclagem                          %N% %C%║%N%
+echo(%C%               ║%N% %C%[  3 ]%N%%W% Limpar cache Delivery Optimization           %N%  %C%[  4 ]%N%%W% Limpar miniaturas                            %N% %C%║%N%
+echo(%C%               ║%N% %C%[  5 ]%N%%W% Limpeza completa                             %N%  %C%[  6 ]%N%%W% Voltar ao Menu Principal                     %N% %C%║%N%
+echo(%C%               ╚════════════════════════════════════════════════════════════════════════════════════════════════════════════╝%N%
+call :ask
 if "%op%"=="1" goto cl_temp
 if "%op%"=="2" goto cl_bin
 if "%op%"=="3" goto cl_do
