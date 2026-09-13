@@ -1052,14 +1052,11 @@ const PAINEL_TEXTOS = {
   bots: textoPainel(
     '🤖 BOTS DISCORD',
     [
-      '🔹 Bot Personalizado: 15€+',
-      '🔹 Manutenção: 10€ / mês',
-      '🔹 Manutenção Lifetime: 70€',
-      '✨ Incluído:',
-      '・Bot à medida do teu servidor',
-      '・Comandos, cargos e permissões',
-      '・Design personalizado e setup completo',
-      '・Suporte contínuo na manutenção mensal ou lifetime',
+      'Bot Discord feito à medida do teu servidor.',
+      'Comandos, cargos e permissões no teu estilo.',
+      'Design personalizado e setup completo.',
+      'Manutenção mensal ou lifetime.',
+      'Melhor qualidade.',
     ],
     { entrega: '🎫 Entrega via ticket', imagem: BOTS_BANNER_URL_PADRAO }
   ),
