@@ -1,6 +1,6 @@
 # VENIX Otimização (`Optimizacao.bat`)
 
-Menu dourado em duas colunas. Corre **como Administrador**.
+Painel dourado em caixa (logo VENIX + duas colunas). Corre **como Administrador**.
 
 ## Como usar
 
