@@ -247,6 +247,9 @@ const SERVIDORES_BANNER_URL_PADRAO =
 const CURSO_BANNER_URL_PADRAO =
   process.env.CURSO_BANNER_URL ||
   'https://media.discordapp.net/attachments/1547020344873848932/1548444814490607816/content.png?ex=6aa7151c&is=6aa5c39c&hm=6aaefab7122df491c01c3a9c14244634b3f80c508a46a5314ac4d7f862db3b0a&=&format=webp&quality=lossless&width=1520&height=856';
+const TRIAL_BANNER_URL_PADRAO =
+  process.env.TRIAL_BANNER_URL ||
+  'https://media.discordapp.net/attachments/1544330681818157148/1548490837212663868/content.png?ex=6aa73ff9&is=6aa5ee79&hm=70e4cf9c44d59d19d050a1479f7c1e0120408c76b72876e6eb30851a150c6eb7&=&format=webp&quality=lossless&width=550&height=310';
 
 // Tickets: categoria, cargos da staff e banner por defeito (env var sobrepõe).
 const TICKETS_CATEGORIA_ID_PADRAO = '1548064600652775526';
@@ -983,12 +986,16 @@ const PAINEL_TEXTOS = {
     ],
     { imagem: LINKS_BANNER_URL_PADRAO }
   ),
-  trial: textoPainel('Trial Nitro', [
-    'Trial Nitro para testar a conta.',
-    'Ativação simples, só resgatar.',
-    'Melhor qualidade.',
-    'Entrega automática no privado.',
-  ]),
+  trial: textoPainel(
+    'Trial Nitro',
+    [
+      'Trial Nitro para testar a conta.',
+      'Ativação simples, só resgatar.',
+      'Melhor qualidade.',
+      'Entrega automática no privado.',
+    ],
+    { imagem: TRIAL_BANNER_URL_PADRAO }
+  ),
   virgem: textoPainel('Conta Virgem', [
     'Recebe uma conta Full Acesso.',
     'Contas virgens, nunca usadas.',
