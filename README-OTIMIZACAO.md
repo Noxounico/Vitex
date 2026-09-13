@@ -1,4 +1,4 @@
-# Nox Otimização (`Optimizacao.bat`)
+# VENIX Otimização (`Optimizacao.bat`)
 
 Menu dourado em duas colunas. Corre **como Administrador**.
 
@@ -20,4 +20,4 @@ Serviços (menu Windows → 8): **inúteis** e **normais**. Opção **14** reduz
 
 ## Reverter
 
-Opção **13 Reverter tudo**, ou Reverter nos submenus Xbox / serviços / hardware / arranque. Ponto `Nox Otimizacao` só existe se usaste a opção **1**. Apps da Loja removidas no Debloater não voltam sozinhas.
+Opção **13 Reverter tudo**, ou Reverter nos submenus Xbox / serviços / hardware / arranque. Ponto `VENIX Otimizacao` só existe se usaste a opção **1**. Apps da Loja removidas no Debloater não voltam sozinhas. Quem usou a versão Nox antiga também vê os backups restaurados.
