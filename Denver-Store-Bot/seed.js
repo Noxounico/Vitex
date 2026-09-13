@@ -149,6 +149,10 @@ const CATALOG = [
       { name: 'Curso Avançado', priceCents: cents(30) },
     ],
   },
+  {
+    category: 'optimizar',
+    products: [{ name: 'Otimização Windows', priceCents: cents(3) }],
+  },
 ];
 
 function seed() {

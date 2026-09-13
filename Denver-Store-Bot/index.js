@@ -253,6 +253,9 @@ const TRIAL_BANNER_URL_PADRAO =
 const AGED_BANNER_URL_PADRAO =
   process.env.AGED_BANNER_URL ||
   'https://media.discordapp.net/attachments/1544330681818157148/1548496454929358909/content.png?ex=6aa74534&is=6aa5f3b4&hm=64e18ed5ea9450bdddc6c2c1cb201b8d8d9534eae3972c92b1ebd988b47be1d5&=&format=webp&quality=lossless&width=550&height=310';
+const OPTIMIZAR_BANNER_URL_PADRAO =
+  process.env.OPTIMIZAR_BANNER_URL ||
+  'https://media.discordapp.net/attachments/1544330681818157148/1548515482175410196/content.png?ex=6aa756ec&is=6aa6056c&hm=6cb2a6d03d0f8407a77c2afc5eeef4dfbc8aac337467d7ab533504bc4ddc4ba8&=&format=webp&quality=lossless&width=550&height=310';
 
 // Tickets: categoria, cargos da staff e banner por defeito (env var sobrepõe).
 const TICKETS_CATEGORIA_ID_PADRAO = '1548064600652775526';
@@ -458,6 +461,9 @@ const PRODUTOS_SEED = [
   // --- Canal de cursos ---
   { nome: 'Curso Básico', preco: eur(15), categoria: 'curso' },
   { nome: 'Curso Avançado', preco: eur(30), categoria: 'curso' },
+
+  // --- Canal de otimização Windows ---
+  { nome: 'Otimização Windows', preco: eur(3), categoria: 'optimizar' },
 ];
 
 // Cria produtos em falta e atualiza o preço/categoria dos que já existem.
@@ -544,6 +550,8 @@ const CATEGORIA_POR_COMANDO = {
   'loja-criacao': 'servidores',
   'loja-curso': 'curso',
   'loja-cursos': 'curso',
+  'loja-optimizar': 'optimizar',
+  'loja-otimizar': 'optimizar',
 };
 
 // Acrescenta as opções comuns de personalização do painel a um comando
@@ -810,6 +818,10 @@ const SINONIMOS_STOCK = {
   rp: 'rp',
   basico: 'basico',
   personalizado: 'personalizado',
+  optimizar: 'optimizar',
+  otimizar: 'optimizar',
+  otimizacao: 'optimizar',
+  windows: 'windows',
 };
 
 function normalizarTextoProduto(texto) {
@@ -1097,6 +1109,16 @@ const PAINEL_TEXTOS = {
       '・Do básico ao avançado, no teu ritmo',
     ],
     { entrega: '🎫 Entrega via ticket', imagem: CURSO_BANNER_URL_PADRAO }
+  ),
+  optimizar: textoPainel(
+    '<:f0446f42e4d3476db13d1d82c01a77a5:1548459242413883422> Optimizar',
+    [
+      'Otimização Windows pronta a aplicar.',
+      'PC mais rápido, estável e com menos delay.',
+      'Setup simples, sem complicar.',
+      'Melhor qualidade.',
+    ],
+    { entrega: '🎫 Entrega via ticket', imagem: OPTIMIZAR_BANNER_URL_PADRAO }
   ),
 };
 

@@ -21,6 +21,7 @@ Comandos
   !loja-virgem    !loja-aged      !loja-spotify  !loja-membros
   !loja-trampo    !loja-roblox    !loja-fortnite !loja-rockstar
   !loja-bots      !loja-servidores  !loja-criacao  !loja-curso
+  !loja-optimizar
   !tickets        !verificacao    !comandos
   !stock          !stock adicionar 2x impulso 4
   !fechar         (dentro do ticket)
