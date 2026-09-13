@@ -250,6 +250,9 @@ const CURSO_BANNER_URL_PADRAO =
 const TRIAL_BANNER_URL_PADRAO =
   process.env.TRIAL_BANNER_URL ||
   'https://media.discordapp.net/attachments/1544330681818157148/1548490837212663868/content.png?ex=6aa73ff9&is=6aa5ee79&hm=70e4cf9c44d59d19d050a1479f7c1e0120408c76b72876e6eb30851a150c6eb7&=&format=webp&quality=lossless&width=550&height=310';
+const AGED_BANNER_URL_PADRAO =
+  process.env.AGED_BANNER_URL ||
+  'https://media.discordapp.net/attachments/1544330681818157148/1548496454929358909/content.png?ex=6aa74534&is=6aa5f3b4&hm=64e18ed5ea9450bdddc6c2c1cb201b8d8d9534eae3972c92b1ebd988b47be1d5&=&format=webp&quality=lossless&width=550&height=310';
 
 // Tickets: categoria, cargos da staff e banner por defeito (env var sobrepõe).
 const TICKETS_CATEGORIA_ID_PADRAO = '1548064600652775526';
@@ -1002,12 +1005,16 @@ const PAINEL_TEXTOS = {
     'Sem histórico de Nitro ou tickets.',
     'Melhor qualidade.',
   ]),
-  aged: textoPainel('Contas Aged', [
-    'Recebe uma conta Full Acesso.',
-    'Contas antigas (2016 a 2022).',
-    'Melhor qualidade.',
-    'Mais confiança e histórico.',
-  ]),
+  aged: textoPainel(
+    'Contas Aged',
+    [
+      'Recebe uma conta Full Acesso.',
+      'Contas antigas (2016 a 2022).',
+      'Melhor qualidade.',
+      'Mais confiança e histórico.',
+    ],
+    { imagem: AGED_BANNER_URL_PADRAO }
+  ),
   spotify: textoPainel('Spotify Premium', [
     'Recebe uma conta Full Acesso.',
     'Obrigatório a Troca de Dados.',
