@@ -131,6 +131,7 @@ const CATALOG = [
     products: [
       { name: 'Bot Personalizado', priceCents: cents(15) },
       { name: 'Manutenção Mensal', priceCents: cents(10) },
+      { name: 'Manutenção Lifetime', priceCents: cents(70) },
     ],
   },
   {
