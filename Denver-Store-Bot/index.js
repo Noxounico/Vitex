@@ -442,6 +442,7 @@ const PRODUTOS_SEED = [
   // --- Canal de bots Discord ---
   { nome: 'Bot Personalizado', preco: eur(15), categoria: 'bots' },
   { nome: 'Manutenção Mensal', preco: eur(10), categoria: 'bots' },
+  { nome: 'Manutenção Lifetime', preco: eur(70), categoria: 'bots' },
 
   // --- Canal de criação de servidores Discord ---
   { nome: 'Discord RP', preco: eur(5), categoria: 'servidores' },
@@ -1053,11 +1054,12 @@ const PAINEL_TEXTOS = {
     [
       '🔹 Bot Personalizado: 15€+',
       '🔹 Manutenção: 10€ / mês',
+      '🔹 Manutenção Lifetime: 70€',
       '✨ Incluído:',
       '・Bot à medida do teu servidor',
       '・Comandos, cargos e permissões',
       '・Design personalizado e setup completo',
-      '・Suporte contínuo na manutenção mensal',
+      '・Suporte contínuo na manutenção mensal ou lifetime',
     ],
     { entrega: '🎫 Entrega via ticket', imagem: BOTS_BANNER_URL_PADRAO }
   ),
