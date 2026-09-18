@@ -2,7 +2,7 @@
 echo off
 setlocal EnableExtensions EnableDelayedExpansion
 :: VENIX Otimizacao — SEM BOM. @echo off TEM de ser o primeiro comando ASCII.
-:: Defender / SmartScreen / Anti-Malware: so nas opcoes 16 e 27, com S.
+:: Defender / SmartScreen / Anti-Malware: so no menu Windows 16 e 27, com S.
 :: Nao desativa UAC, Windows Update, Firewall nem a rede.
 
 title VENIX Otimizacao
@@ -223,7 +223,8 @@ echo(%C%               ║%N% %C%[  7 ]%N%%W% Melhorar Conexao/Ping             
 echo(%C%               ║%N% %C%[  9 ]%N%%W% Otimizar NVIDIA                              %N%  %C%[ 10 ]%N%%W% Fix de Erros                                 %N% %C%║%N%
 echo(%C%               ║%N% %C%[ 11 ]%N%%W% Debloater                                    %N%  %C%[ 12 ]%N%%W% Limpeza do sistema                           %N% %C%║%N%
 echo(%C%               ║%N% %C%[ 13 ]%N%%W% Reverter tudo                                %N%  %C%[ 14 ]%N%%W% Reduzir processos / CPU                      %N% %C%║%N%
-echo(%C%               ║%N% %C%[ 15 ]%N%%W% Remover apps em 2 plano                      %N%  %C%[ 16 ]%N%%W% Sair                                         %N% %C%║%N%
+echo(%C%               ║%N% %C%[ 15 ]%N%%W% Remover apps em 2 plano                      %N%  %C%[ 16 ]%N%%W% FiveM / Fortnite                             %N% %C%║%N%
+echo(%C%               ║%N% %C%[ 17 ]%N%%W% Sair                                         %N%                                                       %C%║%N%
 echo(%C%               ╚════════════════════════════════════════════════════════════════════════════════════════════════════════════╝%N%
 call :ask
 if "%op%"=="1" goto do_restore
@@ -231,7 +232,7 @@ if "%op%"=="2" goto menu_win
 if "%op%"=="3" goto menu_games
 if "%op%"=="4" goto menu_hw
 if "%op%"=="5" goto menu_start
-if "%op%"=="6" goto do_ram
+if "%op%"=="6" goto menu_ram
 if "%op%"=="7" goto menu_ping
 if "%op%"=="8" goto menu_amd
 if "%op%"=="9" goto do_nvidia
@@ -241,7 +242,8 @@ if "%op%"=="12" goto menu_clean
 if "%op%"=="13" goto do_revert_all
 if "%op%"=="14" goto do_cpu
 if "%op%"=="15" goto do_bg
-if "%op%"=="16" goto do_sair
+if "%op%"=="16" goto menu_fnf
+if "%op%"=="17" goto do_sair
 goto menu_main
 
 
@@ -897,7 +899,7 @@ echo(%C%               ║%N% %C%[ 15 ]%N%%W% Cult of the Lamb                  
 echo(%C%               ║%N% %C%[ 17 ]%N%%W% Blood Strike                                 %N%  %C%[ 18 ]%N%%W% Arena Breakout                               %N% %C%║%N%
 echo(%C%               ║%N% %C%[ 19 ]%N%%W% Resident Evil 4 Remake                       %N%  %C%[ 20 ]%N%%W% Resident Evil 2 Remake                       %N% %C%║%N%
 echo(%C%               ║%N% %C%[ 21 ]%N%%W% Tweaks globais                               %N%  %C%[ 22 ]%N%%W% Priorizar EXE custom                         %N% %C%║%N%
-echo(%C%               ║%N% %C%[ 23 ]%N%%W% Menu Principal                               %N%                                                       %C%║%N%
+echo(%C%               ║%N% %C%[ 23 ]%N%%W% FiveM / Fortnite                             %N%  %C%[ 24 ]%N%%W% Menu Principal                               %N% %C%║%N%
 echo(%C%               ╚════════════════════════════════════════════════════════════════════════════════════════════════════════════╝%N%
 call :ask
 if "%op%"=="1" call :prio Fortnite FortniteClient-Win64-Shipping.exe & goto menu_games
@@ -922,9 +924,43 @@ if "%op%"=="19" call :prio RE4 re4.exe & goto menu_games
 if "%op%"=="20" call :prio RE2 re2.exe & goto menu_games
 if "%op%"=="21" goto do_games_global
 if "%op%"=="22" goto do_exe_custom
-if "%op%"=="23" goto menu_main
+if "%op%"=="23" goto menu_fnf
+if "%op%"=="24" goto menu_main
 goto menu_games
 
+
+
+:menu_ram
+call :hdr venix
+echo(%C%               ╔════════════════════════════════════════════════════════════════════════════════════════════════════════════╗%N%
+echo(%C%               ║%Y%                                                MEMORIA RAM                                                 %C%║%N%
+echo(%C%               ╠════════════════════════════════════════════════════════════════════════════════════════════════════════════╣%N%
+echo(%C%               ║%N% %C%[  1 ]%N%%W% Limpar RAM agora                             %N%  %C%[  2 ]%N%%W% Bloquear RAM (manter baixa)                  %N% %C%║%N%
+echo(%C%               ║%N% %C%[  3 ]%N%%W% Desbloquear RAM                              %N%  %C%[  4 ]%N%%W% Voltar ao Menu Principal                     %N% %C%║%N%
+echo(%C%               ╚════════════════════════════════════════════════════════════════════════════════════════════════════════════╝%N%
+call :ask
+if "%op%"=="1" goto do_ram
+if "%op%"=="2" goto do_ram_hold_on
+if "%op%"=="3" goto do_ram_hold_off
+if "%op%"=="4" goto menu_main
+goto menu_ram
+
+:menu_fnf
+call :hdr games
+echo(%C%               ╔════════════════════════════════════════════════════════════════════════════════════════════════════════════╗%N%
+echo(%C%               ║%Y%                                              FIVEM / FORTNITE                                              %C%║%N%
+echo(%C%               ╠════════════════════════════════════════════════════════════════════════════════════════════════════════════╣%N%
+echo(%C%               ║%N% %C%[  1 ]%N%%W% Perfil FiveM                                 %N%  %C%[  2 ]%N%%W% Perfil Fortnite                              %N% %C%║%N%
+echo(%C%               ║%N% %C%[  3 ]%N%%W% Perfil FiveM + Fortnite                      %N%  %C%[  4 ]%N%%W% Reverter perfil FiveM/Fortnite               %N% %C%║%N%
+echo(%C%               ║%N% %C%[  5 ]%N%%W% Voltar ao Menu Principal                     %N%                                                       %C%║%N%
+echo(%C%               ╚════════════════════════════════════════════════════════════════════════════════════════════════════════════╝%N%
+call :ask
+if "%op%"=="1" goto do_fnf_fivem
+if "%op%"=="2" goto do_fnf_fort
+if "%op%"=="3" goto do_fnf_both
+if "%op%"=="4" goto do_fnf_undo
+if "%op%"=="5" goto menu_main
+goto menu_fnf
 
 :do_restore
 cls
@@ -1088,14 +1124,63 @@ goto menu_games
 cls
 echo Liberar Memoria RAM
 echo Nao fecha apps. Discord / browser / jogos abertos continuam a usar RAM.
-echo A cortar working sets e a esvaziar a lista standby (rapido)...
+echo A cortar working sets (uma vez) e a esvaziar a lista standby...
 echo(
 powershell -NoProfile -ExecutionPolicy Bypass -EncodedCommand JABjACAAPQAgAEAAJwAKAHUAcwBpAG4AZwAgAFMAeQBzAHQAZQBtADsACgB1AHMAaQBuAGcAIABTAHkAcwB0AGUAbQAuAFIAdQBuAHQAaQBtAGUALgBJAG4AdABlAHIAbwBwAFMAZQByAHYAaQBjAGUAcwA7AAoAcAB1AGIAbABpAGMAIABzAHQAYQB0AGkAYwAgAGMAbABhAHMAcwAgAE4AbwB4AFIAYQBtACAAewAKACAAIABbAEQAbABsAEkAbQBwAG8AcgB0ACgAIgBuAHQAZABsAGwALgBkAGwAbAAiACkAXQAgAHAAdQBiAGwAaQBjACAAcwB0AGEAdABpAGMAIABlAHgAdABlAHIAbgAgAGkAbgB0ACAAUgB0AGwAQQBkAGoAdQBzAHQAUAByAGkAdgBpAGwAZQBnAGUAKABpAG4AdAAgAHAALAAgAGIAbwBvAGwAIABlACwAIABiAG8AbwBsACAAdAAsACAAbwB1AHQAIABiAG8AbwBsACAAdwApADsACgAgACAAWwBEAGwAbABJAG0AcABvAHIAdAAoACIAbgB0AGQAbABsAC4AZABsAGwAIgApAF0AIABwAHUAYgBsAGkAYwAgAHMAdABhAHQAaQBjACAAZQB4AHQAZQByAG4AIABpAG4AdAAgAE4AdABTAGUAdABTAHkAcwB0AGUAbQBJAG4AZgBvAHIAbQBhAHQAaQBvAG4AKABpAG4AdAAgAGMALAAgAHIAZQBmACAAaQBuAHQAIABpACwAIABpAG4AdAAgAGwAKQA7AAoAIAAgAHAAdQBiAGwAaQBjACAAcwB0AGEAdABpAGMAIAB2AG8AaQBkACAARwBvACgAKQAgAHsACgAgACAAIAAgAGIAbwBvAGwAIAB3ADsACgAgACAAIAAgAFIAdABsAEEAZABqAHUAcwB0AFAAcgBpAHYAaQBsAGUAZwBlACgANQAsACAAdAByAHUAZQAsACAAZgBhAGwAcwBlACwAIABvAHUAdAAgAHcAKQA7AAoAIAAgACAAIABSAHQAbABBAGQAagB1AHMAdABQAHIAaQB2AGkAbABlAGcAZQAoADEAMwAsACAAdAByAHUAZQAsACAAZgBhAGwAcwBlACwAIABvAHUAdAAgAHcAKQA7AAoAIAAgACAAIABpAG4AdAAgAHYAOwAKACAAIAAgACAAdgAgAD0AIAAyADsAIABOAHQAUwBlAHQAUwB5AHMAdABlAG0ASQBuAGYAbwByAG0AYQB0AGkAbwBuACgAOAAwACwAIAByAGUAZgAgAHYALAAgADQAKQA7AAoAIAAgACAAIAB2ACAAPQAgADMAOwAgAE4AdABTAGUAdABTAHkAcwB0AGUAbQBJAG4AZgBvAHIAbQBhAHQAaQBvAG4AKAA4ADAALAAgAHIAZQBmACAAdgAsACAANAApADsACgAgACAAIAAgAHYAIAA9ACAANAA7ACAATgB0AFMAZQB0AFMAeQBzAHQAZQBtAEkAbgBmAG8AcgBtAGEAdABpAG8AbgAoADgAMAAsACAAcgBlAGYAIAB2ACwAIAA0ACkAOwAKACAAIAAgACAAdgAgAD0AIAA1ADsAIABOAHQAUwBlAHQAUwB5AHMAdABlAG0ASQBuAGYAbwByAG0AYQB0AGkAbwBuACgAOAAwACwAIAByAGUAZgAgAHYALAAgADQAKQA7AAoAIAAgAH0ACgB9AAoAJwBAAAoAQQBkAGQALQBUAHkAcABlACAAJABjAAoAJABvACAAPQAgAEcAZQB0AC0AQwBpAG0ASQBuAHMAdABhAG4AYwBlACAAVwBpAG4AMwAyAF8ATwBwAGUAcgBhAHQAaQBuAGcAUwB5AHMAdABlAG0ACgAkAHQAIAA9ACAAWwBpAG4AdABdACgAJABvAC4AVABvAHQAYQBsAFYAaQBzAGkAYgBsAGUATQBlAG0AbwByAHkAUwBpAHoAZQAgAC8AIAAxADAAMgA0ACkACgAkAGIAIAA9ACAAWwBpAG4AdABdACgAJABvAC4ARgByAGUAZQBQAGgAeQBzAGkAYwBhAGwATQBlAG0AbwByAHkAIAAvACAAMQAwADIANAApAAoAVwByAGkAdABlAC0ASABvAHMAdAAgACgAIgAgACAAIAAgAEEAbgB0AGUAcwA6ACAAIAB7ADAAfQAgAE0AQgAgAGwAaQB2AHIAZQBzACAALwAgAHsAMQB9ACAATQBCACIAIAAtAGYAIAAkAGIALAAgACQAdAApAAoAWwBOAG8AeABSAGEAbQBdADoAOgBHAG8AKAApAAoAUwB0AGEAcgB0AC0AUwBsAGUAZQBwACAALQBNAGkAbABsAGkAcwBlAGMAbwBuAGQAcwAgADUAMAAwAAoAJABvACAAPQAgAEcAZQB0AC0AQwBpAG0ASQBuAHMAdABhAG4AYwBlACAAVwBpAG4AMwAyAF8ATwBwAGUAcgBhAHQAaQBuAGcAUwB5AHMAdABlAG0ACgAkAHgAIAA9ACAAWwBpAG4AdABdACgAJABvAC4ARgByAGUAZQBQAGgAeQBzAGkAYwBhAGwATQBlAG0AbwByAHkAIAAvACAAMQAwADIANAApAAoAVwByAGkAdABlAC0ASABvAHMAdAAgACgAIgAgACAAIAAgAEQAZQBwAG8AaQBzADoAIAB7ADAAfQAgAE0AQgAgAGwAaQB2AHIAZQBzACAAIAAoAGQAZQBsAHQAYQAgAHsAMQB9ACAATQBCACkAIgAgAC0AZgAgACQAeAAsACAAKAAkAHgAIAAtACAAJABiACkAKQA=
 echo(
 echo TEMP deixa de ser apagado aqui (isso demorava e nao libertava RAM).
 echo Para ficheiros usa o menu 12 Limpeza.
+echo Para a RAM NAO voltar a subir: menu RAM opcao 2 Bloquear RAM.
 call :pause_back
-goto menu_main
+goto menu_ram
+
+
+:do_ram_hold_on
+cls
+echo Bloquear RAM - manter baixa
+echo Cria a tarefa VENIX-RamHold (a cada 3 min): limpa standby e corta bloat.
+echo NAO fecha Cursor, Discord, browsers nem jogos. Nao corta o working set deles.
+echo SysMain (Superfetch) fica desligado para a cache nao encher outra vez.
+echo Reverter: opcao 3 deste menu, ou menu 13.
+echo(
+call :_ram_hold_on
+call :pause_back
+goto menu_ram
+
+:do_ram_hold_off
+cls
+echo Desbloquear RAM...
+call :_ram_hold_off
+call :pause_back
+goto menu_ram
+
+:do_fnf_fivem
+cls
+echo Perfil FiveM (sem cheats, sem inject, sem mexer em anti-cheat)...
+call :_fnf_apply "FiveM.exe;FiveM_GTAProcess.exe"
+call :pause_back
+goto menu_fnf
+
+:do_fnf_fort
+cls
+echo Perfil Fortnite (sem cheats, sem inject, sem mexer em anti-cheat)...
+call :_fnf_apply "FortniteClient-Win64-Shipping.exe"
+call :pause_back
+goto menu_fnf
+
+:do_fnf_both
+cls
+echo Perfil FiveM + Fortnite...
+call :_fnf_apply "FiveM.exe;FiveM_GTAProcess.exe;FortniteClient-Win64-Shipping.exe"
+call :pause_back
+goto menu_fnf
+
+:do_fnf_undo
+cls
+echo Reverter perfil FiveM / Fortnite...
+call :_fnf_undo
+call :pause_back
+goto menu_fnf
 
 :do_cpu
 cls
@@ -1147,7 +1232,7 @@ echo   - BackgroundAppGlobalToggle = 0
 echo   - LetAppsRunInBackground = Never  (politica)
 echo   - Disabled / DisabledByUser em cada app UWP
 echo(
-echo Reverter: menu 13.
+echo Reverter: menu 13. Explorer foi reiniciado para as chaves pegarem.
 call :pause_back
 goto menu_main
 
@@ -1476,20 +1561,42 @@ call :ok "Dicas / widgets off"
 goto :eof
 
 :_bg_apps_off
-reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications" /v GlobalUserDisabled /t REG_DWORD /d 1 /f >nul
-reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Search" /v BackgroundAppGlobalToggle /t REG_DWORD /d 0 /f >nul
-reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\AppPrivacy" /v LetAppsRunInBackground /t REG_DWORD /d 2 /f >nul
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications" /v GlobalUserDisabled /t REG_DWORD /d 1 /f
+if errorlevel 1 (echo     [AVISO] GlobalUserDisabled HKCU falhou) else (call :ok "HKCU GlobalUserDisabled=1")
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications" /v Migrated /t REG_DWORD /d 1 /f >nul
+reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications" /v GlobalUserDisabled /t REG_DWORD /d 1 /f >nul 2>&1
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Search" /v BackgroundAppGlobalToggle /t REG_DWORD /d 0 /f
+if errorlevel 1 (echo     [AVISO] BackgroundAppGlobalToggle falhou) else (call :ok "BackgroundAppGlobalToggle=0")
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\AppPrivacy" /v LetAppsRunInBackground /t REG_DWORD /d 2 /f
+if errorlevel 1 (echo     [AVISO] LetAppsRunInBackground HKLM falhou) else (call :ok "HKLM LetAppsRunInBackground=Never (2)")
 reg add "HKCU\SOFTWARE\Policies\Microsoft\Windows\AppPrivacy" /v LetAppsRunInBackground /t REG_DWORD /d 2 /f >nul
-call :ok "GlobalUserDisabled=1  LetAppsRunInBackground=Never"
-powershell -NoProfile -ExecutionPolicy Bypass -EncodedCommand JAByAG8AbwB0ACAAPQAgACcASABLAEMAVQA6AFwAUwBvAGYAdAB3AGEAcgBlAFwATQBpAGMAcgBvAHMAbwBmAHQAXABXAGkAbgBkAG8AdwBzAFwAQwB1AHIAcgBlAG4AdABWAGUAcgBzAGkAbwBuAFwAQgBhAGMAawBnAHIAbwB1AG4AZABBAGMAYwBlAHMAcwBBAHAAcABsAGkAYwBhAHQAaQBvAG4AcwAnAAoATgBlAHcALQBJAHQAZQBtACAALQBQAGEAdABoACAAJAByAG8AbwB0ACAALQBGAG8AcgBjAGUAIAB8ACAATwB1AHQALQBOAHUAbABsAAoAJABuACAAPQAgADAACgBHAGUAdAAtAEMAaABpAGwAZABJAHQAZQBtACAAJAByAG8AbwB0ACAALQBFAEEAIABTAGkAbABlAG4AdABsAHkAQwBvAG4AdABpAG4AdQBlACAAfAAgAEYAbwByAEUAYQBjAGgALQBPAGIAagBlAGMAdAAgAHsACgAgACAATgBlAHcALQBJAHQAZQBtAFAAcgBvAHAAZQByAHQAeQAgACQAXwAuAFAAUwBQAGEAdABoACAALQBOAGEAbQBlACAARABpAHMAYQBiAGwAZQBkACAALQBWAGEAbAB1AGUAIAAxACAALQBQAHIAbwBwAGUAcgB0AHkAVAB5AHAAZQAgAEQAVwBvAHIAZAAgAC0ARgBvAHIAYwBlACAAfAAgAE8AdQB0AC0ATgB1AGwAbAAKACAAIABOAGUAdwAtAEkAdABlAG0AUAByAG8AcABlAHIAdAB5ACAAJABfAC4AUABTAFAAYQB0AGgAIAAtAE4AYQBtAGUAIABEAGkAcwBhAGIAbABlAGQAQgB5AFUAcwBlAHIAIAAtAFYAYQBsAHUAZQAgADEAIAAtAFAAcgBvAHAAZQByAHQAeQBUAHkAcABlACAARABXAG8AcgBkACAALQBGAG8AcgBjAGUAIAB8ACAATwB1AHQALQBOAHUAbABsAAoAIAAgACQAbgArACsACgB9AAoARwBlAHQALQBBAHAAcAB4AFAAYQBjAGsAYQBnAGUAIAAtAEUAQQAgAFMAaQBsAGUAbgB0AGwAeQBDAG8AbgB0AGkAbgB1AGUAIAB8ACAARgBvAHIARQBhAGMAaAAtAE8AYgBqAGUAYwB0ACAAewAKACAAIAAkAGkAZAAgAD0AIAAkAF8ALgBQAGEAYwBrAGEAZwBlAEYAYQBtAGkAbAB5AE4AYQBtAGUACgAgACAAaQBmACAAKAAtAG4AbwB0ACAAJABpAGQAKQAgAHsAIAByAGUAdAB1AHIAbgAgAH0ACgAgACAAJABwACAAPQAgAEoAbwBpAG4ALQBQAGEAdABoACAAJAByAG8AbwB0ACAAJABpAGQACgAgACAAaQBmACAAKAAtAG4AbwB0ACAAKABUAGUAcwB0AC0AUABhAHQAaAAgACQAcAApACkAIAB7ACAATgBlAHcALQBJAHQAZQBtACAAJABwACAALQBGAG8AcgBjAGUAIAB8ACAATwB1AHQALQBOAHUAbABsACAAfQAKACAAIABOAGUAdwAtAEkAdABlAG0AUAByAG8AcABlAHIAdAB5ACAAJABwACAALQBOAGEAbQBlACAARABpAHMAYQBiAGwAZQBkACAALQBWAGEAbAB1AGUAIAAxACAALQBQAHIAbwBwAGUAcgB0AHkAVAB5AHAAZQAgAEQAVwBvAHIAZAAgAC0ARgBvAHIAYwBlACAAfAAgAE8AdQB0AC0ATgB1AGwAbAAKACAAIABOAGUAdwAtAEkAdABlAG0AUAByAG8AcABlAHIAdAB5ACAAJABwACAALQBOAGEAbQBlACAARABpAHMAYQBiAGwAZQBkAEIAeQBVAHMAZQByACAALQBWAGEAbAB1AGUAIAAxACAALQBQAHIAbwBwAGUAcgB0AHkAVAB5AHAAZQAgAEQAVwBvAHIAZAAgAC0ARgBvAHIAYwBlACAAfAAgAE8AdQB0AC0ATgB1AGwAbAAKACAAIAAkAG4AKwArAAoAfQAKAFcAcgBpAHQAZQAtAEgAbwBzAHQAIAAoACIAIAAgACAAIABbAE8ASwBdACAAewAwAH0AIABhAHAAcABzACAAVQBXAFAAIABzAGUAbQAgAGEAYwBlAHMAcwBvACAAZQBtACAAMgAgAHAAbABhAG4AbwAiACAALQBmACAAJABuACkA
+reg delete "HKLM\SOFTWARE\Policies\Microsoft\Windows\AppPrivacy" /v LetAppsRunInBackground_UserInControlOfTheseApps /f >nul 2>&1
+reg delete "HKCU\SOFTWARE\Policies\Microsoft\Windows\AppPrivacy" /v LetAppsRunInBackground_UserInControlOfTheseApps /f >nul 2>&1
+powershell -NoProfile -ExecutionPolicy Bypass -EncodedCommand JABFAHIAcgBvAHIAQQBjAHQAaQBvAG4AUAByAGUAZgBlAHIAZQBuAGMAZQAgAD0AIAAnAFMAaQBsAGUAbgB0AGwAeQBDAG8AbgB0AGkAbgB1AGUAJwANAAoAJAByAG8AbwB0ACAAPQAgACcASABLAEMAVQA6AFwAUwBvAGYAdAB3AGEAcgBlAFwATQBpAGMAcgBvAHMAbwBmAHQAXABXAGkAbgBkAG8AdwBzAFwAQwB1AHIAcgBlAG4AdABWAGUAcgBzAGkAbwBuAFwAQgBhAGMAawBnAHIAbwB1AG4AZABBAGMAYwBlAHMAcwBBAHAAcABsAGkAYwBhAHQAaQBvAG4AcwAnAA0ACgBOAGUAdwAtAEkAdABlAG0AIAAtAFAAYQB0AGgAIAAkAHIAbwBvAHQAIAAtAEYAbwByAGMAZQAgAHwAIABPAHUAdAAtAE4AdQBsAGwADQAKAE4AZQB3AC0ASQB0AGUAbQBQAHIAbwBwAGUAcgB0AHkAIAAtAFAAYQB0AGgAIAAkAHIAbwBvAHQAIAAtAE4AYQBtAGUAIABHAGwAbwBiAGEAbABVAHMAZQByAEQAaQBzAGEAYgBsAGUAZAAgAC0AVgBhAGwAdQBlACAAMQAgAC0AUAByAG8AcABlAHIAdAB5AFQAeQBwAGUAIABEAFcAbwByAGQAIAAtAEYAbwByAGMAZQAgAHwAIABPAHUAdAAtAE4AdQBsAGwADQAKAE4AZQB3AC0ASQB0AGUAbQBQAHIAbwBwAGUAcgB0AHkAIAAtAFAAYQB0AGgAIAAkAHIAbwBvAHQAIAAtAE4AYQBtAGUAIABNAGkAZwByAGEAdABlAGQAIAAtAFYAYQBsAHUAZQAgADEAIAAtAFAAcgBvAHAAZQByAHQAeQBUAHkAcABlACAARABXAG8AcgBkACAALQBGAG8AcgBjAGUAIAB8ACAATwB1AHQALQBOAHUAbABsAA0ACgAkAGwAbQBSAG8AbwB0ACAAPQAgACcASABLAEwATQA6AFwAUwBPAEYAVABXAEEAUgBFAFwATQBpAGMAcgBvAHMAbwBmAHQAXABXAGkAbgBkAG8AdwBzAFwAQwB1AHIAcgBlAG4AdABWAGUAcgBzAGkAbwBuAFwAQgBhAGMAawBnAHIAbwB1AG4AZABBAGMAYwBlAHMAcwBBAHAAcABsAGkAYwBhAHQAaQBvAG4AcwAnAA0ACgBOAGUAdwAtAEkAdABlAG0AIAAtAFAAYQB0AGgAIAAkAGwAbQBSAG8AbwB0ACAALQBGAG8AcgBjAGUAIAB8ACAATwB1AHQALQBOAHUAbABsAA0ACgBOAGUAdwAtAEkAdABlAG0AUAByAG8AcABlAHIAdAB5ACAALQBQAGEAdABoACAAJABsAG0AUgBvAG8AdAAgAC0ATgBhAG0AZQAgAEcAbABvAGIAYQBsAFUAcwBlAHIARABpAHMAYQBiAGwAZQBkACAALQBWAGEAbAB1AGUAIAAxACAALQBQAHIAbwBwAGUAcgB0AHkAVAB5AHAAZQAgAEQAVwBvAHIAZAAgAC0ARgBvAHIAYwBlACAAfAAgAE8AdQB0AC0ATgB1AGwAbAANAAoAJABzAGUAYQByAGMAaAAgAD0AIAAnAEgASwBDAFUAOgBcAFMAbwBmAHQAdwBhAHIAZQBcAE0AaQBjAHIAbwBzAG8AZgB0AFwAVwBpAG4AZABvAHcAcwBcAEMAdQByAHIAZQBuAHQAVgBlAHIAcwBpAG8AbgBcAFMAZQBhAHIAYwBoACcADQAKAE4AZQB3AC0ASQB0AGUAbQAgAC0AUABhAHQAaAAgACQAcwBlAGEAcgBjAGgAIAAtAEYAbwByAGMAZQAgAHwAIABPAHUAdAAtAE4AdQBsAGwADQAKAE4AZQB3AC0ASQB0AGUAbQBQAHIAbwBwAGUAcgB0AHkAIAAtAFAAYQB0AGgAIAAkAHMAZQBhAHIAYwBoACAALQBOAGEAbQBlACAAQgBhAGMAawBnAHIAbwB1AG4AZABBAHAAcABHAGwAbwBiAGEAbABUAG8AZwBnAGwAZQAgAC0AVgBhAGwAdQBlACAAMAAgAC0AUAByAG8AcABlAHIAdAB5AFQAeQBwAGUAIABEAFcAbwByAGQAIAAtAEYAbwByAGMAZQAgAHwAIABPAHUAdAAtAE4AdQBsAGwADQAKAGYAbwByAGUAYQBjAGgAIAAoACQAcABvAGwAIABpAG4AIABAACgAJwBIAEsATABNADoAXABTAE8ARgBUAFcAQQBSAEUAXABQAG8AbABpAGMAaQBlAHMAXABNAGkAYwByAG8AcwBvAGYAdABcAFcAaQBuAGQAbwB3AHMAXABBAHAAcABQAHIAaQB2AGEAYwB5ACcALAAnAEgASwBDAFUAOgBcAFMATwBGAFQAVwBBAFIARQBcAFAAbwBsAGkAYwBpAGUAcwBcAE0AaQBjAHIAbwBzAG8AZgB0AFwAVwBpAG4AZABvAHcAcwBcAEEAcABwAFAAcgBpAHYAYQBjAHkAJwApACkAIAB7AA0ACgAgACAATgBlAHcALQBJAHQAZQBtACAALQBQAGEAdABoACAAJABwAG8AbAAgAC0ARgBvAHIAYwBlACAAfAAgAE8AdQB0AC0ATgB1AGwAbAANAAoAIAAgAE4AZQB3AC0ASQB0AGUAbQBQAHIAbwBwAGUAcgB0AHkAIAAtAFAAYQB0AGgAIAAkAHAAbwBsACAALQBOAGEAbQBlACAATABlAHQAQQBwAHAAcwBSAHUAbgBJAG4AQgBhAGMAawBnAHIAbwB1AG4AZAAgAC0AVgBhAGwAdQBlACAAMgAgAC0AUAByAG8AcABlAHIAdAB5AFQAeQBwAGUAIABEAFcAbwByAGQAIAAtAEYAbwByAGMAZQAgAHwAIABPAHUAdAAtAE4AdQBsAGwADQAKACAAIABSAGUAbQBvAHYAZQAtAEkAdABlAG0AUAByAG8AcABlAHIAdAB5ACAALQBQAGEAdABoACAAJABwAG8AbAAgAC0ATgBhAG0AZQAgAEwAZQB0AEEAcABwAHMAUgB1AG4ASQBuAEIAYQBjAGsAZwByAG8AdQBuAGQAXwBVAHMAZQByAEkAbgBDAG8AbgB0AHIAbwBsAE8AZgBUAGgAZQBzAGUAQQBwAHAAcwAgAC0ARQByAHIAbwByAEEAYwB0AGkAbwBuACAAUwBpAGwAZQBuAHQAbAB5AEMAbwBuAHQAaQBuAHUAZQANAAoAfQANAAoAJABuACAAPQAgADAADQAKACQAaQBkAHMAIAA9ACAATgBlAHcALQBPAGIAagBlAGMAdAAgAFMAeQBzAHQAZQBtAC4AQwBvAGwAbABlAGMAdABpAG8AbgBzAC4ARwBlAG4AZQByAGkAYwAuAEgAYQBzAGgAUwBlAHQAWwBzAHQAcgBpAG4AZwBdAA0ACgBmAG8AcgBlAGEAYwBoACAAKAAkAHAAawBnACAAaQBuACAAQAAoAEcAZQB0AC0AQQBwAHAAeABQAGEAYwBrAGEAZwBlACAALQBFAHIAcgBvAHIAQQBjAHQAaQBvAG4AIABTAGkAbABlAG4AdABsAHkAQwBvAG4AdABpAG4AdQBlACkAKQAgAHsAIABpAGYAIAAoACQAcABrAGcALgBQAGEAYwBrAGEAZwBlAEYAYQBtAGkAbAB5AE4AYQBtAGUAKQAgAHsAIABbAHYAbwBpAGQAXQAkAGkAZABzAC4AQQBkAGQAKAAkAHAAawBnAC4AUABhAGMAawBhAGcAZQBGAGEAbQBpAGwAeQBOAGEAbQBlACkAIAB9ACAAfQANAAoAdAByAHkAIAB7ACAAZgBvAHIAZQBhAGMAaAAgACgAJABwAGsAZwAgAGkAbgAgAEAAKABHAGUAdAAtAEEAcABwAHgAUABhAGMAawBhAGcAZQAgAC0AQQBsAGwAVQBzAGUAcgBzACAALQBFAHIAcgBvAHIAQQBjAHQAaQBvAG4AIABTAGkAbABlAG4AdABsAHkAQwBvAG4AdABpAG4AdQBlACkAKQAgAHsAIABpAGYAIAAoACQAcABrAGcALgBQAGEAYwBrAGEAZwBlAEYAYQBtAGkAbAB5AE4AYQBtAGUAKQAgAHsAIABbAHYAbwBpAGQAXQAkAGkAZABzAC4AQQBkAGQAKAAkAHAAawBnAC4AUABhAGMAawBhAGcAZQBGAGEAbQBpAGwAeQBOAGEAbQBlACkAIAB9ACAAfQAgAH0AIABjAGEAdABjAGgAIAB7AH0ADQAKAGYAbwByAGUAYQBjAGgAIAAoACQAaQBkACAAaQBuACAAJABpAGQAcwApACAAewANAAoAIAAgACQAcAAgAD0AIABKAG8AaQBuAC0AUABhAHQAaAAgACQAcgBvAG8AdAAgACQAaQBkAA0ACgAgACAATgBlAHcALQBJAHQAZQBtACAALQBQAGEAdABoACAAJABwACAALQBGAG8AcgBjAGUAIAB8ACAATwB1AHQALQBOAHUAbABsAA0ACgAgACAATgBlAHcALQBJAHQAZQBtAFAAcgBvAHAAZQByAHQAeQAgAC0AUABhAHQAaAAgACQAcAAgAC0ATgBhAG0AZQAgAEQAaQBzAGEAYgBsAGUAZAAgAC0AVgBhAGwAdQBlACAAMQAgAC0AUAByAG8AcABlAHIAdAB5AFQAeQBwAGUAIABEAFcAbwByAGQAIAAtAEYAbwByAGMAZQAgAHwAIABPAHUAdAAtAE4AdQBsAGwADQAKACAAIABOAGUAdwAtAEkAdABlAG0AUAByAG8AcABlAHIAdAB5ACAALQBQAGEAdABoACAAJABwACAALQBOAGEAbQBlACAARABpAHMAYQBiAGwAZQBkAEIAeQBVAHMAZQByACAALQBWAGEAbAB1AGUAIAAxACAALQBQAHIAbwBwAGUAcgB0AHkAVAB5AHAAZQAgAEQAVwBvAHIAZAAgAC0ARgBvAHIAYwBlACAAfAAgAE8AdQB0AC0ATgB1AGwAbAANAAoAIAAgACQAbgArACsADQAKAH0ADQAKACQAZwAgAD0AIAAoAEcAZQB0AC0ASQB0AGUAbQBQAHIAbwBwAGUAcgB0AHkAIAAkAHIAbwBvAHQAIAAtAE4AYQBtAGUAIABHAGwAbwBiAGEAbABVAHMAZQByAEQAaQBzAGEAYgBsAGUAZAApAC4ARwBsAG8AYgBhAGwAVQBzAGUAcgBEAGkAcwBhAGIAbABlAGQADQAKACQAdAAgAD0AIAAoAEcAZQB0AC0ASQB0AGUAbQBQAHIAbwBwAGUAcgB0AHkAIAAkAHMAZQBhAHIAYwBoACAALQBOAGEAbQBlACAAQgBhAGMAawBnAHIAbwB1AG4AZABBAHAAcABHAGwAbwBiAGEAbABUAG8AZwBnAGwAZQApAC4AQgBhAGMAawBnAHIAbwB1AG4AZABBAHAAcABHAGwAbwBiAGEAbABUAG8AZwBnAGwAZQANAAoAJABsACAAPQAgACgARwBlAHQALQBJAHQAZQBtAFAAcgBvAHAAZQByAHQAeQAgACcASABLAEwATQA6AFwAUwBPAEYAVABXAEEAUgBFAFwAUABvAGwAaQBjAGkAZQBzAFwATQBpAGMAcgBvAHMAbwBmAHQAXABXAGkAbgBkAG8AdwBzAFwAQQBwAHAAUAByAGkAdgBhAGMAeQAnACAALQBOAGEAbQBlACAATABlAHQAQQBwAHAAcwBSAHUAbgBJAG4AQgBhAGMAawBnAHIAbwB1AG4AZAApAC4ATABlAHQAQQBwAHAAcwBSAHUAbgBJAG4AQgBhAGMAawBnAHIAbwB1AG4AZAANAAoAVwByAGkAdABlAC0ASABvAHMAdAAgACgAJwAgACAAIAAgAFsATwBLAF0AIABVAFcAUAAgAGMAbwBtACAARABpAHMAYQBiAGwAZQBkAD0AMQA6ACAAJwAgACsAIAAkAG4AKQANAAoAVwByAGkAdABlAC0ASABvAHMAdAAgACgAJwAgACAAIAAgAFsAQwBIAEUAQwBLAF0AIABHAGwAbwBiAGEAbABVAHMAZQByAEQAaQBzAGEAYgBsAGUAZAA9ACcAIAArACAAJABnACAAKwAgACcAIAAoADEAKQAnACkADQAKAFcAcgBpAHQAZQAtAEgAbwBzAHQAIAAoACcAIAAgACAAIABbAEMASABFAEMASwBdACAAQgBhAGMAawBnAHIAbwB1AG4AZABBAHAAcABHAGwAbwBiAGEAbABUAG8AZwBnAGwAZQA9ACcAIAArACAAJAB0ACAAKwAgACcAIAAoADAAKQAnACkADQAKAFcAcgBpAHQAZQAtAEgAbwBzAHQAIAAoACcAIAAgACAAIABbAEMASABFAEMASwBdACAATABlAHQAQQBwAHAAcwBSAHUAbgBJAG4AQgBhAGMAawBnAHIAbwB1AG4AZAA9ACcAIAArACAAJABsACAAKwAgACcAIAAoADIAPQBOAGUAdgBlAHIAKQAnACkADQAKAGkAZgAgACgAJABnACAALQBuAGUAIAAxACAALQBvAHIAIAAkAHQAIAAtAG4AZQAgADAAIAAtAG8AcgAgACQAbAAgAC0AbgBlACAAMgApACAAewAgAFcAcgBpAHQAZQAtAEgAbwBzAHQAIAAnACAAIAAgACAAWwBBAFYASQBTAE8AXQAgAEEAbABnAHUAbQBhACAAYwBoAGEAdgBlACAAbgBhAG8AIABmAGkAYwBvAHUALgAgAFAAbwBsAGkAdABpAGMAYQAgAGQAYQAgAGUAbQBwAHIAZQBzAGEAIAAvACAAVABhAG0AcABlAHIAIABwAG8AZABlACAAZQBzAHQAYQByACAAYQAgAGIAbABvAHEAdQBlAGEAcgAuACcAIAB9AA0ACgA=
+echo A parar extras SearchHost / SearchApp (Start Menu fica; Discord/Cursor/jogos nao)...
+taskkill /F /IM SearchHost.exe >nul 2>&1
+taskkill /F /IM SearchApp.exe >nul 2>&1
+taskkill /F /IM RuntimeBroker.exe >nul 2>&1
+echo A reiniciar Explorer para as chaves pegarem (apps tuas ficam abertas)...
+taskkill /f /im explorer.exe >nul 2>&1
+timeout /t 1 /nobreak >nul
+start explorer.exe
+echo(
+echo Verificacao:
+reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications" /v GlobalUserDisabled
+reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Search" /v BackgroundAppGlobalToggle
+reg query "HKLM\SOFTWARE\Policies\Microsoft\Windows\AppPrivacy" /v LetAppsRunInBackground
 goto :eof
 
 :_bg_apps_on
 reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications" /v GlobalUserDisabled /f >nul 2>&1
+reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications" /v Migrated /f >nul 2>&1
+reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications" /v GlobalUserDisabled /f >nul 2>&1
 reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Search" /v BackgroundAppGlobalToggle /f >nul 2>&1
 reg delete "HKLM\SOFTWARE\Policies\Microsoft\Windows\AppPrivacy" /v LetAppsRunInBackground /f >nul 2>&1
 reg delete "HKCU\SOFTWARE\Policies\Microsoft\Windows\AppPrivacy" /v LetAppsRunInBackground /f >nul 2>&1
-powershell -NoProfile -ExecutionPolicy Bypass -EncodedCommand JAByAG8AbwB0ACAAPQAgACcASABLAEMAVQA6AFwAUwBvAGYAdAB3AGEAcgBlAFwATQBpAGMAcgBvAHMAbwBmAHQAXABXAGkAbgBkAG8AdwBzAFwAQwB1AHIAcgBlAG4AdABWAGUAcgBzAGkAbwBuAFwAQgBhAGMAawBnAHIAbwB1AG4AZABBAGMAYwBlAHMAcwBBAHAAcABsAGkAYwBhAHQAaQBvAG4AcwAnAAoAaQBmACAAKABUAGUAcwB0AC0AUABhAHQAaAAgACQAcgBvAG8AdAApACAAewAKACAAIABHAGUAdAAtAEMAaABpAGwAZABJAHQAZQBtACAAJAByAG8AbwB0ACAALQBFAEEAIABTAGkAbABlAG4AdABsAHkAQwBvAG4AdABpAG4AdQBlACAAfAAgAEYAbwByAEUAYQBjAGgALQBPAGIAagBlAGMAdAAgAHsACgAgACAAIAAgAFIAZQBtAG8AdgBlAC0ASQB0AGUAbQBQAHIAbwBwAGUAcgB0AHkAIAAkAF8ALgBQAFMAUABhAHQAaAAgAC0ATgBhAG0AZQAgAEQAaQBzAGEAYgBsAGUAZAAgAC0ARQBBACAAUwBpAGwAZQBuAHQAbAB5AEMAbwBuAHQAaQBuAHUAZQAKACAAIAAgACAAUgBlAG0AbwB2AGUALQBJAHQAZQBtAFAAcgBvAHAAZQByAHQAeQAgACQAXwAuAFAAUwBQAGEAdABoACAALQBOAGEAbQBlACAARABpAHMAYQBiAGwAZQBkAEIAeQBVAHMAZQByACAALQBFAEEAIABTAGkAbABlAG4AdABsAHkAQwBvAG4AdABpAG4AdQBlAAoAIAAgAH0ACgB9AAoAVwByAGkAdABlAC0ASABvAHMAdAAgACcAIAAgACAAIABbAE8ASwBdACAAYwBoAGEAdgBlAHMAIABwAG8AcgAgAGEAcABwACAAcgBlAGEAdABpAHYAYQBkAGEAcwAnAA==
+powershell -NoProfile -ExecutionPolicy Bypass -Command "$root='HKCU:\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications'; if (Test-Path $root) { Get-ChildItem $root -EA SilentlyContinue | ForEach-Object { Remove-ItemProperty $_.PSPath -Name Disabled -EA SilentlyContinue; Remove-ItemProperty $_.PSPath -Name DisabledByUser -EA SilentlyContinue } }; Write-Host '    [OK] chaves por app reativadas'"
+call :ok "Apps em 2 plano reativadas"
 goto :eof
 
 :_cpu_snap
@@ -1680,8 +1787,96 @@ start explorer.exe
 call :ok "Miniaturas"
 goto :eof
 
+
+:_ram_write_ps1
+if not exist "%ProgramData%\VenixOtimizacao" mkdir "%ProgramData%\VenixOtimizacao" >nul 2>&1
+powershell -NoProfile -ExecutionPolicy Bypass -Command "$b='JEVycm9yQWN0aW9uUHJlZmVyZW5jZSA9ICdTaWxlbnRseUNvbnRpbnVlJwokYyA9IEAnCnVzaW5nIFN5c3RlbTsKdXNpbmcgU3lzdGVtLlJ1bnRpbWUuSW50ZXJvcFNlcnZpY2VzOwpwdWJsaWMgc3RhdGljIGNsYXNzIFZlbml4UmFtSG9sZCB7CiAgW0RsbEltcG9ydCgibnRkbGwuZGxsIildIHB1YmxpYyBzdGF0aWMgZXh0ZXJuIGludCBSdGxBZGp1c3RQcml2aWxlZ2UoaW50IHAsIGJvb2wgZSwgYm9vbCB0LCBvdXQgYm9vbCB3KTsKICBbRGxsSW1wb3J0KCJudGRsbC5kbGwiKV0gcHVibGljIHN0YXRpYyBleHRlcm4gaW50IE50U2V0U3lzdGVtSW5mb3JtYXRpb24oaW50IGMsIHJlZiBpbnQgaSwgaW50IGwpOwogIFtEbGxJbXBvcnQoInBzYXBpLmRsbCIpXSBwdWJsaWMgc3RhdGljIGV4dGVybiBib29sIEVtcHR5V29ya2luZ1NldChJbnRQdHIgaCk7CiAgcHVibGljIHN0YXRpYyB2b2lkIFN0YW5kYnkoKSB7CiAgICBib29sIHc7CiAgICBSdGxBZGp1c3RQcml2aWxlZ2UoNSwgdHJ1ZSwgZmFsc2UsIG91dCB3KTsKICAgIFJ0bEFkanVzdFByaXZpbGVnZSgxMywgdHJ1ZSwgZmFsc2UsIG91dCB3KTsKICAgIGludCB2OwogICAgdiA9IDQ7IE50U2V0U3lzdGVtSW5mb3JtYXRpb24oODAsIHJlZiB2LCA0KTsKICAgIHYgPSA1OyBOdFNldFN5c3RlbUluZm9ybWF0aW9uKDgwLCByZWYgdiwgNCk7CiAgfQogIHB1YmxpYyBzdGF0aWMgdm9pZCBUcmltKEludFB0ciBoKSB7IEVtcHR5V29ya2luZ1NldChoKTsgfQp9CidACmlmICgtbm90ICgnVmVuaXhSYW1Ib2xkJyAtYXMgW3R5cGVdKSkgeyBBZGQtVHlwZSAkYyB9CnRyeSB7IFN0b3AtU2VydmljZSAtTmFtZSBTeXNNYWluIC1Gb3JjZSAtRXJyb3JBY3Rpb24gU2lsZW50bHlDb250aW51ZSB9IGNhdGNoIHt9CltWZW5peFJhbUhvbGRdOjpTdGFuZGJ5KCkKJHByb3RlY3QgPSAnY3Vyc29yfGRpc2NvcmR8Y2hyb21lfG1zZWRnZXxmaXJlZm94fGJyYXZlfG9wZXJhfHZpdmFsZGl8c3RlYW18ZXBpY2dhbWVzbGF1bmNoZXJ8Zml2ZW18Zm9ydG5pdGV8Z3RhNXxjb2RlfGRldmVudnxvYnM2NHxvYnMzMnxzcG90aWZ5fGV4cGxvcmVyfGNzcnNzfHdpbmxvZ29ufGxzYXNzfHNlcnZpY2VzfHNtc3N8ZHdtfGF1ZGlvZGcnCiRibG9hdCA9IEAoJ1J1bnRpbWVCcm9rZXInLCdBcHBsaWNhdGlvbkZyYW1lSG9zdCcsJ1RleHRJbnB1dEhvc3QnLCdTZWFyY2hIb3N0JywnU2VhcmNoQXBwJywnUGhvbmVFeHBlcmllbmNlSG9zdCcsJ1dpZGdldFNlcnZpY2UnLCdXaWRnZXRzJywnWW91clBob25lJywnR2FtZUJhcicsJ0dhbWVCYXJGVFcnLCdHYW1lQmFyUHJlc2VuY2VXcml0ZXInLCdDb21wYXRUZWxSdW5uZXInLCdHYW1lQ2hhdE92ZXJsYXknLCdPbmVEcml2ZScsJ1NoZWxsRXhwZXJpZW5jZUhvc3QnLCdVc2VyT09CRUJyb2tlcicsJ1NlY3VyaXR5SGVhbHRoU3lzdHJheScsJ1N0YXJ0TWVudUV4cGVyaWVuY2VIb3N0JywnWW91clBob25lU2VydmVyJykKR2V0LVByb2Nlc3MgLUVycm9yQWN0aW9uIFNpbGVudGx5Q29udGludWUgfCBXaGVyZS1PYmplY3QgewogICgkYmxvYXQgLWNvbnRhaW5zICRfLlByb2Nlc3NOYW1lKSAtYW5kICgkXy5Qcm9jZXNzTmFtZSAtbm90bWF0Y2ggJHByb3RlY3QpCn0gfCBGb3JFYWNoLU9iamVjdCB7CiAgdHJ5IHsgW1Zlbml4UmFtSG9sZF06OlRyaW0oJF8uSGFuZGxlKSB9IGNhdGNoIHt9Cn0K'; $p=Join-Path $env:ProgramData 'VenixOtimizacao\ram-hold.ps1'; [IO.File]::WriteAllText($p, [Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($b)))"
+goto :eof
+
+:_ram_hold_on
+call :_ram_write_ps1
+if not exist "%ProgramData%\VenixOtimizacao\ram-hold.ps1" (
+    echo     [AVISO] Nao consegui gravar ram-hold.ps1
+    goto :eof
+)
+schtasks /Delete /TN "VENIX-RamHold" /F >nul 2>&1
+schtasks /Create /F /TN "VENIX-RamHold" /SC MINUTE /MO 3 /RU SYSTEM /RL HIGHEST /NP /TR "powershell.exe -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File %ProgramData%\VenixOtimizacao\ram-hold.ps1" >nul 2>&1
+if errorlevel 1 (
+    schtasks /Create /F /TN "VENIX-RamHold" /SC MINUTE /MO 3 /RU SYSTEM /RL HIGHEST /TR "powershell.exe -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File %ProgramData%\VenixOtimizacao\ram-hold.ps1"
+)
+sc stop SysMain >nul 2>&1
+sc config SysMain start= disabled >nul 2>&1
+powershell -NoProfile -Command "Disable-MMAgent -MemoryCompression -EA SilentlyContinue" >nul 2>&1
+reg add "HKCU\Software\VenixOtimizacao" /v RamHold /t REG_DWORD /d 1 /f >nul
+schtasks /Query /TN "VENIX-RamHold" >nul 2>&1
+if errorlevel 1 (echo     [AVISO] Tarefa VENIX-RamHold nao ficou criada.) else (call :ok "Tarefa VENIX-RamHold a cada 3 min")
+echo A aplicar a primeira limpeza agora (standby + bloat, sem fechar as tuas apps)...
+powershell -NoProfile -ExecutionPolicy Bypass -File "%ProgramData%\VenixOtimizacao\ram-hold.ps1"
+call :ok "SysMain off + standby a ser limpa em ciclo"
+goto :eof
+
+:_ram_hold_off
+schtasks /Delete /TN "VENIX-RamHold" /F >nul 2>&1
+if exist "%ProgramData%\VenixOtimizacao\ram-hold.ps1" del /f /q "%ProgramData%\VenixOtimizacao\ram-hold.ps1" >nul 2>&1
+if exist "%ProgramData%\VenixOtimizacao" rd /q "%ProgramData%\VenixOtimizacao" >nul 2>&1
+sc config SysMain start= auto >nul 2>&1
+sc start SysMain >nul 2>&1
+powershell -NoProfile -Command "Enable-MMAgent -MemoryCompression -EA SilentlyContinue" >nul 2>&1
+reg delete "HKCU\Software\VenixOtimizacao" /v RamHold /f >nul 2>&1
+call :ok "VENIX-RamHold removida  SysMain ligado"
+goto :eof
+
+:_fnf_apply
+set "VENIX_FNF_EXES=%~1"
+call :_gamemode
+call :_hags_on
+call :_mmcss
+call :_energia
+reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile" /v SystemResponsiveness /t REG_DWORD /d 0 /f >nul
+reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile" /v NetworkThrottlingIndex /t REG_DWORD /d 4294967295 /f >nul
+reg add "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\kernel" /v GlobalTimerResolutionRequests /t REG_DWORD /d 1 /f >nul 2>&1
+reg add "HKLM\SYSTEM\CurrentControlSet\Control\PriorityControl" /v Win32PrioritySeparation /t REG_DWORD /d 26 /f >nul
+reg add "HKCU\Software\VenixOtimizacao" /v Fnf /t REG_DWORD /d 1 /f >nul
+for %%E in (%~1) do (
+    if /I not "%%~E"=="" (
+        echo %%~E | findstr /I "EasyAntiCheat BattlEye BEService" >nul
+        if errorlevel 1 (
+            reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\%%~E\PerfOptions" /v CpuPriorityClass /t REG_DWORD /d 3 /f >nul
+            reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\%%~E\PerfOptions" /v IoPriority /t REG_DWORD /d 3 /f >nul
+            reg add "HKCU\Software\Microsoft\DirectX\UserGpuPreferences" /v "%%~E" /t REG_SZ /d "GpuPreference=2;" /f >nul
+            reg add "HKCU\Software\VenixOtimizacao\Prio" /v "%%~E" /t REG_SZ /d 1 /f >nul
+            call :ok "%%~E CPU High + GPU alto desempenho"
+        )
+    )
+)
+for /f "tokens=*" %%I in ('reg query "HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces" 2^>nul') do (
+    reg add "%%I" /v TcpAckFrequency /t REG_DWORD /d 1 /f >nul 2>&1
+    reg add "%%I" /v TCPNoDelay /t REG_DWORD /d 1 /f >nul 2>&1
+)
+call :ok "Timer/rede: SystemResponsiveness=0  throttling off  TCPNoDelay"
+powershell -NoProfile -ExecutionPolicy Bypass -EncodedCommand JABFAHIAcgBvAHIAQQBjAHQAaQBvAG4AUAByAGUAZgBlAHIAZQBuAGMAZQAgAD0AIAAnAFMAaQBsAGUAbgB0AGwAeQBDAG8AbgB0AGkAbgB1AGUAJwANAAoAJABuAGEAbQBlAHMAIAA9ACAAQAAoACQAZQBuAHYAOgBWAEUATgBJAFgAXwBGAE4ARgBfAEUAWABFAFMAIAAtAHMAcABsAGkAdAAgACcAOwAnACAAfAAgAEYAbwByAEUAYQBjAGgALQBPAGIAagBlAGMAdAAgAHsAIAAkAF8ALgBUAHIAaQBtACgAKQAgAH0AIAB8ACAAVwBoAGUAcgBlAC0ATwBiAGoAZQBjAHQAIAB7ACAAJABfACAAfQApAA0ACgAkAGYAbABhAGcAIAA9ACAAJwB+ACAARABJAFMAQQBCAEwARQBEAFgATQBBAFgASQBNAEkAWgBFAEQAVwBJAE4ARABPAFcARQBEAE0ATwBEAEUAIABIAEkARwBIAEQAUABJAEEAVwBBAFIARQAnAA0ACgAkAHIAawAgAD0AIAAnAEgASwBDAFUAOgBcAFMAbwBmAHQAdwBhAHIAZQBcAE0AaQBjAHIAbwBzAG8AZgB0AFwAVwBpAG4AZABvAHcAcwAgAE4AVABcAEMAdQByAHIAZQBuAHQAVgBlAHIAcwBpAG8AbgBcAEEAcABwAEMAbwBtAHAAYQB0AEYAbABhAGcAcwBcAEwAYQB5AGUAcgBzACcADQAKAE4AZQB3AC0ASQB0AGUAbQAgACQAcgBrACAALQBGAG8AcgBjAGUAIAB8ACAATwB1AHQALQBOAHUAbABsAA0ACgBmAHUAbgBjAHQAaQBvAG4AIABTAGUAdAAtAEYAcwBvACgAWwBzAHQAcgBpAG4AZwBdACQAcABhAHQAaAApACAAewANAAoAIAAgAGkAZgAgACgALQBuAG8AdAAgACQAcABhAHQAaAApACAAewAgAHIAZQB0AHUAcgBuACAAJABmAGEAbABzAGUAIAB9AA0ACgAgACAAaQBmACAAKAAkAHAAYQB0AGgAIAAtAG0AYQB0AGMAaAAgACcARQBhAHMAeQBBAG4AdABpAEMAaABlAGEAdAB8AEIAYQB0AHQAbABFAHkAZQB8AEUAYQBzAHkAQQBuAHQAaQBDAGgAZQBhAHQAXwBFAE8AUwB8AEIARQBTAGUAcgB2AGkAYwBlACcAKQAgAHsAIAByAGUAdAB1AHIAbgAgACQAZgBhAGwAcwBlACAAfQANAAoAIAAgAE4AZQB3AC0ASQB0AGUAbQBQAHIAbwBwAGUAcgB0AHkAIAAtAFAAYQB0AGgAIAAkAHIAawAgAC0ATgBhAG0AZQAgACQAcABhAHQAaAAgAC0AVgBhAGwAdQBlACAAJABmAGwAYQBnACAALQBQAHIAbwBwAGUAcgB0AHkAVAB5AHAAZQAgAFMAdAByAGkAbgBnACAALQBGAG8AcgBjAGUAIAB8ACAATwB1AHQALQBOAHUAbABsAA0ACgAgACAAVwByAGkAdABlAC0ASABvAHMAdAAgACgAJwAgACAAIAAgAFsATwBLAF0AIABGAFMATwAgAG8AZgBmADoAIAAnACAAKwAgACQAcABhAHQAaAApAA0ACgAgACAAcgBlAHQAdQByAG4AIAAkAHQAcgB1AGUADQAKAH0ADQAKACQAZgBvAHUAbgBkACAAPQAgADAADQAKAGYAbwByAGUAYQBjAGgAIAAoACQAcAByAG8AYwAgAGkAbgAgAEAAKABHAGUAdAAtAFAAcgBvAGMAZQBzAHMAIAAtAEUAcgByAG8AcgBBAGMAdABpAG8AbgAgAFMAaQBsAGUAbgB0AGwAeQBDAG8AbgB0AGkAbgB1AGUAKQApACAAewANAAoAIAAgACQAZQB4AGUAIAA9ACAAJABwAHIAbwBjAC4AUAByAG8AYwBlAHMAcwBOAGEAbQBlACAAKwAgACcALgBlAHgAZQAnAA0ACgAgACAAaQBmACAAKAAkAG4AYQBtAGUAcwAgAC0AYwBvAG4AdABhAGkAbgBzACAAJABlAHgAZQApACAAewANAAoAIAAgACAAIAB0AHIAeQAgAHsADQAKACAAIAAgACAAIAAgACQAcAAgAD0AIAAkAHAAcgBvAGMALgBQAGEAdABoAA0ACgAgACAAIAAgACAAIABpAGYAIAAoACQAcAAgAC0AYQBuAGQAIAAoAFMAZQB0AC0ARgBzAG8AIAAkAHAAKQApACAAewAgACQAZgBvAHUAbgBkACsAKwAgAH0ADQAKACAAIAAgACAAfQAgAGMAYQB0AGMAaAAgAHsAfQANAAoAIAAgAH0ADQAKAH0ADQAKACQAcgBvAG8AdABzACAAPQAgAE4AZQB3AC0ATwBiAGoAZQBjAHQAIABTAHkAcwB0AGUAbQAuAEMAbwBsAGwAZQBjAHQAaQBvAG4AcwAuAEcAZQBuAGUAcgBpAGMALgBMAGkAcwB0AFsAcwB0AHIAaQBuAGcAXQANAAoAZgBvAHIAZQBhAGMAaAAgACgAJAByACAAaQBuACAAQAAoAA0ACgAgACAAKABKAG8AaQBuAC0AUABhAHQAaAAgACQAZQBuAHYAOgBMAE8AQwBBAEwAQQBQAFAARABBAFQAQQAgACcARgBpAHYAZQBNACcAKQAsAA0ACgAgACAAKABKAG8AaQBuAC0AUABhAHQAaAAgACQAZQBuAHYAOgBMAE8AQwBBAEwAQQBQAFAARABBAFQAQQAgACcARgBpAHYAZQBNAFwARgBpAHYAZQBNAC4AYQBwAHAAJwApACwADQAKACAAIAAoAEoAbwBpAG4ALQBQAGEAdABoACAAJAB7AGUAbgB2ADoAUAByAG8AZwByAGEAbQBGAGkAbABlAHMAfQAgACcARQBwAGkAYwAgAEcAYQBtAGUAcwBcAEYAbwByAHQAbgBpAHQAZQAnACkALAANAAoAIAAgACgASgBvAGkAbgAtAFAAYQB0AGgAIAAkAHsAZQBuAHYAOgBQAHIAbwBnAHIAYQBtAEYAaQBsAGUAcwAoAHgAOAA2ACkAfQAgACcARQBwAGkAYwAgAEcAYQBtAGUAcwBcAEYAbwByAHQAbgBpAHQAZQAnACkALAANAAoAIAAgACcAQwA6AFwARQBwAGkAYwAgAEcAYQBtAGUAcwBcAEYAbwByAHQAbgBpAHQAZQAnACwADQAKACAAIAAnAEQAOgBcAEUAcABpAGMAIABHAGEAbQBlAHMAXABGAG8AcgB0AG4AaQB0AGUAJwAsAA0ACgAgACAAJwBFADoAXABFAHAAaQBjACAARwBhAG0AZQBzAFwARgBvAHIAdABuAGkAdABlACcALAANAAoAIAAgACcAQwA6AFwAUAByAG8AZwByAGEAbQAgAEYAaQBsAGUAcwBcAEUAcABpAGMAIABHAGEAbQBlAHMAXABGAG8AcgB0AG4AaQB0AGUAJwANAAoAKQApACAAewAgAGkAZgAgACgAJAByACAALQBhAG4AZAAgACgAVABlAHMAdAAtAFAAYQB0AGgAIAAkAHIAKQApACAAewAgACQAcgBvAG8AdABzAC4AQQBkAGQAKAAkAHIAKQAgAH0AIAB9AA0ACgB0AHIAeQAgAHsADQAKACAAIAAkAGUAcABpAGMAIAA9ACAAKABHAGUAdAAtAEkAdABlAG0AUAByAG8AcABlAHIAdAB5ACAAJwBIAEsATABNADoAXABTAE8ARgBUAFcAQQBSAEUAXABXAE8AVwA2ADQAMwAyAE4AbwBkAGUAXABFAHAAaQBjAEcAYQBtAGUAcwBcAFUAbgByAGUAYQBsACAARQBuAGcAaQBuAGUAJwAgAC0ARQBBACAAUwBpAGwAZQBuAHQAbAB5AEMAbwBuAHQAaQBuAHUAZQApAC4ASQBOAFMAVABBAEwATABEAEkAUgANAAoAIAAgAGkAZgAgACgAJABlAHAAaQBjACkAIAB7ACAAJAByAG8AbwB0AHMALgBBAGQAZAAoACQAZQBwAGkAYwApACAAfQANAAoAfQAgAGMAYQB0AGMAaAAgAHsAfQANAAoAZgBvAHIAZQBhAGMAaAAgACgAJABuAGEAbQBlACAAaQBuACAAJABuAGEAbQBlAHMAKQAgAHsADQAKACAAIABmAG8AcgBlAGEAYwBoACAAKAAkAHIAIABpAG4AIAAkAHIAbwBvAHQAcwApACAAewANAAoAIAAgACAAIABHAGUAdAAtAEMAaABpAGwAZABJAHQAZQBtACAALQBQAGEAdABoACAAJAByACAALQBGAGkAbAB0AGUAcgAgACQAbgBhAG0AZQAgAC0AUgBlAGMAdQByAHMAZQAgAC0ARABlAHAAdABoACAANgAgAC0ARgBpAGwAZQAgAC0ARQByAHIAbwByAEEAYwB0AGkAbwBuACAAUwBpAGwAZQBuAHQAbAB5AEMAbwBuAHQAaQBuAHUAZQAgAHwAIABGAG8AcgBFAGEAYwBoAC0ATwBiAGoAZQBjAHQAIAB7AA0ACgAgACAAIAAgACAAIABpAGYAIAAoAFMAZQB0AC0ARgBzAG8AIAAkAF8ALgBGAHUAbABsAE4AYQBtAGUAKQAgAHsAIAAkAHMAYwByAGkAcAB0ADoAZgBvAHUAbgBkACsAKwAgAH0ADQAKACAAIAAgACAAfQANAAoAIAAgAH0ADQAKAH0ADQAKAGkAZgAgACgAJABmAG8AdQBuAGQAIAAtAGUAcQAgADAAKQAgAHsAIABXAHIAaQB0AGUALQBIAG8AcwB0ACAAJwAgACAAIAAgAFsAQQBWAEkAUwBPAF0AIABOAGEAbwAgAGEAYwBoAGUAaQAgAG8AIABFAFgARQAgAG4AbwAgAGQAaQBzAGMAbwAuACAAQwBQAFUALwBHAFAAVQAgAG0AZQBzAG0AbwAgAGEAcwBzAGkAbQAgAGEAcABsAGkAYwBhAGQAbwBzACAAcABlAGwAbwAgAG4AbwBtAGUALgAnACAAfQANAAoA
+echo Nao mexi em EasyAntiCheat / BattlEye / ficheiros de anti-cheat.
+goto :eof
+
+:_fnf_undo
+for %%E in (FiveM.exe FiveM_GTAProcess.exe FortniteClient-Win64-Shipping.exe) do (
+    reg delete "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\%%E\PerfOptions" /f >nul 2>&1
+    reg delete "HKCU\Software\Microsoft\DirectX\UserGpuPreferences" /v "%%E" /f >nul 2>&1
+    reg delete "HKCU\Software\VenixOtimizacao\Prio" /v "%%E" /f >nul 2>&1
+)
+reg delete "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\kernel" /v GlobalTimerResolutionRequests /f >nul 2>&1
+reg add "HKLM\SYSTEM\CurrentControlSet\Control\PriorityControl" /v Win32PrioritySeparation /t REG_DWORD /d 2 /f >nul
+reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile" /v SystemResponsiveness /t REG_DWORD /d 20 /f >nul
+reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile" /v NetworkThrottlingIndex /t REG_DWORD /d 10 /f >nul
+powershell -NoProfile -Command "$rk='HKCU:\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers'; if (Test-Path $rk) { Get-Item $rk | ForEach-Object { $_.Property } | Where-Object { $_ -match 'FiveM|FortniteClient-Win64-Shipping' } | ForEach-Object { Remove-ItemProperty $rk -Name $_ -EA SilentlyContinue; Write-Host ('    [OK] FSO: '+$_) } }"
+reg delete "HKCU\Software\VenixOtimizacao" /v Fnf /f >nul 2>&1
+call :ok "Perfil FiveM/Fortnite revertido"
+goto :eof
+
 :_revert_all
 echo A reverter...
+call :_ram_hold_off
+call :_fnf_undo
 reg add "HKCU\Control Panel\Mouse" /v MouseSpeed /t REG_SZ /d 1 /f >nul
 reg add "HKCU\Control Panel\Mouse" /v MouseThreshold1 /t REG_SZ /d 6 /f >nul
 reg add "HKCU\Control Panel\Mouse" /v MouseThreshold2 /t REG_SZ /d 10 /f >nul
@@ -1743,6 +1938,7 @@ call :st_on_silent
 reg delete "HKCU\Software\VenixOtimizacao" /f >nul 2>&1
 reg delete "HKCU\Software\NoxOtimizacao" /f >nul 2>&1
 if exist "%LOCALAPPDATA%\VenixOtimizacao" rd /s /q "%LOCALAPPDATA%\VenixOtimizacao" >nul 2>&1
+if exist "%ProgramData%\VenixOtimizacao" rd /s /q "%ProgramData%\VenixOtimizacao" >nul 2>&1
 if exist "%LOCALAPPDATA%\NoxOtimizacao" rd /s /q "%LOCALAPPDATA%\NoxOtimizacao" >nul 2>&1
 call :ok "Tweaks VENIX revertidos (apps da Loja nao voltam sozinhas)"
 goto :eof
