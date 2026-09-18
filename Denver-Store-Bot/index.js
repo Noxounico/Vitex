@@ -1164,14 +1164,33 @@ function resolverTextosLoja(products, categoryName, opts = {}) {
   };
 }
 
+// Links do Discord CDN com ?ex= (hex unix) deixam de servir a imagem.
+// Se o Discord rejeitar um Media Gallery com URL morto, o painel/ticket
+// inteiro falha — por isso saltamos URLs já expiradas.
+function urlImagemUsavel(url) {
+  if (!url || !/^https?:\/\//i.test(String(url))) return null;
+  try {
+    const u = new URL(url);
+    const ex = u.searchParams.get('ex');
+    if (ex) {
+      const expiraMs = parseInt(ex, 16) * 1000;
+      if (Number.isFinite(expiraMs) && expiraMs <= Date.now() + 5000) return null;
+    }
+  } catch {
+    return url;
+  }
+  return url;
+}
+
 // Cartão V2 igual à print: banner no topo, texto, caixa verde, rodapé + botão
 // à direita (ou menu em baixo, no caso dos tickets).
 function montarPainelV2({ imagemUrl, accentColor, texto, rodape, accessory, extraRows = [] }) {
   const container = new ContainerBuilder().setAccentColor(accentColor ?? 0x2b2d31);
+  const imagem = urlImagemUsavel(imagemUrl);
 
-  if (imagemUrl && /^https?:\/\//i.test(imagemUrl)) {
+  if (imagem) {
     container.addMediaGalleryComponents(
-      new MediaGalleryBuilder().addItems(new MediaGalleryItemBuilder().setURL(imagemUrl))
+      new MediaGalleryBuilder().addItems(new MediaGalleryItemBuilder().setURL(imagem))
     );
   }
 
@@ -1461,6 +1480,44 @@ async function fecharTicket(canal, autorTag) {
   }, 5000);
 }
 
+async function cargosStaffExistentes(guild) {
+  const ids = [];
+  for (const id of ticketsCargosStaffIds()) {
+    const cargo = guild.roles.cache.get(id) || (await guild.roles.fetch(id).catch(() => null));
+    if (cargo) ids.push(id);
+  }
+  return ids;
+}
+
+async function categoriaTicketsValida(guild) {
+  const id = ticketsCategoriaId();
+  if (!id) return null;
+  const canal = guild.channels.cache.get(id) || (await guild.channels.fetch(id).catch(() => null));
+  if (!canal) {
+    console.warn(`Categoria de tickets ${id} não encontrada.`);
+    return null;
+  }
+  if (canal.type !== ChannelType.GuildCategory) {
+    console.warn(`TICKETS_CATEGORIA_ID ${id} não é uma categoria (type=${canal.type}).`);
+    return null;
+  }
+  return id;
+}
+
+function mensagemErroTicket(err) {
+  const codigo = err?.code;
+  if (codigo === 50013 || /Missing Permissions/i.test(err?.message || '')) {
+    return 'Não consegui criar o canal do ticket. Dá ao bot a permissão **Gerir Canais** na categoria de tickets.';
+  }
+  if (codigo === 30013) {
+    return 'A categoria de tickets está cheia (máximo 50 canais). Fecha tickets antigos e tenta outra vez.';
+  }
+  return (
+    'Não consegui criar o canal do ticket. Confirma que o bot tem a permissão **Gerir Canais** ' +
+    'e que a categoria de tickets existe.'
+  );
+}
+
 async function criarCanalTicket(guild, user, tipoKey, extra) {
   const tipo = TIPOS_TICKET[tipoKey];
   if (!tipo || !guild) return null;
@@ -1471,8 +1528,8 @@ async function criarCanalTicket(guild, user, tipoKey, extra) {
       ? user.username || user.globalName || userId
       : userId;
 
-  const categoriaId = ticketsCategoriaId();
-  const staffRoleIds = ticketsCargosStaffIds();
+  const parent = await categoriaTicketsValida(guild);
+  const staffRoleIds = await cargosStaffExistentes(guild);
   const overwrites = [
     { id: guild.roles.everyone.id, deny: [PermissionFlagsBits.ViewChannel] },
     {
@@ -1489,7 +1546,7 @@ async function criarCanalTicket(guild, user, tipoKey, extra) {
         PermissionFlagsBits.ViewChannel,
         PermissionFlagsBits.SendMessages,
         PermissionFlagsBits.ManageChannels,
-        PermissionFlagsBits.ManageRoles,
+        PermissionFlagsBits.ReadMessageHistory,
       ],
     },
   ];
@@ -1505,59 +1562,111 @@ async function criarCanalTicket(guild, user, tipoKey, extra) {
   }
 
   const nome = nomeCanalTicket(tipoKey, username, extra);
-
-  return guild.channels.create({
+  const payload = {
     name: nome,
     type: ChannelType.GuildText,
-    parent: categoriaId || undefined,
+    parent: parent || undefined,
     permissionOverwrites: overwrites,
-  });
+  };
+
+  try {
+    return await guild.channels.create(payload);
+  } catch (err) {
+    if (payload.parent && (err.code === 30013 || err.code === 50035)) {
+      console.warn('A criar ticket fora da categoria:', err.message);
+      return guild.channels.create({ ...payload, parent: undefined });
+    }
+    throw err;
+  }
 }
 
 async function enviarMensagemTicket(canal, { userId, texto, extraRows = [] }) {
-  const painelTicket = montarPainelV2({
-    imagemUrl: ticketsBannerUrl(),
-    accentColor: 0x2b2d31,
-    texto,
-    extraRows: [buildBotoesTicket(canal.id), ...extraRows],
-  });
+  const rows = [buildBotoesTicket(canal.id), ...extraRows];
+  const allowedMentions = {
+    users: userId ? [userId] : [],
+    roles: ticketsCargosStaffIds(),
+  };
+
+  const enviarV2 = async (imagemUrl) => {
+    const painelTicket = montarPainelV2({
+      imagemUrl,
+      accentColor: 0x2b2d31,
+      texto,
+      extraRows: rows,
+    });
+    await canal.send({
+      ...painelTicket.payload,
+      allowedMentions,
+    });
+  };
+
+  try {
+    await enviarV2(ticketsBannerUrl());
+    return;
+  } catch (err) {
+    console.warn('Mensagem do ticket com banner falhou, a tentar sem imagem:', err.message);
+  }
+
+  try {
+    await enviarV2(null);
+    return;
+  } catch (err) {
+    console.warn('Mensagem V2 do ticket falhou, a tentar texto simples:', err.message);
+  }
+
   await canal.send({
-    ...painelTicket.payload,
-    allowedMentions: {
-      users: userId ? [userId] : [],
-      roles: ticketsCargosStaffIds(),
-    },
+    content: texto,
+    components: rows,
+    allowedMentions,
   });
+}
+
+async function responderEphemeral(interaction, content) {
+  if (interaction.deferred || interaction.replied) {
+    return interaction.editReply({ content });
+  }
+  return interaction.reply({ content, ephemeral: true });
 }
 
 async function criarTicket(interaction, tipoKey) {
   const tipo = TIPOS_TICKET[tipoKey];
   if (!tipo) return;
+  if (!interaction.guild) {
+    return responderEphemeral(interaction, 'Os tickets só funcionam no servidor.');
+  }
+
+  if (!interaction.deferred && !interaction.replied) {
+    await interaction.deferReply({ ephemeral: true });
+  }
 
   let canal;
   try {
     canal = await criarCanalTicket(interaction.guild, interaction.user, tipoKey);
   } catch (err) {
     console.error('Falha ao criar canal de ticket:', err.message);
-    return interaction.reply({
-      content:
-        'Não consegui criar o canal do ticket. Confirma que o bot tem a permissão **Gerir Canais** ' +
-        'e que a categoria de tickets existe.',
-      ephemeral: true,
-    });
+    return responderEphemeral(interaction, mensagemErroTicket(err));
   }
 
-  await enviarMensagemTicket(canal, {
-    userId: interaction.user.id,
-    texto:
-      `Olá <@${interaction.user.id}>! Ticket de **${tipo.label}** aberto — em breve alguém da equipa vai responder. ` +
-      ticketsStaffMencoes(),
-  });
+  if (!canal) {
+    return responderEphemeral(interaction, mensagemErroTicket());
+  }
 
-  await interaction.reply({
-    content: `✅ Ticket criado: <#${canal.id}>`,
-    ephemeral: true,
-  });
+  try {
+    await enviarMensagemTicket(canal, {
+      userId: interaction.user.id,
+      texto:
+        `Olá <@${interaction.user.id}>! Ticket de **${tipo.label}** aberto — em breve alguém da equipa vai responder. ` +
+        ticketsStaffMencoes(),
+    });
+  } catch (err) {
+    console.error('Falha ao enviar mensagem do ticket:', err.message);
+    return responderEphemeral(
+      interaction,
+      `✅ Ticket criado: <#${canal.id}> (não consegui enviar a mensagem inicial).`
+    );
+  }
+
+  await responderEphemeral(interaction, `✅ Ticket criado: <#${canal.id}>`);
 }
 
 function textoPedidoCliente(orderId, product, quantidade) {
