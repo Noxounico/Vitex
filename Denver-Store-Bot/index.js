@@ -1465,9 +1465,7 @@ function podeGerirTicket(membro, canal) {
 }
 
 async function fecharTicket(canal, autorTag) {
-  const aviso =
-    `🔒 Ticket fechado por ${autorTag}. Este canal será apagado em 5 segundos.\n\n` +
-    textoComandos();
+  const aviso = `🔒 Ticket fechado por ${autorTag}. Este canal será apagado em 5 segundos.`;
   try {
     await canal.send({ content: aviso });
   } catch {
