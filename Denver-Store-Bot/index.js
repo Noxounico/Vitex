@@ -449,7 +449,7 @@ const PRODUTOS_SEED = [
   { nome: '20 Rockstar Acc', preco: eur(15), categoria: 'rockstar' },
 
   // --- Canal de bots Discord ---
-  { nome: 'Bot Personalizado', preco: eur(15), categoria: 'bots' },
+  { nome: 'Bot Personalizado + Manutenção', preco: eur(15), categoria: 'bots' },
   { nome: 'Manutenção Mensal', preco: eur(10), categoria: 'bots' },
   { nome: 'Manutenção Lifetime', preco: eur(70), categoria: 'bots' },
 
@@ -465,6 +465,10 @@ const PRODUTOS_SEED = [
   // --- Canal de otimização Windows ---
   { nome: 'Otimização Windows', preco: eur(3), categoria: 'optimizar' },
 ];
+
+// Categorias onde a lista acima manda: qualquer produto que já não esteja no
+// seed é desativado (evita nomes antigos a aparecer no menu de compra).
+const CATEGORIAS_SO_COM_SEED = ['Impulsos', 'bots'];
 
 // Cria produtos em falta e atualiza o preço/categoria dos que já existem.
 function seedProdutosIniciais() {
@@ -502,15 +506,17 @@ function seedProdutosIniciais() {
     atualizados++;
   }
 
-  const nomesImpulsos = new Set(
-    PRODUTOS_SEED.filter((p) => p.categoria === 'Impulsos').map((p) => p.nome.toLowerCase())
-  );
   let desativados = 0;
-  for (const p of db.listActiveProductsByCategory('Impulsos')) {
-    if (!nomesImpulsos.has(String(p.name).toLowerCase())) {
-      db.deactivateProduct(p.id);
-      console.log(`~ produto desativado #${p.id}: ${p.name} [Impulsos]`);
-      desativados++;
+  for (const categoria of CATEGORIAS_SO_COM_SEED) {
+    const nomes = new Set(
+      PRODUTOS_SEED.filter((p) => p.categoria === categoria).map((p) => p.nome.toLowerCase())
+    );
+    for (const p of db.listActiveProductsByCategory(categoria)) {
+      if (!nomes.has(String(p.name).toLowerCase())) {
+        db.deactivateProduct(p.id);
+        console.log(`~ produto desativado #${p.id}: ${p.name} [${categoria}]`);
+        desativados++;
+      }
     }
   }
 
@@ -521,7 +527,7 @@ function seedProdutosIniciais() {
     console.log(`🌱 ${atualizados} preço(s) atualizado(s).`);
   }
   if (desativados > 0) {
-    console.log(`🌱 ${desativados} produto(s) antigo(s) de Impulsos desativado(s).`);
+    console.log(`🌱 ${desativados} produto(s) antigo(s) desativado(s).`);
   }
   if (criados === 0 && atualizados === 0 && desativados === 0) {
     console.log('🌱 Produtos e preços já estavam em dia.');
@@ -1078,7 +1084,7 @@ const PAINEL_TEXTOS = {
   bots: textoPainel(
     '🤖 BOTS DISCORD',
     [
-      '🔹 Bot Personalizado: 15€+',
+      '🔹 Bot Personalizado + Manutenção: 15€',
       '🔹 Manutenção: 10€ / mês',
       '🔹 Manutenção Lifetime: 70€',
       '✨ Incluído:',

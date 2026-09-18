@@ -129,7 +129,7 @@ const CATALOG = [
   {
     category: 'bots',
     products: [
-      { name: 'Bot Personalizado', priceCents: cents(15) },
+      { name: 'Bot Personalizado + Manutenção', priceCents: cents(15) },
       { name: 'Manutenção Mensal', priceCents: cents(10) },
       { name: 'Manutenção Lifetime', priceCents: cents(70) },
     ],
@@ -154,6 +154,9 @@ const CATALOG = [
     products: [{ name: 'Otimização Windows', priceCents: cents(3) }],
   },
 ];
+
+// Categorias onde o catálogo manda: produtos fora dele são desativados.
+const CATEGORIAS_SO_COM_CATALOGO = ['Impulsos', 'bots'];
 
 function seed() {
   let created = 0;
@@ -198,10 +201,11 @@ function seed() {
     }
   }
 
-  const impulsos = CATALOG.find((g) => g.category === 'Impulsos');
-  if (impulsos) {
-    const nomes = new Set(impulsos.products.map((p) => p.name.toLowerCase()));
-    for (const p of db.listActiveProductsByCategory('Impulsos')) {
+  for (const categoria of CATEGORIAS_SO_COM_CATALOGO) {
+    const grupo = CATALOG.find((g) => g.category === categoria);
+    if (!grupo) continue;
+    const nomes = new Set(grupo.products.map((p) => p.name.toLowerCase()));
+    for (const p of db.listActiveProductsByCategory(categoria)) {
       if (!nomes.has(String(p.name).toLowerCase())) {
         db.deactivateProduct(p.id);
         console.log(`  - desativado #${p.id}: ${p.name}`);
